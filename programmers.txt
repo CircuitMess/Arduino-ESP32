@@ -4,8 +4,14 @@ ringofirm.program.protocol=esp32
 ringofirm.program.tool=esptool_py
 ringofirm.program.extra_params=
 
-spencerfirm.name=Ringo Firmware
+spencerfirm.name=Spencer Firmware
 spencerfirm.protocol=esp32
 spencerfirm.program.protocol=esp32
 spencerfirm.program.tool=esptool_py
 spencerfirm.program.extra_params=
+
+jaydfirm.name=Jay-D Firmware
+jaydfirm.protocol=esp32
+jaydfirm.program.protocol=esp32
+jaydfirm.program.tool=esptool_py
+jaydfirm.program.extra_params=

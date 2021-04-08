@@ -8,6 +8,7 @@ menu.DebugLevel=Core Debug Level
 menu.PSRAM=PSRAM
 menu.Revision=Board Revision
 
+##############################################################
 
 ringo.name=Ringo by CircuitMess
 
@@ -39,12 +40,8 @@ ringo.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 ringo.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
 ringo.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
 
-
-
 ringo.menu.FlashFreq.80=80MHz
 ringo.menu.FlashFreq.80.build.flash_freq=80m
-
-
 
 ringo.menu.UploadSpeed.921600=921600
 ringo.menu.UploadSpeed.921600.upload.speed=921600
@@ -89,12 +86,8 @@ spencer.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 spencer.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
 spencer.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
 
-
-
 spencer.menu.FlashFreq.80=80MHz
 spencer.menu.FlashFreq.80.build.flash_freq=80m
-
-
 
 spencer.menu.UploadSpeed.921600=921600
 spencer.menu.UploadSpeed.921600.upload.speed=921600
@@ -106,5 +99,51 @@ spencer.bootloader.tool=spencerfirm
 
 spencer.bootloader.tool=firmburn
 spencer.bootloader.tool.firmware=spencer/firmware.bin
+
+##############################################################
+
+jayd.name=Jay-D by CircuitMess
+
+jayd.vid.0=0x10c4
+jayd.pid.0=0xea60
+
+jayd.upload.tool=esptool_py
+jayd.upload.maximum_size=1310720
+jayd.upload.maximum_data_size=327680
+jayd.upload.wait_for_upload_port=false
+
+jayd.serial.disableDTR=true
+jayd.serial.disableRTS=true
+
+jayd.build.mcu=esp32
+jayd.build.core=esp32
+jayd.build.variant=jayd
+jayd.build.board=CM_JAYD
+
+jayd.build.f_cpu=240000000L
+jayd.build.flash_size=4MB
+jayd.build.flash_freq=40m
+jayd.build.flash_mode=dio
+jayd.build.boot=dio
+jayd.build.partitions=default
+jayd.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=0 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MEMMAP -DCONFIG_SPIRAM_USE_MEMMAP=1 -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
+
+jayd.menu.PartitionScheme.min_spiffs=No OTA
+jayd.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
+jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=1175552
+
+jayd.menu.FlashFreq.80=80MHz
+jayd.menu.FlashFreq.80.build.flash_freq=80m
+
+jayd.menu.UploadSpeed.921600=921600
+jayd.menu.UploadSpeed.921600.upload.speed=921600
+
+jayd.menu.DebugLevel.none=None
+jayd.menu.DebugLevel.none.build.code_debug=0
+
+jayd.bootloader.tool=jaydfirm
+
+jayd.bootloader.tool=firmburn
+jayd.bootloader.tool.firmware=jayd/firmware.bin
 
 ##############################################################
