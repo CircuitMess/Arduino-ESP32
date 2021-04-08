@@ -36,7 +36,7 @@
 //#define RPI_DISPLAY_TYPE // 20MHz maximum SPI
 
 // Only define one driver, the other ones must be commented out
-#define ILI9341_DRIVER
+//#define ILI9341_DRIVER
 //#define ST7735_DRIVER      // Define additional parameters below for this display
 //#define ILI9163_DRIVER     // Define additional parameters below for this display
 //#define S6D02A1_DRIVER
@@ -153,12 +153,12 @@
 // ###### EDIT THE PIN NUMBERS IN THE LINES FOLLOWING TO SUIT YOUR ESP8266 SETUP ######
 
 // For NodeMCU - use pin numbers in the form PIN_Dx where Dx is the NodeMCU pin designation
-#define TFT_MISO -1
-#define TFT_MOSI 25 // 23 // 16
-#define TFT_SCLK  26 // 18 // 19 // 17
-#define TFT_CS   2 // 4 // 12   // Chip select control pin
-#define TFT_DC    4 // 0 // 4  // Data Command control pin
-#define TFT_RST   13 // 2  // Reset pin (could connect to RST pin)
+//#define TFT_MISO -1
+//#define TFT_MOSI 25 // 23 // 16
+//#define TFT_SCLK  26 // 18 // 19 // 17
+//#define TFT_CS   2 // 4 // 12   // Chip select control pin
+//#define TFT_DC    4 // 0 // 4  // Data Command control pin
+//#define TFT_RST   13 // 2  // Reset pin (could connect to RST pin)
 
 //#define TFT_BL PIN_D1  // LED back-light (only for ST7789 with backlight control pin)
 
@@ -308,7 +308,7 @@
 // #define SPI_FREQUENCY   5000000
 // #define SPI_FREQUENCY  10000000
 // #define SPI_FREQUENCY  20000000
-#define SPI_FREQUENCY  27000000
+// #define SPI_FREQUENCY  27000000
 // #define SPI_FREQUENCY  40000000
 // #define SPI_FREQUENCY  55000000 // STM32 SPI1 only (SPI2 maximum is 27MHz)
 // #define SPI_FREQUENCY  80000000
