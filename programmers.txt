@@ -1,0 +1,11 @@
+ringofirm.name=Ringo Firmware
+ringofirm.protocol=esp32
+ringofirm.program.protocol=esp32
+ringofirm.program.tool=esptool_py
+ringofirm.program.extra_params=
+
+spencerfirm.name=Ringo Firmware
+spencerfirm.protocol=esp32
+spencerfirm.program.protocol=esp32
+spencerfirm.program.tool=esptool_py
+spencerfirm.program.extra_params=

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f45f73c4-84c8-4cd7-9a6f-5527fd7a1d5b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Extensions/Sprite.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Sprite.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Sprite.h" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Sprite.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TFT_eSPI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/TFT_eSPI.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TFT_eSPI.h" beforeDir="false" afterPath="$PROJECT_DIR$/TFT_eSPI.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User_Setup.h" beforeDir="false" afterPath="$PROJECT_DIR$/User_Setup.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1bZmbGkAKEfhrm1zMVbppWWzj8L" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+</project>

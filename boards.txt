@@ -1,0 +1,110 @@
+menu.UploadSpeed=Upload Speed
+menu.CPUFreq=CPU Frequency
+menu.FlashFreq=Flash Frequency
+menu.FlashMode=Flash Mode
+menu.FlashSize=Flash Size
+menu.PartitionScheme=Partition Scheme
+menu.DebugLevel=Core Debug Level
+menu.PSRAM=PSRAM
+menu.Revision=Board Revision
+
+
+ringo.name=Ringo by CircuitMess
+
+ringo.vid.0=0x10c4
+ringo.pid.0=0xea60
+
+ringo.upload.tool=esptool_py
+ringo.upload.maximum_size=1310720
+ringo.upload.maximum_data_size=327680
+ringo.upload.wait_for_upload_port=false
+
+ringo.serial.disableDTR=true
+ringo.serial.disableRTS=true
+
+ringo.build.mcu=esp32
+ringo.build.core=esp32
+ringo.build.variant=d32
+ringo.build.board=LOLIN_D32
+
+ringo.build.f_cpu=240000000L
+ringo.build.flash_size=4MB
+ringo.build.flash_freq=40m
+ringo.build.flash_mode=dio
+ringo.build.boot=dio
+ringo.build.partitions=default
+ringo.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS
+
+ringo.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
+ringo.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
+ringo.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
+
+
+
+ringo.menu.FlashFreq.80=80MHz
+ringo.menu.FlashFreq.80.build.flash_freq=80m
+
+
+
+ringo.menu.UploadSpeed.921600=921600
+ringo.menu.UploadSpeed.921600.upload.speed=921600
+
+ringo.menu.DebugLevel.none=None
+ringo.menu.DebugLevel.none.build.code_debug=0
+
+ringo.bootloader.tool=ringofirm
+
+ringo.bootloader.tool=firmburn
+ringo.bootloader.tool.firmware=ringo/firmware.bin
+
+##############################################################
+
+spencer.name=Spencer by CircuitMess
+
+spencer.vid.0=0x10c4
+spencer.pid.0=0xea60
+
+spencer.upload.tool=esptool_py
+spencer.upload.maximum_size=1310720
+spencer.upload.maximum_data_size=327680
+spencer.upload.wait_for_upload_port=false
+
+spencer.serial.disableDTR=true
+spencer.serial.disableRTS=true
+
+spencer.build.mcu=esp32
+spencer.build.core=esp32
+spencer.build.variant=d32
+spencer.build.board=LOLIN_D32
+
+spencer.build.f_cpu=240000000L
+spencer.build.flash_size=4MB
+spencer.build.flash_freq=40m
+spencer.build.flash_mode=dio
+spencer.build.boot=dio
+spencer.build.partitions=default
+spencer.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH
+
+spencer.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
+spencer.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
+spencer.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
+
+
+
+spencer.menu.FlashFreq.80=80MHz
+spencer.menu.FlashFreq.80.build.flash_freq=80m
+
+
+
+spencer.menu.UploadSpeed.921600=921600
+spencer.menu.UploadSpeed.921600.upload.speed=921600
+
+spencer.menu.DebugLevel.none=None
+spencer.menu.DebugLevel.none.build.code_debug=0
+
+spencer.bootloader.tool=spencerfirm
+
+spencer.bootloader.tool=firmburn
+spencer.bootloader.tool.firmware=spencer/firmware.bin
+
+##############################################################

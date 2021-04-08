@@ -1,0 +1,17 @@
+#include "BinarySemaphore.h"
+
+BinarySemaphore::BinarySemaphore(){
+	semaphore = xSemaphoreCreateBinary();
+}
+
+BinarySemaphore::~BinarySemaphore(){
+	vSemaphoreDelete(semaphore);
+}
+
+bool BinarySemaphore::wait(){
+	return xSemaphoreTake(semaphore, portMAX_DELAY) == pdTRUE; // TODO: INCLUDE_vTaskSuspend to be set to 1
+}
+
+void BinarySemaphore::signal(){
+	xSemaphoreGive(semaphore);
+}
