@@ -130,7 +130,7 @@ jayd.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -D
 
 jayd.menu.PartitionScheme.min_spiffs=No OTA
 jayd.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=1175552
+jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
 
 jayd.menu.FlashFreq.80=80MHz
 jayd.menu.FlashFreq.80.build.flash_freq=80m
