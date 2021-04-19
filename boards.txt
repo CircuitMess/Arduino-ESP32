@@ -35,6 +35,7 @@ ringo.build.flash_mode=dio
 ringo.build.boot=dio
 ringo.build.partitions=default
 ringo.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DILI9341_DRIVER -DTFT_MISO=-1 -DTFT_MOSI=25 -DTFT_SCLK=26 -DTFT_CS=2 -DTFT_DC=4 -DTFT_RST=13 -DSPI_FREQUENCY=27000000
+ringo.build.extra_flags=-Os -g3
 
 ringo.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 ringo.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
@@ -81,6 +82,7 @@ spencer.build.flash_mode=dio
 spencer.build.boot=dio
 spencer.build.partitions=default
 spencer.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DTFT_WIDTH=0 -DTFT_HEIGHT=0 -DST7735_DRIVER
+spencer.build.extra_flags=-Os -g3
 
 spencer.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 spencer.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
@@ -126,7 +128,8 @@ jayd.build.flash_freq=40m
 jayd.build.flash_mode=dio
 jayd.build.boot=dio
 jayd.build.partitions=default
-jayd.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DST7735_DRIVER -DTFT_RGB_ORDER=TFT_BGR -DTFT_MISO=-1 -DTFT_MOSI=23 -DTFT_SCLK=18 -DTFT_CS=32 -DTFT_DC=33 -DTFT_RST=2 -DSPI_FREQUENCY=27000000 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=0 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MEMMAP -DCONFIG_SPIRAM_USE_MEMMAP=1 -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
+jayd.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DST7735_DRIVER -DTFT_RGB_ORDER=TFT_BGR -DTFT_WIDTH=128 -DTFT_HEIGHT=160 -DTFT_MISO=-1 -DTFT_MOSI=23 -DTFT_SCLK=18 -DTFT_CS=32 -DTFT_DC=33 -DTFT_RST=2 -DSPI_FREQUENCY=27000000 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=0 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MEMMAP -DCONFIG_SPIRAM_USE_MEMMAP=1 -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
+jayd.build.extra_flags=-O2
 
 jayd.menu.PartitionScheme.min_spiffs=No OTA
 jayd.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
