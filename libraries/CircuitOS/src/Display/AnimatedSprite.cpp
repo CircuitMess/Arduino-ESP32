@@ -1,95 +1,210 @@
 #include "AnimatedSprite.h"
-#include "PGMFile.h"
 #include "gifdec.h"
-#include <FS.h>
-AnimatedSprite::AnimatedSprite(Sprite* parentSprite, uint8_t* gifData, size_t gifSize) : parentSprite(parentSprite){
-	fs::File file = fs::File(fs::FileImplPtr(new PGMFile(gifData, gifSize)));
-	gd_GIF* gif = gd_open_gif(&file);
-	if(gif == nullptr){
-		Serial.println("Failed opening gif");
+
+AnimatedSprite::AnimatedSprite(Sprite* canvas, fs::File file) : canvas(canvas), file(file){
+	if(!file){
+		Serial.printf("AnimatedGif file %s not open\n", file.name());
 		return;
 	}
 
-	width = gif->width;
-	height = gif->height;
+	file.seek(0);
 
-	while (gd_get_frame(gif) == 1) {
-		uint8_t *buffer = (uint8_t*) malloc(width * height * 3);
-		//render 24-bit color frame into buffer
-		gd_render_frame(gif, buffer, false);
-
-		uint16_t* frame = static_cast<uint16_t*>(malloc(width * height * sizeof(uint16_t)));
-		for(int i = 0; i < width * height; i++){
-			frame[i] = C_RGB(buffer[i*3], buffer[i*3+1], buffer[i*3+2]);
-		}
-
-		free(buffer);
-
-		frames.push_back({ (uint8_t*) frame, static_cast<uint>(gif->gce.delay*10) });
+	Header header;
+	if(file.read(reinterpret_cast<uint8_t*>(&header), sizeof(Header)) != sizeof(Header)){
+		Serial.println("Failed reading G565 header");
+		return;
 	}
 
-	gd_close_gif(gif);
+	width = header.width;
+	height = header.height;
+	noFrames = header.noFrames;
+	flags = header.flags;
+
+	// Serial.printf("Width %d, height %d, %d frames, color table %s\n", width, height, noFrames, flags ? "yes" : "no");
+	if(flags){
+		table = new Table(file);
+		// Serial.printf("Colors: %d\n", table->getNoColors());
+	}
+	if(psramFound()){
+		gifFrame.data = static_cast<uint8_t*>(ps_malloc(width * height * (flags ? 1 : 2)));
+	}else {
+		gifFrame.data = static_cast<uint8_t *>(malloc(width * height * (flags ? 1 : 2)));
+	}
+	// Serial.printf("Data start: %lu\n", file.position());
+
+	dataStart = file.position();
+	reset();
+}
+
+AnimatedSprite::Table::Table(fs::File& file){
+	file.read(&noColors, sizeof(noColors));
+	colors = static_cast<Color*>(malloc(sizeof(Color) * noColors));
+	file.read(reinterpret_cast<uint8_t*>(colors), sizeof(Color) * noColors);
+}
+
+AnimatedSprite::Table::~Table(){
+	delete colors;
+}
+
+Color AnimatedSprite::Table::getColor(uint8_t i) const {
+	if(colors == nullptr || i >= noColors) return 0;
+	return colors[i];
+}
+
+uint8_t AnimatedSprite::Table::getNoColors() const{
+	return noColors;
 }
 
 AnimatedSprite::~AnimatedSprite(){
-	for(const Frame& frame : frames){
-		free(frame.data);
-	}
-}
-
-int AnimatedSprite::getX() const{
-	return x;
-}
-
-void AnimatedSprite::setX(int x){
-	AnimatedSprite::x = x;
-}
-
-int AnimatedSprite::getY() const{
-	return y;
-}
-
-void AnimatedSprite::setY(int y){
-	AnimatedSprite::y = y;
-}
-
-void AnimatedSprite::setXY(int x, int y){
-	AnimatedSprite::x = x;
-	AnimatedSprite::y = y;
+	delete table;
+	delete gifFrame.data;
+	file.close();
 }
 
 void AnimatedSprite::push(){
-	if(currentFrameTime == 0){
-		parentSprite->drawIcon(reinterpret_cast<const unsigned short*>(frames[currentFrame].data), x, y, width, height, 1, TFT_TRANSPARENT);
-		currentFrameTime = millis();
-		return;
-	}
-
-	uint cFrameTime = currentFrameTime;
-	uint currentTime = millis();
-	while(cFrameTime + frames[currentFrame].duration < currentTime){
-		cFrameTime += frames[currentFrame].duration;
-		currentFrame = (currentFrame + 1) % frames.size();
-		currentFrameTime = currentTime;
-
-		if(currentFrame == 0){
-			if(loopDoneCallback != nullptr && !alerted){
-				loopDoneCallback();
-				alerted = true;
+	if(flags){
+		for(int i = 0; i < width * height; i++){
+			Color color = table->getColor(gifFrame.data[i]);
+			if(swapBytes){
+				color = color << 8 | color >> 8;
 			}
-		}else{
-			alerted = false;
-		}
-	}
+			if(color == maskingColor) continue;
 
-	parentSprite->drawIcon(reinterpret_cast<const unsigned short*>(frames[currentFrame].data), x, y, width, height, 1, TFT_TRANSPARENT);
+			int _y = i / width;
+			int _x = i - _y * width;
+
+			canvas->drawPixel(x + _x, y + _y, color);
+		}
+	}else{
+		canvas->drawIcon(reinterpret_cast<const unsigned short*>(gifFrame.data), x, y, width, height, 1, maskingColor);
+	}
 }
 
 void AnimatedSprite::reset(){
-	currentFrame = 0;
+	file.seek(dataStart);
 	currentFrameTime = 0;
+	currentFrame = 0;
+	alerted = false;
+	onLastFrame = false;
+	playing = true;
 }
 
 void AnimatedSprite::setLoopDoneCallback(void (*callback)()){
 	loopDoneCallback = callback;
+}
+
+bool AnimatedSprite::nextFrame(){
+	if(!playing) return false;
+	if(onLastFrame) return false;
+
+	if(currentFrameTime == 0){
+		file.read(reinterpret_cast<uint8_t*>(&gifFrame.duration), sizeof(gifFrame.duration));
+		file.read(gifFrame.data, width * height * (flags ? 1 : 2));
+		currentFrameTime = millis();
+
+		// Serial.printf("New frame, %d ms\n", gifFrame.duration);
+
+		return true;
+	}
+
+	bool newFrame = false;
+
+	uint currentTime = millis();
+	while(currentFrameTime + gifFrame.duration < currentTime){
+		currentFrameTime += gifFrame.duration;
+		currentFrame++;
+
+		if(currentFrame == noFrames){
+			currentFrame = 0;
+			file.seek(dataStart);
+		}
+
+		file.read(reinterpret_cast<uint8_t*>(&gifFrame.duration), sizeof(gifFrame.duration));
+		file.read(gifFrame.data, width * height * (flags ? 1 : 2));
+
+		// Serial.printf("New frame, %d ms\n", gifFrame.duration);
+
+		newFrame = true;
+		if(currentFrame == noFrames-1){
+			onLastFrame = true;
+			if(!loop) break;
+		}
+	}
+
+	return newFrame;
+}
+
+bool AnimatedSprite::checkFrame(){
+	if(currentFrameTime == 0) return true;
+	if(onLastFrame && alerted) return false;
+
+	if(currentFrameTime + gifFrame.duration < millis()){
+		if(onLastFrame && !alerted){
+			alerted = true;
+
+			// Order of callbacks is important in case the AnimatedSprite gets deleted in it.
+
+			if(loop){
+				reset();
+
+				if(loopDoneCallback != nullptr){
+					loopDoneCallback();
+				}
+
+				return true;
+			}
+
+			if(loopDoneCallback != nullptr){
+				loopDoneCallback();
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void AnimatedSprite::setX(int16_t x){
+	AnimatedSprite::x = x;
+}
+
+void AnimatedSprite::setY(int16_t y){
+	AnimatedSprite::y = y;
+}
+
+void AnimatedSprite::setXY(int16_t x, int16_t y){
+	AnimatedSprite::x = x;
+	AnimatedSprite::y = y;
+}
+
+uint16_t AnimatedSprite::getWidth() const{
+	return width;
+}
+
+uint16_t AnimatedSprite::getHeight() const{
+	return height;
+}
+
+void AnimatedSprite::setLoop(bool loop){
+	AnimatedSprite::loop = loop;
+}
+
+void AnimatedSprite::setMaskingColor(Color maskingColor){
+	AnimatedSprite::maskingColor = maskingColor;
+}
+
+void AnimatedSprite::setSwapBytes(bool swapBytes){
+	AnimatedSprite::swapBytes = swapBytes;
+}
+
+void AnimatedSprite::start(){
+	playing = true;
+	currentFrameTime = millis();
+}
+
+void AnimatedSprite::stop(){
+	playing = false;
 }

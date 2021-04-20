@@ -3,14 +3,11 @@
 bool StreamableHTTPClient::startPOST(){
 	// connect to server
 	if(!connect()) {
-		Serial.println("connect");
-
 		return false;
 	}
 
 	// send Header
 	if(!sendHeader("POST")) {
-		Serial.println("header");
 		return false;
 	}
 

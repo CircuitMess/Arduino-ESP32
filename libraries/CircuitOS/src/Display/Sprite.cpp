@@ -3,6 +3,9 @@
 #include "../Util/Debug.h"
 #include <pgmspace.h>
 
+#ifdef CIRCUITOS_U8G2FONTS
+FontWriter u8f;
+#endif
 
 Sprite::Sprite(TFT_eSPI* spi, uint16_t width, uint16_t height) : TFT_eSprite(spi){
 	parent = nullptr;
@@ -179,7 +182,7 @@ Sprite& Sprite::push(){
 	bool oldSwapBytes = parent->getSwapBytes();
 	parent->setSwapBytes(true);
 	if(chroma){
-		parent->pushImage(x, y, _iwidth, _iheight, _img, chromaKey);
+		parent->pushImage(x, y, _iwidth, _iheight, _img, (uint32_t) chromaKey);
 	}else{
 		static_cast<TFT_eSprite*>(parent)->pushImage(x, y, _iwidth, _iheight, _img);
 	}
@@ -286,3 +289,10 @@ Sprite* Sprite::getParent() const{
 Sprite::~Sprite(){
 	deleteSprite();
 }
+
+#ifdef CIRCUITOS_U8G2FONTS
+FontWriter& Sprite::startU8g2Fonts(){
+	u8f.begin(*this);
+	return u8f;
+}
+#endif
