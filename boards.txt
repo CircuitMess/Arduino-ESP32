@@ -34,7 +34,7 @@ ringo.build.flash_freq=40m
 ringo.build.flash_mode=dio
 ringo.build.boot=dio
 ringo.build.partitions=default
-ringo.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DILI9341_DRIVER -DTFT_MISO=-1 -DTFT_MOSI=25 -DTFT_SCLK=26 -DTFT_CS=2 -DTFT_DC=4 -DTFT_RST=13 -DSPI_FREQUENCY=27000000
+ringo.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DST7735_DRIVER -DST7735_REDTAB -DTFT_WIDTH=128 -DTFT_HEIGHT=160 -DTFT_MISO=19 -DTFT_MOSI=23 -DTFT_SCLK=18 -DTFT_CS=4 -DTFT_DC=0 -DTFT_RST=2 -DSPI_FREQUENCY=27000000
 ringo.build.extra_flags=-Os -g3
 
 ringo.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
