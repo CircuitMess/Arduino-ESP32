@@ -51,8 +51,6 @@ ringo.menu.DebugLevel.none=None
 ringo.menu.DebugLevel.none.build.code_debug=0
 
 ringo.bootloader.tool=ringofirm
-
-ringo.bootloader.tool=firmburn
 ringo.bootloader.tool.firmware=ringo/firmware.bin
 
 ##############################################################
@@ -98,8 +96,6 @@ spencer.menu.DebugLevel.none=None
 spencer.menu.DebugLevel.none.build.code_debug=0
 
 spencer.bootloader.tool=spencerfirm
-
-spencer.bootloader.tool=firmburn
 spencer.bootloader.tool.firmware=spencer/firmware.bin
 
 ##############################################################
@@ -145,8 +141,6 @@ jayd.menu.DebugLevel.none=None
 jayd.menu.DebugLevel.none.build.code_debug=0
 
 jayd.bootloader.tool=jaydfirm
-
-jayd.bootloader.tool=firmburn
 jayd.bootloader.tool.firmware=jayd/firmware.bin
 
 ##############################################################
