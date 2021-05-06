@@ -45,6 +45,7 @@ MixSystem::MixSystem() : audioTask("MixAudio", audioThread, 16 * 1024, this), qu
 
 	out = new OutputSplitter();
 	out->addOutput(i2s);
+	out->setSource(mixer);
 }
 
 MixSystem::~MixSystem(){
@@ -240,7 +241,7 @@ void MixSystem::setEffect(uint8_t channel, uint8_t slot, EffectType type){
 
 void MixSystem::setEffectIntensity(uint8_t channel, uint8_t slot, uint8_t intensity){
 	if(!out->isRunning()){
-		setEffectIntensity(channel, slot, intensity);
+		_setEffectIntensity(channel, slot, intensity);
 		return;
 	}
 
