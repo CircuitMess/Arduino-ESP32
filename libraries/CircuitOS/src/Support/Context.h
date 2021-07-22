@@ -2,6 +2,7 @@
 #define CIRCUITOS_CONTEXT_H
 
 #include "../UI/Screen.h"
+#include "ContextTransition.h"
 
 class Context {
 public:
@@ -17,9 +18,9 @@ public:
 	virtual void pack();
 	virtual void unpack();
 
-	virtual void pop();
-	virtual void pop(void* data);
-	virtual void push(Context* parent);
+	virtual ContextTransition* pop();
+	virtual ContextTransition* pop(void* data);
+	virtual ContextTransition* push(Context* parent);
 	virtual void returned(void* data);
 
 	Screen& getScreen();
@@ -27,6 +28,8 @@ public:
 	static void setDeleteOnPop(bool deleteOnPop);
 
 	void setParent(Context* parent);
+
+	static Context* getCurrentContext();
 
 protected:
 	Screen screen;
@@ -37,6 +40,12 @@ protected:
 	Vector<SpriteElement*> sprites;
 
 	static bool deleteOnPop;
+
+	virtual void init();
+	virtual void deinit();
+
+private:
+	static Context* currentContext;
 };
 
 

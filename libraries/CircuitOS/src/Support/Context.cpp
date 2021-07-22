@@ -1,7 +1,7 @@
 #include "Context.h"
-#include "ContextTransition.h"
 
 bool Context::deleteOnPop = false;
+Context* Context::currentContext = nullptr;
 
 Context::Context(Display& display) : screen(display){
 	addSprite(&screen);
@@ -20,6 +20,7 @@ void Context::addSprite(SpriteElement* sprite){
 }
 
 void Context::pack(){
+	currentContext = nullptr;
 	if(packed) return;
 
 	for(SpriteElement* element : sprites){
@@ -27,9 +28,11 @@ void Context::pack(){
 	}
 
 	packed = true;
+	deinit();
 }
 
 void Context::unpack(){
+	currentContext = this;
 	if(!packed) return;
 
 	for(SpriteElement* element : sprites){
@@ -37,10 +40,11 @@ void Context::unpack(){
 	}
 
 	packed = false;
+	init();
 }
 
-void Context::pop(){
-	if(parent == nullptr) return;
+ContextTransition* Context::pop(){
+	if(parent == nullptr) return nullptr;
 	ContextTransition* transition = new ContextTransition(*screen.getDisplay(), this, parent, true);
 	if(deleteOnPop){
 		transition->setDoneCallback([](Context* oldCtx, Context* newCtx){
@@ -48,17 +52,19 @@ void Context::pop(){
 		});
 	}
 	parent = nullptr;
+	return transition;
 }
 
-void Context::pop(void* data){
-	if(parent == nullptr) return;
+ContextTransition* Context::pop(void* data){
+	if(parent == nullptr) return nullptr;
 	parent->returned(data);
 	pop();
 }
 
-void Context::push(Context* parent){
+ContextTransition* Context::push(Context* parent){
 	this->parent = parent;
-	new ContextTransition(*screen.getDisplay(), parent, this);
+	return new ContextTransition(*screen.getDisplay(), parent, this);
+
 }
 
 void Context::returned(void* data){
@@ -71,4 +77,12 @@ void Context::setDeleteOnPop(bool deleteOnPop){
 
 void Context::setParent(Context* parent){
 	Context::parent = parent;
+}
+
+void Context::init(){}
+
+void Context::deinit(){}
+
+Context *Context::getCurrentContext(){
+	return currentContext;
 }

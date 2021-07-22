@@ -10,6 +10,7 @@ FontWriter u8f;
 Sprite::Sprite(TFT_eSPI* spi, uint16_t width, uint16_t height) : TFT_eSprite(spi){
 	parent = nullptr;
 	parentSPI = spi;
+	Serial.printf("A. Free heap: %d B\n", ESP.getFreeHeap());
 	createSprite(width, height);
 }
 
@@ -180,7 +181,12 @@ Sprite& Sprite::push(){
 	logln("Pushing sprite at [" + String(x) + ", " + String(y) + "]");
 
 	bool oldSwapBytes = parent->getSwapBytes();
-	parent->setSwapBytes(true);
+	if(parent->getSwapBytes() && getSwapBytes()) {
+		parent->setSwapBytes(false);
+	}else{
+		parent->setSwapBytes(true);
+	}
+
 	if(chroma){
 		parent->pushImage(x, y, _iwidth, _iheight, _img, (uint32_t) chromaKey);
 	}else{
@@ -262,7 +268,7 @@ void Sprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *dat
 				continue;
 			}
 
-			if(!_iswapBytes) color = color << 8 | color >> 8;
+			//if(!_iswapBytes) color = color << 8 | color >> 8;
 			_img[x + ys * _iwidth] = color;
 			x++;
 		}

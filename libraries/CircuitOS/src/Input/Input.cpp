@@ -50,28 +50,36 @@ void Input::btnPress(uint i){
 		btnCount[i]++;
 
 		if(btnState[i] == 0 && btnCount[i] == DEBOUNCE_COUNT){
-			if(anyKeyCallback != nullptr)
-			{
-				if(anyKeyCallbackReturn)
-				{
+			if(anyKeyCallback != nullptr){
+				if(anyKeyCallbackReturn){
 					anyKeyCallback();
 					return;
-				}
-				else
-				{
+				}else{
 					anyKeyCallback();
 				}
 			}
 			btnState[i] = 1;
-			if(!btnHoldOver[buttons[i]])
-			{
+			if(!btnHoldOver[buttons[i]]){
 				btnHoldStart[buttons[i]] = millis();
+			}
+
+			for(auto listener : listeners){
+				if(removedListeners.find(listener) != removedListeners.end()) continue;
+				listener->buttonPressed(buttons[i]);
+				listener->anyKeyPressed();
+				if(listener->holdTimes.find(buttons[i]) != listener->holdTimes.end() && !listener->holdTimes.find(buttons[i])->second.holdingOver){
+						btnHoldStart[buttons[i]] = millis();
+						return;
+				}
+
 			}
 			if(btnPressCallback[buttons[i]] != nullptr){
 				btnPressCallback[buttons[i]]();
 			}
 		}
 	}
+
+	clearListeners();
 }
 
 void Input::btnRelease(uint i){
@@ -79,83 +87,94 @@ void Input::btnRelease(uint i){
 		btnCount[i]--;
 
 		if(btnState[i] == 1 && btnCount[i] == 0){
-			if(anyKeyCallback != nullptr)
-			{
-				if(anyKeyCallbackReturn)
-				{
+			if(anyKeyCallback != nullptr){
+				if(anyKeyCallbackReturn){
 					anyKeyCallback();
 					return;
-				}
-				else
-				{
+				}else{
 					anyKeyCallback();
 				}
 			}
 			btnState[i] = 0;
-			btnHoldOver[buttons[i]] = 0;
+			btnHoldOver[buttons[i]] = false;
 			btnHoldStart[buttons[i]] = millis();
 			btnHoldRepeatCounter[buttons[i]] = 0;
 
+			for(auto listener : listeners){
+				if(removedListeners.find(listener) != removedListeners.end()) continue;
+				listener->buttonReleased(buttons[i]);
+				if(listener->holdTimes.find(buttons[i]) != listener->holdTimes.end()){
+					listener->holdTimes.find(buttons[i])->second.holdingOver = false;
+				}
+				if(listener->holdAndRepeatTimes.find(buttons[i]) != listener->holdAndRepeatTimes.end()){
+					listener->holdAndRepeatTimes.find(buttons[i])->second.repeatCounter = 0;
+				}
+			}
 			if(btnReleaseCallback[buttons[i]] != nullptr){
 				btnReleaseCallback[buttons[i]]();
 			}
 		}
 	}
+
+	clearListeners();
 }
 
-void Input::loop(uint _time)
-{
+void Input::loop(uint _time){
 	scanButtons();
-	for(uint8_t i = 0; i < buttons.size(); i++)
-	{
+	for(uint8_t i = 0; i < buttons.size(); i++){
 		uint32_t holdTime = getButtonHeldMillis(buttons[i]);
-		if(btnState[i] == 1 && (btnHoldRepeatCallback[buttons[i]] != nullptr || btnHoldCallback[buttons[i]] != nullptr))
-		{
-			
-			if(holdTime >= btnHoldValue[buttons[i]] && !btnHoldOver[buttons[i]])
-			{
-				if(btnHoldCallback[buttons[i]] != nullptr)
-				{
+		if(btnState[i] == 1){
+			if(holdTime >= btnHoldValue[buttons[i]] && !btnHoldOver[buttons[i]]){
+				if(btnHoldCallback[buttons[i]] != nullptr){
 					btnHoldCallback[buttons[i]]();
 				}
-				btnHoldOver[buttons[i]] = 1;
+				btnHoldOver[buttons[i]] = true;
 			}
-			if(holdTime >= (btnHoldRepeatCounter[buttons[i]] + 1)*btnHoldRepeatValue[buttons[i]])
-			{
+			if(holdTime >= (btnHoldRepeatCounter[buttons[i]] + 1) * btnHoldRepeatValue[buttons[i]]){
 				btnHoldRepeatCounter[buttons[i]]++;
-				if(btnHoldRepeatCallback[buttons[i]] != nullptr)
-				{
+				if(btnHoldRepeatCallback[buttons[i]] != nullptr){
 					btnHoldRepeatCallback[buttons[i]](btnHoldRepeatCounter[buttons[i]]);
+				}
+			}
+
+			for(auto listener : listeners){
+				auto search = listener->holdTimes.find(buttons[i]);
+				if(search != listener->holdTimes.end() && holdTime >= search->second.time && !search->second.holdingOver){
+					listener->buttonHeld(buttons[i]);
+					search->second.holdingOver = true;
+				}
+				auto searchRepeat = listener->holdAndRepeatTimes.find(buttons[i]);
+				if(searchRepeat != listener->holdAndRepeatTimes.end() && holdTime >= (searchRepeat->second.repeatCounter + 1) * searchRepeat->second.time){
+					searchRepeat->second.repeatCounter++;
+					listener->buttonHeldRepeat(buttons[i], searchRepeat->second.repeatCounter);
 				}
 			}
 		}
 	}
+
+	clearListeners();
 }
 
-void Input::setButtonHeldCallback(uint8_t pin, uint32_t holdTime, void (*callback)())
-{
+void Input::setButtonHeldCallback(uint8_t pin, uint32_t holdTime, void (* callback)()){
 	if(pin >= pinNumber) return;
 	registerButton(pin);
 	btnHoldCallback[pin] = callback;
 	btnHoldValue[pin] = holdTime;
 }
 
-void Input::setButtonHeldRepeatCallback(uint8_t pin, uint32_t periodTime, void (*callback)(uint))
-{
+void Input::setButtonHeldRepeatCallback(uint8_t pin, uint32_t periodTime, void (* callback)(uint)){
 	if(pin >= pinNumber) return;
 	registerButton(pin);
-	btnHoldRepeatCallback[pin]=callback;
+	btnHoldRepeatCallback[pin] = callback;
 	btnHoldRepeatValue[pin] = periodTime;
 }
 
-uint32_t Input::getButtonHeldMillis(uint8_t pin)
-{
+uint32_t Input::getButtonHeldMillis(uint8_t pin){
 	if(pin >= pinNumber) return 0;
 	return millis() - btnHoldStart[pin];
 }
 
-void Input::setAnyKeyCallback(void (*callback)(), bool returnAfterCallback)
-{
+void Input::setAnyKeyCallback(void (* callback)(), bool returnAfterCallback){
 	anyKeyCallback = callback;
 	anyKeyCallbackReturn = returnAfterCallback;
 }
@@ -164,4 +183,30 @@ void Input::preregisterButtons(Vector<uint8_t> pins){
 	for(const uint8_t pin : pins){
 		registerButton(pin);
 	}
+}
+
+void Input::addListener(InputListener* listener){
+	if(listeners.indexOf(listener) == (uint) -1){
+		listeners.push_back(listener);
+	}
+
+	auto l = removedListeners.find(listener);
+	if(l != removedListeners.end()){
+		removedListeners.erase(l);
+	}
+}
+
+void Input::removeListener(InputListener* listener){
+	if(listeners.indexOf(listener) == -1 || removedListeners.find(listener) != removedListeners.end()) return;
+	removedListeners.insert(listener);
+}
+
+void Input::clearListeners(){
+	for(const auto& listener : removedListeners){
+		uint i = listeners.indexOf(listener);
+		if(i == (uint) -1) continue;
+		listeners.remove(i);
+	}
+
+	removedListeners.clear();
 }
