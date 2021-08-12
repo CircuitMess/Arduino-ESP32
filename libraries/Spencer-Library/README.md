@@ -9,12 +9,11 @@ Spencer is also a part of [CircuitMess STEM Box](https://igg.me/at/stem-box/x#/)
 
 ![](https://circuitmess.com/wp-content/uploads/2020/11/spencer-page-1.jpg)
 
-## Installation
+# Installation
 
-TODO - add Arduino library manager installation.
+The library is automatically installed when you install the CircuitMess ESP32 Arduino platform, which contains the Spencer board. More info on [CircuitMess/Arduino-Packages](https://github.com/CircuitMess/Arduino-Packages).
 
-
-## Development setup
+# Development setup
 
 The library uses several dependency libraries:
 - [CircuitOS](https://github.com/CircuitMess/CircuitOS) by CircuitMess
@@ -24,9 +23,13 @@ The library uses several dependency libraries:
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoît Blanchon
 - [NTPClient](https://github.com/taranais/NTPClient) by taranais
 
-You can download all of these libraries by downloading or cloning the repository into your Documents/Arduino/Libraries folder on Windows, or ~/Arduino/libraries folder on Linux.
+These libraries are automatically installed when you install the CircuitMess ESP32 Arduino platform.
 
-If you prefer, you can also follow the installation instructions on the respective repository pages.
+## Using Arduino IDE
+
+Simply open Spencer-Library.ino using Arduino IDE, set the board to Spencer, and compile.
+
+## Using CMake
 
 To run a test compilation you need to have [CMake](https://cmake.org/) and [arduino-cli](https://github.com/arduino/arduino-cli)  installed. You also need to have both of them registered in the PATH.
 
@@ -36,16 +39,22 @@ set(PORT /dev/ttyUSB0)
 ```
 Then in the root directory of the repository type:
 ```
-mkdir build
-cd build
+mkdir cmake
+cd cmake
 cmake ..
-cmake --build . --target CMUpload
+cmake --build . --target CMBuild
 ```
-This should compile and upload a test sketch.
-## Used libraries and copyright notices
+This will compile the binaries, and place the .bin and .elf files in the build/ directory located in the root of the repository.
+
+To compile the binary, and upload it according to the port set in CMakeLists.txt, run
+
+```cmake --build . --target CMBuild```
+
+in the cmake directory.
+# Used libraries and copyright notices
 [See NOTICE](https://github.com/CircuitMess/Spencer-Library/blob/master/NOTICE.md)
 
-## Meta
+# Meta
 
 
 **CircuitMess**  - https://circuitmess.com/
@@ -59,6 +68,6 @@ This should compile and upload a test sketch.
 **YouTube** - https://www.youtube.com/channel/UCVUvt1CeoZpCSnwg3oBMsOQ
 
 ----
-Copyright © 2020 CircuitMess
+Copyright © 2021 CircuitMess
 
 Licensed under [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html).

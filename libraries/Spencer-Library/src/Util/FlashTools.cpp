@@ -50,7 +50,7 @@ void FlashTools::upload(){
 			fileWritten += bytes;
 
 			for(int i = 0; i < bytes; i += sizeof(uint32_t)){
-				sum += *reinterpret_cast<uint32_t*>(&data);
+				sum += *((uint32_t*)(&data[i]));
 			}
 		}
 		file.close();
