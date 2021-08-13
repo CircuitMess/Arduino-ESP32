@@ -115,6 +115,10 @@ tools.jaydfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --ch
 tools.jaydfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/jayd/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/jayd/firmware.partitions.bin" 0x383000 "{runtime.platform.path}/firmwares/jayd/spiffs.bin"
 tools.jaydfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/jayd/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/jayd/firmware.partitions.bin" 0x383000 "{runtime.platform.path}/firmwares/jayd/spiffs.bin"
 
+tools.wheelfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/wheelson/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/wheelson/firmware.partitions.bin" 0x383000 "{runtime.platform.path}/firmwares/wheelson/spiffs.bin"
+tools.wheelfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/wheelson/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/wheelson/firmware.partitions.bin" 0x383000 "{runtime.platform.path}/firmwares/wheelson/spiffs.bin"
+tools.wheelfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/wheelson/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/wheelson/firmware.partitions.bin" 0x383000 "{runtime.platform.path}/firmwares/wheelson/spiffs.bin"
+
 tools.ringofirm.erase.pattern=
 tools.ringofirm.erase.params.quiet=
 tools.ringofirm.erase.params.verbose=
@@ -132,3 +136,9 @@ tools.jaydfirm.erase.params.quiet=
 tools.jaydfirm.erase.params.verbose=
 tools.jaydfirm.bootloader.params.verbose=
 tools.jaydfirm.bootloader.params.quiet=
+
+tools.wheelfirm.erase.pattern=
+tools.wheelfirm.erase.params.quiet=
+tools.wheelfirm.erase.params.verbose=
+tools.wheelfirm.bootloader.params.verbose=
+tools.wheelfirm.bootloader.params.quiet=

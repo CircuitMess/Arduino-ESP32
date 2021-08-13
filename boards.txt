@@ -147,8 +147,8 @@ jayd.bootloader.tool.firmware=jayd/firmware.bin
 
 wheelson.name=Wheelson by CircuitMess
 
-wheelson.vid.0=0x10c4
-wheelson.pid.0=0xea60
+wheelson.vid.0=0x1a86
+wheelson.pid.0=0x7523
 
 wheelson.upload.tool=esptool_py
 wheelson.upload.maximum_size=1310720
@@ -185,7 +185,7 @@ wheelson.menu.UploadSpeed.921600.upload.speed=921600
 wheelson.menu.DebugLevel.none=None
 wheelson.menu.DebugLevel.none.build.code_debug=0
 
-# wheelson.bootloader.tool=jaydfirm
-# wheelson.bootloader.tool.firmware=jayd/firmware.bin
+wheelson.bootloader.tool=wheelfirm
+wheelson.bootloader.tool.firmware=wheelson/firmware.bin
 
 ##############################################################

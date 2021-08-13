@@ -15,3 +15,9 @@ jaydfirm.protocol=esp32
 jaydfirm.program.protocol=esp32
 jaydfirm.program.tool=esptool_py
 jaydfirm.program.extra_params=
+
+wheelfirm.name=Wheelson Firmware
+wheelfirm.protocol=esp32
+wheelfirm.program.protocol=esp32
+wheelfirm.program.tool=esptool_py
+wheelfirm.program.extra_params=
