@@ -189,3 +189,48 @@ wheelson.bootloader.tool=wheelfirm
 wheelson.bootloader.tool.firmware=wheelson/firmware.bin
 
 ##############################################################
+
+byteboi.name=ByteBoi by CircuitMess
+
+byteboi.vid.0=0x1a86
+byteboi.pid.0=0x7523
+
+byteboi.upload.tool=esptool_py
+byteboi.upload.maximum_size=1310720
+byteboi.upload.maximum_data_size=327680
+byteboi.upload.wait_for_upload_port=false
+
+byteboi.serial.disableDTR=true
+byteboi.serial.disableRTS=true
+
+byteboi.build.mcu=esp32
+byteboi.build.core=esp32
+byteboi.build.variant=byteboi
+byteboi.build.board=CM_BYTEBOI
+
+byteboi.build.f_cpu=240000000L
+byteboi.build.flash_size=4MB
+byteboi.build.flash_freq=40m
+byteboi.build.flash_mode=dio
+byteboi.build.boot=dio
+byteboi.build.partitions=default
+byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_LOVYANGFX -DCIRCUITOS_PIEZO_ESP32 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
+byteboi.build.extra_flags=-O2 -g
+
+byteboi.menu.PartitionScheme.min_spiffs=No OTA
+byteboi.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
+byteboi.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+
+byteboi.menu.FlashFreq.80=80MHz
+byteboi.menu.FlashFreq.80.build.flash_freq=80m
+
+byteboi.menu.UploadSpeed.921600=921600
+byteboi.menu.UploadSpeed.921600.upload.speed=921600
+
+byteboi.menu.DebugLevel.none=None
+byteboi.menu.DebugLevel.none.build.code_debug=0
+
+byteboi.bootloader.tool=wheelfirm
+byteboi.bootloader.tool.firmware=wheelson/firmware.bin
+
+##############################################################
