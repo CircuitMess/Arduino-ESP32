@@ -79,7 +79,7 @@ spencer.build.flash_freq=40m
 spencer.build.flash_mode=dio
 spencer.build.boot=dio
 spencer.build.partitions=default
-spencer.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DTFT_WIDTH=0 -DTFT_HEIGHT=0 -DST7735_DRIVER
+spencer.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_LEDMATRIX -DCIRCUITOS_SERIALFLASH -DCIRCUITOS_NET -DTFT_WIDTH=0 -DTFT_HEIGHT=0 -DST7735_DRIVER
 spencer.build.extra_flags=-Os -g3
 
 spencer.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
