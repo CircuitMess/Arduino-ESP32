@@ -217,9 +217,21 @@ byteboi.build.partitions=default
 byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_LOVYANGFX -DCIRCUITOS_PIEZO_ESP32 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1 -DLOVYAN_SCK=26 -DLOVYAN_MOSI=32 -DLOVYAN_MISO=5 -DLOVYAN_DC=21 -DLOVYAN_CS=33 -DLOVYAN_RST=27 -DLOVYAN_WIDTH=240 -DLOVYAN_HEIGHT=320
 byteboi.build.extra_flags=-O2 -g
 
-byteboi.menu.PartitionScheme.min_spiffs=No OTA
-byteboi.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-byteboi.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+byteboi.menu.PartitionScheme.game=Game for launcher
+byteboi.menu.PartitionScheme.game.build.partitions=no_ota
+byteboi.menu.PartitionScheme.game.upload.maximum_size=1638400
+
+byteboi.menu.PartitionScheme.standalone=Standalone game (with SPIFFS)
+byteboi.menu.PartitionScheme.standalone.build.partitions=no_ota
+byteboi.menu.PartitionScheme.standalone.upload.maximum_size=2097152
+
+byteboi.menu.PartitionScheme.standalone_big=Standalone app (no SPIFFS)
+byteboi.menu.PartitionScheme.standalone_big.build.partitions=noota_4MB
+byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3612672
+
+byteboi.menu.PartitionScheme.launcher=Launcher
+byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
+byteboi.menu.PartitionScheme.launcher.upload.maximum_size=983040
 
 byteboi.menu.FlashFreq.80=80MHz
 byteboi.menu.FlashFreq.80.build.flash_freq=80m
