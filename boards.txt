@@ -231,7 +231,7 @@ byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3612672
 
 byteboi.menu.PartitionScheme.launcher=Launcher
 byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
-byteboi.menu.PartitionScheme.launcher.upload.maximum_size=983040
+byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1310720
 
 byteboi.menu.FlashFreq.80=80MHz
 byteboi.menu.FlashFreq.80.build.flash_freq=80m
