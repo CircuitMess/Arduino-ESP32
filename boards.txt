@@ -40,6 +40,8 @@ ringo.build.extra_flags=-Os -g3
 ringo.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 ringo.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
 ringo.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
+ringo.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+ringo.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x3D1000
 
 ringo.menu.FlashFreq.80=80MHz
 ringo.menu.FlashFreq.80.build.flash_freq=80m
@@ -85,6 +87,8 @@ spencer.build.extra_flags=-Os -g3
 spencer.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (Large APPS with OTA)
 spencer.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs
 spencer.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080
+spencer.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+spencer.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x3D1000
 
 spencer.menu.FlashFreq.80=80MHz
 spencer.menu.FlashFreq.80.build.flash_freq=80m
@@ -129,7 +133,9 @@ jayd.build.extra_flags=-O2
 
 jayd.menu.PartitionScheme.min_spiffs=No OTA
 jayd.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=3604480
+jayd.menu.PartitionScheme.min_spiffs.upload.binary_start=0x90000
+jayd.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x11000
 
 jayd.menu.FlashFreq.80=80MHz
 jayd.menu.FlashFreq.80.build.flash_freq=80m
@@ -174,7 +180,9 @@ wheelson.build.extra_flags=-O2 -g
 
 wheelson.menu.PartitionScheme.min_spiffs=No OTA
 wheelson.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-wheelson.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+wheelson.menu.PartitionScheme.min_spiffs.upload.maximum_size=3604480
+wheelson.menu.PartitionScheme.min_spiffs.upload.binary_start=0x90000
+wheelson.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x11000
 
 wheelson.menu.FlashFreq.80=80MHz
 wheelson.menu.FlashFreq.80.build.flash_freq=80m
@@ -217,21 +225,25 @@ byteboi.build.partitions=default
 byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_LOVYANGFX -DCIRCUITOS_PIEZO_ESP32 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1 -DLOVYAN_SCK=26 -DLOVYAN_MOSI=32 -DLOVYAN_MISO=5 -DLOVYAN_DC=21 -DLOVYAN_CS=33 -DLOVYAN_RST=27 -DLOVYAN_WIDTH=240 -DLOVYAN_HEIGHT=320
 byteboi.build.extra_flags=-O2 -g
 
-byteboi.menu.PartitionScheme.game=Game for launcher
+byteboi.menu.PartitionScheme.game=Game for launcher (1MB SPIFFS)
 byteboi.menu.PartitionScheme.game.build.partitions=no_ota
 byteboi.menu.PartitionScheme.game.upload.maximum_size=1835008
+byteboi.menu.PartitionScheme.game.upload.binary_start=0x110000
 
 byteboi.menu.PartitionScheme.standalone=Standalone game (1MB SPIFFS)
 byteboi.menu.PartitionScheme.standalone.build.partitions=no_ota
 byteboi.menu.PartitionScheme.standalone.upload.maximum_size=3080192
+byteboi.menu.PartitionScheme.standalone.upload.binary_start=0x110000
 
 byteboi.menu.PartitionScheme.standalone_big=Big standalone game (0.5MB SPIFFS)
 byteboi.menu.PartitionScheme.standalone_big.build.partitions=noota_4MB
 byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3604480
+byteboi.menu.PartitionScheme.standalone_big.upload.binary_start=0x90000
 
 byteboi.menu.PartitionScheme.launcher=Launcher
 byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
 byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1245184
+byteboi.menu.PartitionScheme.launcher.upload.binary_start=0x110000
 
 byteboi.menu.FlashFreq.80=80MHz
 byteboi.menu.FlashFreq.80.build.flash_freq=80m
