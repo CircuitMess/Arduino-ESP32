@@ -219,19 +219,19 @@ byteboi.build.extra_flags=-O2 -g
 
 byteboi.menu.PartitionScheme.game=Game for launcher
 byteboi.menu.PartitionScheme.game.build.partitions=no_ota
-byteboi.menu.PartitionScheme.game.upload.maximum_size=1638400
+byteboi.menu.PartitionScheme.game.upload.maximum_size=1835008
 
-byteboi.menu.PartitionScheme.standalone=Standalone game (with SPIFFS)
+byteboi.menu.PartitionScheme.standalone=Standalone game (1MB SPIFFS)
 byteboi.menu.PartitionScheme.standalone.build.partitions=no_ota
-byteboi.menu.PartitionScheme.standalone.upload.maximum_size=2097152
+byteboi.menu.PartitionScheme.standalone.upload.maximum_size=3080192
 
-byteboi.menu.PartitionScheme.standalone_big=Standalone app (no SPIFFS)
+byteboi.menu.PartitionScheme.standalone_big=Big standalone game (0.5MB SPIFFS)
 byteboi.menu.PartitionScheme.standalone_big.build.partitions=noota_4MB
-byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3612672
+byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3604480
 
 byteboi.menu.PartitionScheme.launcher=Launcher
 byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
-byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1310720
+byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1245184
 
 byteboi.menu.FlashFreq.80=80MHz
 byteboi.menu.FlashFreq.80.build.flash_freq=80m

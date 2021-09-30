@@ -1,7 +1,7 @@
 # Name,   Type, SubType, Offset,  Size, Flags
 nvs,      data, nvs,     0x9000,  0x5000,
 otadata,  data, ota,     0xe000,  0x2000,
-launcher, app,  ota_0,   0x10000, 0x140000,
-game,      app,  ota_1,   0x150000,0x140000,
-eeprom,   data, 0x99,    0x290000,0x1000,
-spiffs,   data, spiffs,  0x291000,0x16F000,
+eeprom,   data, 0x99,    0x10000, 0x1000,
+spiffs,   data, spiffs,  0x11000, 0xFF000,
+launcher, app,  ota_0,   0x110000,0x130000,
+game,     app,  ota_1,   0x240000,0x1C0000,
