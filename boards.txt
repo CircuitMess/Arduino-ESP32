@@ -227,7 +227,7 @@ byteboi.build.extra_flags=-O2 -g
 
 byteboi.menu.PartitionScheme.game=Game for launcher (1MB SPIFFS)
 byteboi.menu.PartitionScheme.game.build.partitions=no_ota
-byteboi.menu.PartitionScheme.game.upload.maximum_size=1835008
+byteboi.menu.PartitionScheme.game.upload.maximum_size=2097152
 byteboi.menu.PartitionScheme.game.upload.binary_start=0x110000
 
 byteboi.menu.PartitionScheme.standalone=Standalone game (1MB SPIFFS)
@@ -242,8 +242,9 @@ byteboi.menu.PartitionScheme.standalone_big.upload.binary_start=0x90000
 
 byteboi.menu.PartitionScheme.launcher=Launcher
 byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
-byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1245184
+byteboi.menu.PartitionScheme.launcher.upload.maximum_size=983040
 byteboi.menu.PartitionScheme.launcher.upload.binary_start=0x110000
+byteboi.menu.PartitionScheme.launcher.build.pscheme_defines=-DBYTEBOI_LAUNCHER
 
 byteboi.menu.FlashFreq.80=80MHz
 byteboi.menu.FlashFreq.80.build.flash_freq=80m
