@@ -259,7 +259,7 @@ byteboi.menu.UploadSpeed.921600.upload.speed=921600
 byteboi.menu.DebugLevel.none=None
 byteboi.menu.DebugLevel.none.build.code_debug=0
 
-byteboi.bootloader.tool=wheelfirm
-byteboi.bootloader.tool.firmware=wheelson/firmware.bin
+byteboi.bootloader.tool=bbfirm
+byteboi.bootloader.tool.firmware=byteboi/firmware.bin
 
 ##############################################################

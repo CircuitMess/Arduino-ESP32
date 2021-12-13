@@ -21,3 +21,9 @@ wheelfirm.protocol=esp32
 wheelfirm.program.protocol=esp32
 wheelfirm.program.tool=esptool_py
 wheelfirm.program.extra_params=
+
+bbfirm.name=ByteBoi Firmware
+bbfirm.protocol=esp32
+bbfirm.program.protocol=esp32
+bbfirm.program.tool=esptool_py
+bbfirm.program.extra_params=

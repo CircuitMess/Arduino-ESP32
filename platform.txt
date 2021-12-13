@@ -120,6 +120,10 @@ tools.wheelfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --c
 tools.wheelfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" {upload.binary_start} "{runtime.platform.path}/firmwares/wheelson/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/wheelson/firmware.partitions.bin" {upload.spiffs_start} "{runtime.platform.path}/firmwares/wheelson/spiffs.bin"
 tools.wheelfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" {upload.binary_start} "{runtime.platform.path}/firmwares/wheelson/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/wheelson/firmware.partitions.bin" {upload.spiffs_start} "{runtime.platform.path}/firmwares/wheelson/spiffs.bin"
 
+tools.bbfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x110000 "{runtime.platform.path}/firmwares/byteboi/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/byteboi/firmware.partitions.bin" 0x11000 "{runtime.platform.path}/firmwares/byteboi/spiffs.bin"
+tools.bbfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x110000 "{runtime.platform.path}/firmwares/byteboi/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/byteboi/firmware.partitions.bin" 0x11000 "{runtime.platform.path}/firmwares/byteboi/spiffs.bin"
+tools.bbfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x110000 "{runtime.platform.path}/firmwares/byteboi/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/byteboi/firmware.partitions.bin" 0x11000 "{runtime.platform.path}/firmwares/byteboi/spiffs.bin"
+
 tools.ringofirm.erase.pattern=
 tools.ringofirm.erase.params.quiet=
 tools.ringofirm.erase.params.verbose=
@@ -143,3 +147,9 @@ tools.wheelfirm.erase.params.quiet=
 tools.wheelfirm.erase.params.verbose=
 tools.wheelfirm.bootloader.params.verbose=
 tools.wheelfirm.bootloader.params.quiet=
+
+tools.bbfirm.erase.pattern=
+tools.bbfirm.erase.params.quiet=
+tools.bbfirm.erase.params.verbose=
+tools.bbfirm.bootloader.params.verbose=
+tools.bbfirm.bootloader.params.quiet=
