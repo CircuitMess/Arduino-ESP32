@@ -4,8 +4,38 @@
 #include <Display/Color.h>
 #include "Wheelson.h"
 bool Camera::inited = false;
+bool Camera::useJpeg = false;
 
 Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t))), frame888(static_cast<uint8_t*>(ps_malloc(160 * 120 * 3))){
+	if(!inited){
+		initialize(false);
+	}
+}
+
+Camera::~Camera(){
+	free(frame565);
+	free(frame888);
+
+	if(frame){
+		esp_camera_fb_return(frame);
+	}
+}
+
+void Camera::initialize(bool jpeg, uint8_t q){
+	useJpeg = jpeg;
+	if(!jpeg) q = 0;
+	int qualities[] = { 10, 7, 4 };
+
+	esp_err_t err;
+
+	if(inited){
+		err = esp_camera_deinit();
+		if(err != ESP_OK){
+			Serial.printf("Camera deinit failed with error 0x%x", err);
+			return;
+		}
+		inited = false;
+	}
 
 	camera_config_t config;
 	config.ledc_channel = LEDC_CHANNEL_0;
@@ -28,36 +58,26 @@ Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t)))
 	config.pin_reset = RESET_GPIO_NUM;
 	config.xclk_freq_hz = 18000000;
 
-	config.pixel_format = PIXFORMAT_RGB888;
+	config.pixel_format = useJpeg ? PIXFORMAT_JPEG : PIXFORMAT_RGB888;
 	config.frame_size = FRAMESIZE_QQVGA;
 	config.fb_count = 1;
-	if(!inited){
-		// Init Camera
-		esp_err_t err = esp_camera_init(&config);
-		inited = err == ESP_OK;
+	config.jpeg_quality = qualities[q];
 
-		if(err != ESP_OK){
-			Serial.printf("Camera init failed with error 0x%x", err);
-			return;
-		}
+	err = esp_camera_init(&config);
+	inited = err == ESP_OK;
+
+	if(err != ESP_OK){
+		Serial.printf("Camera init failed with error 0x%x", err);
+		return;
 	}
 
 	Serial.println("Camera init OK!");
 	sensor_t* sensor = esp_camera_sensor_get();
 	sensor->set_hmirror(sensor, 1);
 	sensor->set_vflip(sensor, 1);
-	sensor->set_quality(sensor, 10);
+	sensor->set_quality(sensor, qualities[q]);
 	sensor->set_special_effect(sensor, 0);
 	sensor->set_saturation(sensor, 2);
-}
-
-Camera::~Camera(){
-	free(frame565);
-	free(frame888);
-
-	if(frame){
-		esp_camera_fb_return(frame);
-	}
 }
 
 bool Camera::loadFrame(){
@@ -66,6 +86,9 @@ bool Camera::loadFrame(){
 		Serial.println("Camera capture failed");
 		return false;
 	}
+
+	// TODO: decoding, maybe
+	if(useJpeg) return true;
 
 	memcpy(frame888, frame->buf, min(frame->len, (size_t) 160 * 120 * 3));
 

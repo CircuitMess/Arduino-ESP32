@@ -1,18 +1,20 @@
 #include <Arduino.h>
 #include <SPI.h>
+#include <Loop/LoopManager.h>
 #include <SerialFlash.h>
 #include <CircuitOS.h>
 #include <Input/InputGPIO.h>
-#include "Speech/SpeechToIntent.h"
-#include "Audio/Playback.h"
 #include <Devices/LEDmatrix/LEDmatrix.h>
-#include <Loop/LoopManager.h>
+#include <Devices/SerialFlash/SerialFlashFileAdapter.h>
 #include <WiFi.h>
-#include "Audio/Recording.h"
+#include <Network/Net.h>
 #include <Util/Task.h>
 #include "Settings.h"
-#include <Network/Net.h>
-#include <Devices/SerialFlash/SerialFlashFileAdapter.h>
+#include "Audio/Playback.h"
+#include "Audio/Recording.h"
+#include "PreparedStatement.h"
+#include "Speech/SpeechToIntent.h"
+#include "Speech/TextToSpeech.h"
 
 #ifndef SPENCER_HPP
 #define SPENCER_HPP

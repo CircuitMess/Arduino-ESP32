@@ -34,6 +34,8 @@ public:
 	 */
 	const camera_fb_t* getFrame() const;
 
+	static void initialize(bool jpeg = false, uint8_t q = 0);
+
 	bool isInited() const;
 
 	operator bool() const;
@@ -44,6 +46,7 @@ private:
 	uint8_t* frame888;
 
 	static bool inited;
+	static bool useJpeg;
 };
 
 

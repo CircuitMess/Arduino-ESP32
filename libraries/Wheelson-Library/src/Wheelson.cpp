@@ -1,9 +1,4 @@
-#include <WiFi.h>
-#include <SPIFFS.h>
-#include <Loop/LoopManager.h>
 #include "Wheelson.h"
-#include "Settings.h"
-#include "Nuvoton/WheelsonInput.h"
 
 Nuvoton Nuvo(Wire);
 WheelsonLED LED;
