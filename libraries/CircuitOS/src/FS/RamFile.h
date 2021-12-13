@@ -1,11 +1,11 @@
-#ifndef CIRCUITOS_PGMFILE_H
-#define CIRCUITOS_PGMFILE_H
+#ifndef CIRCUITOS_RAMFILE_H
+#define CIRCUITOS_RAMFILE_H
 
 #include <Arduino.h>
 #include <FS.h>
 #include <FSImpl.h>
 
-class PGMFile : public fs::FileImpl {
+class RamFile : public fs::FileImpl {
 public:
 #ifdef ESP32
 	fs::FileImplPtr openNextFile(const char* mode) override;
@@ -16,10 +16,11 @@ public:
 	void rewindDirectory() ;
 	operator bool() ;
 #endif
-	PGMFile(const uint8_t* data, size_t size);
-	virtual ~PGMFile();
+	RamFile(uint8_t* data, size_t size);
+	virtual ~RamFile();
 
-	static fs::File open(const uint8_t* data, size_t size);
+	static fs::File open(uint8_t* data, size_t size);
+	static fs::File open(fs::File file);
 
 	size_t write(const uint8_t* buf, size_t size) override;
 	size_t read(uint8_t* buf, size_t size) override;
@@ -47,10 +48,12 @@ public:
 	int available();
 
 private:
-	const uint8_t* data;
+	uint8_t* data = nullptr;
 	size_t dataSize;
 	size_t cursor = 0;
+	const char* filename = nullptr;
+
 };
 
 
-#endif //CIRCUITOS_PGMFILE_H
+#endif //CIRCUITOS_RAMFILE_H
