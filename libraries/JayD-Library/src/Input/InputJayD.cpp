@@ -12,15 +12,13 @@ InputJayD::InputJayD() : btnPressCallbacks(NUM_BTN, nullptr), btnReleaseCallback
 						 btnHoldValue(NUM_BTN, 0), btnHoldStart(NUM_BTN, 0),
 						 wasPressed(NUM_BTN, false){
 
-	Wire.begin(I2C_SDA, I2C_SCL);
-
 	instance = this;
 
 }
 
 void InputJayD::reset(){
 	digitalWrite(JDNV_PIN_RESET, LOW);
-	delay(5);
+	delay(50);
 	digitalWrite(JDNV_PIN_RESET, HIGH);
 
 }
@@ -47,15 +45,22 @@ bool InputJayD::begin(){
 	pinMode(JDNV_PIN_RESET, OUTPUT);
 	digitalWrite(JDNV_PIN_RESET, HIGH);
 	reset();
-	delay(10);
+	delay(50);
+	Wire.begin(I2C_SDA, I2C_SCL);
 	Wire.beginTransmission(JDNV_ADDR);
 
 	if(Wire.endTransmission() != 0){
+		printf("Nuvo com error\n");
+		inited = false;
 		return false;
 	}
 
-	return identify();
+	inited = identify();
+	if(!inited){
+		printf("Nuvo ID error\n");
+	}
 
+	return inited;
 }
 
 void InputJayD::setBtnPressCallback(uint8_t id, void (*callback)()){
@@ -117,15 +122,15 @@ void InputJayD::removeListener(JayDInputListener* listener){
 uint8_t InputJayD::getNumEvents(){
 	Wire.beginTransmission(JDNV_ADDR);
 	Wire.write(BYTE_NUMEVENTS);
-	Wire.endTransmission();
+	if(Wire.endTransmission() != 0) return 0;
+
 	Wire.requestFrom(JDNV_ADDR, 2);
-	if(Wire.available()){
-		Wire.read();//addr
-	}
-	if(Wire.available()){
-		uint8_t numEventsData = Wire.read();
-		return numEventsData;
-	}
+	if(!Wire.available()) return 0;
+	Wire.read();//addr
+
+	if(!Wire.available()) return 0;
+	uint8_t numEventsData = Wire.read();
+	return numEventsData;
 }
 
 uint8_t InputJayD::getPotValue(uint8_t potID){
@@ -243,6 +248,8 @@ void InputJayD::handlePotentiometerEvent(uint8_t id, uint8_t value){
 }
 
 void InputJayD::loop(uint _time){
+	if(!inited) return;
+
 	fetchEvents(getNumEvents());
 	buttonHoldCheck();
 

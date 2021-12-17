@@ -1,12 +1,21 @@
 #ifndef WHEELSON_LIBRARY_WHEELSON_H
 #define WHEELSON_LIBRARY_WHEELSON_H
 
+#include <Arduino.h>
+#include <CircuitOS.h>
 #include <Display/Display.h>
-#include <Input/Input.h>
+#include <WiFi.h>
+#include <SPIFFS.h>
+#include <Loop/LoopManager.h>
+#include "BatteryService.h"
 #include "Nuvoton/Nuvoton.h"
+#include "Nuvoton/WheelsonInput.h"
 #include "Nuvoton/WheelsonLED.h"
 #include "Nuvoton/WheelsonMotor.h"
-#include "BatteryService.h"
+#include "Markers.h"
+#include "BallTracker.h"
+#include "Camera.h"
+#include "Settings.h"
 
 #define I2C_SDA 14
 #define I2C_SCL 15

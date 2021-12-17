@@ -133,9 +133,9 @@ jayd.build.extra_flags=-O2
 
 jayd.menu.PartitionScheme.min_spiffs=No OTA
 jayd.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=3604480
-jayd.menu.PartitionScheme.min_spiffs.upload.binary_start=0x90000
-jayd.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x11000
+jayd.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+jayd.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+jayd.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x383000
 
 jayd.menu.FlashFreq.80=80MHz
 jayd.menu.FlashFreq.80.build.flash_freq=80m
@@ -175,14 +175,14 @@ wheelson.build.flash_freq=40m
 wheelson.build.flash_mode=dio
 wheelson.build.boot=dio
 wheelson.build.partitions=default
-wheelson.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DST7735_DRIVER -DTFT_RGB_ORDER=TFT_BGR -DTFT_WIDTH=128 -DTFT_HEIGHT=160 -DTFT_MISO=-1 -DTFT_MOSI=13 -DTFT_SCLK=2 -DTFT_CS=32 -DTFT_DC=12 -DTFT_RST=-1 -DSPI_FREQUENCY=27000000 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
+wheelson.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DST7735_DRIVER -DTFT_RGB_ORDER=TFT_BGR -DTFT_WIDTH=128 -DTFT_HEIGHT=160 -DTFT_MISO=-1 -DTFT_MOSI=13 -DTFT_SCLK=2 -DTFT_CS=32 -DTFT_DC=12 -DTFT_RST=-1 -DSPI_FREQUENCY=27000000 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1
 wheelson.build.extra_flags=-O2 -g
 
 wheelson.menu.PartitionScheme.min_spiffs=No OTA
 wheelson.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-wheelson.menu.PartitionScheme.min_spiffs.upload.maximum_size=3604480
-wheelson.menu.PartitionScheme.min_spiffs.upload.binary_start=0x90000
-wheelson.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x11000
+wheelson.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+wheelson.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+wheelson.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x383000
 
 wheelson.menu.FlashFreq.80=80MHz
 wheelson.menu.FlashFreq.80.build.flash_freq=80m
@@ -226,24 +226,28 @@ byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS
 byteboi.build.extra_flags=-O2 -g
 
 byteboi.menu.PartitionScheme.game=Game for launcher (1MB SPIFFS)
-byteboi.menu.PartitionScheme.game.build.partitions=no_ota
+byteboi.menu.PartitionScheme.game.build.partitions=byteboi
 byteboi.menu.PartitionScheme.game.upload.maximum_size=2097152
 byteboi.menu.PartitionScheme.game.upload.binary_start=0x110000
+byteboi.menu.PartitionScheme.game.upload.spiffs_start=0x11000
 
 byteboi.menu.PartitionScheme.standalone=Standalone game (1MB SPIFFS)
-byteboi.menu.PartitionScheme.standalone.build.partitions=no_ota
+byteboi.menu.PartitionScheme.standalone.build.partitions=byteboi
 byteboi.menu.PartitionScheme.standalone.upload.maximum_size=3080192
 byteboi.menu.PartitionScheme.standalone.upload.binary_start=0x110000
+byteboi.menu.PartitionScheme.standalone.upload.spiffs_start=0x11000
 
 byteboi.menu.PartitionScheme.standalone_big=Big standalone game (0.5MB SPIFFS)
-byteboi.menu.PartitionScheme.standalone_big.build.partitions=noota_4MB
+byteboi.menu.PartitionScheme.standalone_big.build.partitions=byteboi_big
 byteboi.menu.PartitionScheme.standalone_big.upload.maximum_size=3604480
 byteboi.menu.PartitionScheme.standalone_big.upload.binary_start=0x90000
+byteboi.menu.PartitionScheme.standalone_big.upload.spiffs_start=0x11000
 
 byteboi.menu.PartitionScheme.launcher=Launcher
-byteboi.menu.PartitionScheme.launcher.build.partitions=launcher
+byteboi.menu.PartitionScheme.launcher.build.partitions=byteboi_launcher
 byteboi.menu.PartitionScheme.launcher.upload.maximum_size=983040
 byteboi.menu.PartitionScheme.launcher.upload.binary_start=0x110000
+byteboi.menu.PartitionScheme.launcher.upload.spiffs_start=0x11000
 byteboi.menu.PartitionScheme.launcher.build.pscheme_defines=-DBYTEBOI_LAUNCHER
 
 byteboi.menu.FlashFreq.80=80MHz
@@ -255,8 +259,8 @@ byteboi.menu.UploadSpeed.921600.upload.speed=921600
 byteboi.menu.DebugLevel.none=None
 byteboi.menu.DebugLevel.none.build.code_debug=0
 
-byteboi.bootloader.tool=wheelfirm
-byteboi.bootloader.tool.firmware=wheelson/firmware.bin
+byteboi.bootloader.tool=bbfirm
+byteboi.bootloader.tool.firmware=byteboi/firmware.bin
 
 ##############################################################
 

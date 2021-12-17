@@ -1,12 +1,4 @@
-#include <WiFi.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SPIFFS.h>
-#include <Loop/LoopManager.h>
 #include "JayD.h"
-#include "Settings.h"
-#include "Services/SDScheduler.h"
-#include "Input/InputJayD.h"
 
 const i2s_pin_config_t i2s_pin_config = {
 		.bck_io_num = I2S_BCK,
@@ -39,7 +31,6 @@ void JayDImpl::begin(){
 	SPI.setFrequency(60000000);
 	if(!SD.begin(SD_CS, SPI)){
 		Serial.println("No SD card");
-		//for(;;);
 	}
 	if(!SPIFFS.begin()){
 		Serial.println("SPIFFS error");
@@ -50,7 +41,6 @@ void JayDImpl::begin(){
 
 	if(!LEDmatrix.begin(I2C_SDA, I2C_SCL)){
 		Serial.println("couldn't start matrix");
-		for(;;);
 	}
 
 	LoopManager::addListener(&Sched);

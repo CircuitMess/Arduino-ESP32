@@ -66,12 +66,13 @@ void Input::btnPress(uint i){
 			for(auto listener : listeners){
 				if(removedListeners.find(listener) != removedListeners.end()) continue;
 				listener->buttonPressed(buttons[i]);
+				if(removedListeners.find(listener) != removedListeners.end()) continue;
 				listener->anyKeyPressed();
+				if(removedListeners.find(listener) != removedListeners.end()) continue;
 				if(listener->holdTimes.find(buttons[i]) != listener->holdTimes.end() && !listener->holdTimes.find(buttons[i])->second.holdingOver){
 						btnHoldStart[buttons[i]] = millis();
 						return;
 				}
-
 			}
 			if(btnPressCallback[buttons[i]] != nullptr){
 				btnPressCallback[buttons[i]]();
@@ -167,6 +168,16 @@ void Input::setButtonHeldRepeatCallback(uint8_t pin, uint32_t periodTime, void (
 	registerButton(pin);
 	btnHoldRepeatCallback[pin] = callback;
 	btnHoldRepeatValue[pin] = periodTime;
+}
+
+void Input::removeButtonHeldCallback(uint8_t pin){
+	btnHoldCallback[pin] = nullptr;
+	btnHoldValue[pin] = 0;
+}
+
+void Input::removeButtonHeldRepeatCallback(uint8_t pin){
+	btnHoldRepeatCallback[pin] = nullptr;
+	btnHoldRepeatValue[pin] = 0;
 }
 
 uint32_t Input::getButtonHeldMillis(uint8_t pin){

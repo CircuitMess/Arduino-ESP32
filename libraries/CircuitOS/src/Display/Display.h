@@ -1,8 +1,12 @@
 #ifndef SWTEST_DISPLAY_H
 #define SWTEST_DISPLAY_H
+#include "../../Setup.hpp"
 
-
+#ifdef CIRCUITOS_LOVYANGFX
+#include "LovyanGFX_setup.h"
+#else
 #include <TFT_eSPI.h>
+#endif
 #include "Sprite.h"
 
 class Sprite;
@@ -35,6 +39,8 @@ public:
 	uint getWidth() const;
 
 	uint getHeight() const;
+
+	void swapBytes(bool swap);
 
 private:
 	TFT_eSPI tft; 

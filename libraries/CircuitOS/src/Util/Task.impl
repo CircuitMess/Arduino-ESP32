@@ -5,7 +5,9 @@
 bool Task::pinnedTasks = false;
 uint8_t Task::usedCores = 0;
 
-Task::Task(std::string  taskName, void (* fun)(Task*), size_t stackSize, void* arg) : taskName(std::move(taskName)), func(fun), stackSize(stackSize), arg(arg){ }
+Task::Task(std::string  taskName, void (* fun)(Task*), size_t stackSize, void* arg) : taskName(std::move(taskName)), func(fun), stackSize(stackSize), arg(arg){
+
+}
 
 void Task::taskFunc(void* arg){
 	Task* task = static_cast<Task*>(arg);
@@ -26,12 +28,7 @@ void Task::start(byte priority, int8_t core){
 	stopped = false;
 
 	if(core != -1){
-		BaseType_t res = xTaskCreatePinnedToCore(Task::taskFunc, taskName.c_str(), stackSize, this, priority, &tHandle, core);
-		if(res != pdPASS){
-			printf("task create error %d\n", res);
-		}else{
-			printf("Task created!\n");
-		}
+		xTaskCreatePinnedToCore(Task::taskFunc, taskName.c_str(), stackSize, this, priority, &tHandle, core);
 	}else if(pinnedTasks){
 		Serial.printf("Creating task on proc %d\n", usedCores);
 		xTaskCreatePinnedToCore(Task::taskFunc, taskName.c_str(), stackSize, this, priority, &tHandle, usedCores++);

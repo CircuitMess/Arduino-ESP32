@@ -110,6 +110,7 @@ private:
 
 	uint32_t holdTime = 0;
 
+	bool inited = false;
 };
 
 

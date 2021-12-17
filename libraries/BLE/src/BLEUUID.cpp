@@ -13,7 +13,15 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "BLEUUID.h"
+
+#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
 #include "esp32-hal-log.h"
+#define LOG_TAG ""
+#else
+#include "esp_log.h"
+static const char* LOG_TAG = "BLEUUID";
+#endif
+
 
 /**
  * @brief Copy memory from source to target but in reverse order.
@@ -113,7 +121,7 @@ BLEUUID::BLEUUID(std::string value) {
 		}
 	}
 	else {
-		log_e("ERROR: UUID value not 2, 4, 16 or 36 bytes");
+		ESP_LOGE(LOG_TAG, "ERROR: UUID value not 2, 4, 16 or 36 bytes");
 		m_valueSet = false;
 	}
 } //BLEUUID(std::string)
@@ -128,7 +136,7 @@ BLEUUID::BLEUUID(std::string value) {
  */
 BLEUUID::BLEUUID(uint8_t* pData, size_t size, bool msbFirst) {
 	if (size != 16) {
-		log_e("ERROR: UUID length not 16 bytes");
+		ESP_LOGE(LOG_TAG, "ERROR: UUID length not 16 bytes");
 		return;
 	}
 	m_uuid.len = ESP_UUID_LEN_128;
@@ -204,7 +212,7 @@ uint8_t BLEUUID::bitSize() {
 		case ESP_UUID_LEN_128:
 			return 128;
 		default:
-			log_e("Unknown UUID length: %d", m_uuid.len);
+			ESP_LOGE(LOG_TAG, "Unknown UUID length: %d", m_uuid.len);
 			return 0;
 	} // End of switch
 } // bitSize
@@ -217,7 +225,7 @@ uint8_t BLEUUID::bitSize() {
  * @return True if the UUIDs are equal and false otherwise.
  */
 bool BLEUUID::equals(BLEUUID uuid) {
-	//log_d("Comparing: %s to %s", toString().c_str(), uuid.toString().c_str());
+	//ESP_LOGD(TAG, "Comparing: %s to %s", toString().c_str(), uuid.toString().c_str());
 	if (!m_valueSet || !uuid.m_valueSet) return false;
 
 	if (uuid.m_uuid.len != m_uuid.len) {
@@ -271,12 +279,12 @@ BLEUUID BLEUUID::fromString(std::string _uuid) {
  * @return The native UUID value or NULL if not set.
  */
 esp_bt_uuid_t* BLEUUID::getNative() {
-	//log_d(">> getNative()")
+	//ESP_LOGD(TAG, ">> getNative()")
 	if (m_valueSet == false) {
-		log_v("<< Return of un-initialized UUID!");
+		ESP_LOGD(LOG_TAG, "<< Return of un-initialized UUID!");
 		return nullptr;
 	}
-	//log_d("<< getNative()");
+	//ESP_LOGD(TAG, "<< getNative()");
 	return &m_uuid;
 } // getNative
 
@@ -288,7 +296,7 @@ esp_bt_uuid_t* BLEUUID::getNative() {
  * will convert 16 or 32 bit representations to the full 128bit.
  */
 BLEUUID BLEUUID::to128() {
-	//log_v(">> toFull() - %s", toString().c_str());
+	//ESP_LOGD(LOG_TAG, ">> toFull() - %s", toString().c_str());
 
 	// If we either don't have a value or are already a 128 bit UUID, nothing further to do.
 	if (!m_valueSet || m_uuid.len == ESP_UUID_LEN_128) {
@@ -330,7 +338,7 @@ BLEUUID BLEUUID::to128() {
 	m_uuid.uuid.uuid128[0]  = 0xfb;
 
 	m_uuid.len = ESP_UUID_LEN_128;
-	//log_d("<< toFull <-  %s", toString().c_str());
+	//ESP_LOGD(TAG, "<< toFull <-  %s", toString().c_str());
 	return *this;
 } // to128
 
