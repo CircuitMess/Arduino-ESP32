@@ -45,7 +45,7 @@ bool InputJayD::begin(){
 	pinMode(JDNV_PIN_RESET, OUTPUT);
 	digitalWrite(JDNV_PIN_RESET, HIGH);
 	reset();
-	delay(50);
+	delay(500);
 	Wire.begin(I2C_SDA, I2C_SCL);
 	Wire.beginTransmission(JDNV_ADDR);
 

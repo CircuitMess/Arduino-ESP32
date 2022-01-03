@@ -8,7 +8,7 @@ Nuvoton::Nuvoton(TwoWire& Wire) : Wire(Wire), i2c(WSNV_ADDR, this->Wire) {
 bool Nuvoton::begin() {
 	pinMode(WSNV_PIN_RESET, OUTPUT);
 	reset();
-	delay(50);
+	delay(500);
 
 	i2c.setHome();
 
