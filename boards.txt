@@ -306,7 +306,7 @@ chatter.menu.UploadSpeed.921600.upload.speed=921600
 chatter.menu.DebugLevel.none=None
 chatter.menu.DebugLevel.none.build.code_debug=0
 
-chatter.bootloader.tool=wheelfirm
-chatter.bootloader.tool.firmware=wheelson/firmware.bin
+chatter.bootloader.tool=chatfirm
+chatter.bootloader.tool.firmware=chatter/firmware.bin
 
 ##############################################################
