@@ -27,3 +27,9 @@ bbfirm.protocol=esp32
 bbfirm.program.protocol=esp32
 bbfirm.program.tool=esptool_py
 bbfirm.program.extra_params=
+
+chatfirm.name=Chatter Firmware
+chatfirm.protocol=esp32
+chatfirm.program.protocol=esp32
+chatfirm.program.tool=esptool_py
+chatfirm.program.extra_params=

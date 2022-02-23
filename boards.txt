@@ -222,8 +222,8 @@ byteboi.build.flash_freq=40m
 byteboi.build.flash_mode=dio
 byteboi.build.boot=dio
 byteboi.build.partitions=default
-byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_LOVYANGFX -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_MEMTEST=0 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1 -DLOVYAN_SCK=26 -DLOVYAN_MOSI=32 -DLOVYAN_MISO=5 -DLOVYAN_DC=21 -DLOVYAN_CS=33 -DLOVYAN_RST=27 -DLOVYAN_WIDTH=240 -DLOVYAN_HEIGHT=320
-byteboi.build.extra_flags=-O2 -g
+byteboi.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_U8G2FONTS -DCIRCUITOS_LOVYANGFX -DLOVYAN_PANEL=Panel_ILI9341 -DLOVYAN_FREQ=60000000 -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_MEMTEST=0 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1 -DLOVYAN_SCK=26 -DLOVYAN_MOSI=32 -DLOVYAN_MISO=5 -DLOVYAN_DC=21 -DLOVYAN_CS=33 -DLOVYAN_RST=27 -DLOVYAN_WIDTH=240 -DLOVYAN_HEIGHT=320 -DCIRCUITOS_LOVYANGFX_ZOOM=2
+byteboi.build.extra_flags=-Os -g
 
 byteboi.menu.PartitionScheme.game=Game for launcher (1MB SPIFFS)
 byteboi.menu.PartitionScheme.game.build.partitions=byteboi
@@ -310,3 +310,51 @@ synthia.bootloader.tool=wheelfirm
 synthia.bootloader.tool.firmware=wheelson/firmware.bin
 
 ##############################################################
+
+chatter.name=Chatter by CircuitMess
+
+chatter.vid.0=0x1a86
+chatter.pid.0=0x7523
+
+chatter.upload.tool=esptool_py
+chatter.upload.maximum_size=1310720
+chatter.upload.maximum_data_size=327680
+chatter.upload.wait_for_upload_port=false
+
+chatter.serial.disableDTR=true
+chatter.serial.disableRTS=true
+
+chatter.build.mcu=esp32
+chatter.build.core=esp32
+chatter.build.variant=chatter
+chatter.build.board=CM_CHATTER
+
+chatter.build.f_cpu=240000000L
+chatter.build.flash_size=4MB
+chatter.build.flash_freq=40m
+chatter.build.flash_mode=dio
+chatter.build.boot=dio
+chatter.build.partitions=default
+chatter.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_PANEL=Panel_ST7735S -DLOVYAN_FREQ=27000000 -DLOVYAN_WIDTH=128 -DLOVYAN_HEIGHT=160 -DLOVYAN_MISO=-1 -DLOVYAN_MOSI=26 -DLOVYAN_SCK=27 -DLOVYAN_CS=-1 -DLOVYAN_DC=33 -DLOVYAN_RST=15 -DRADIOLIB_GODMODE
+chatter.build.extra_flags=-O2 -g
+
+chatter.menu.PartitionScheme.min_spiffs=No OTA
+chatter.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
+chatter.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+chatter.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+chatter.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
+
+chatter.menu.FlashFreq.80=80MHz
+chatter.menu.FlashFreq.80.build.flash_freq=80m
+
+chatter.menu.UploadSpeed.921600=921600
+chatter.menu.UploadSpeed.921600.upload.speed=921600
+
+chatter.menu.DebugLevel.none=None
+chatter.menu.DebugLevel.none.build.code_debug=0
+
+chatter.bootloader.tool=chatfirm
+chatter.bootloader.tool.firmware=chatter/firmware.bin
+
+##############################################################
+

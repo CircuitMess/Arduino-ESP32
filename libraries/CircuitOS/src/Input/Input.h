@@ -82,6 +82,18 @@ public:
 
 	void removeListener(InputListener* listener);
 
+	bool getButtonState(uint8_t pin);
+
+	/**
+	 * Listener masking functions.
+	 *
+	 * Listeners added to mask will be ignored when input events happen.
+	 */
+	void maskAll();
+	void unmaskAll();
+	void addMask(InputListener* listener);
+	void removeMask(InputListener* listener);
+
 protected:
 	uint8_t pinNumber = 0;
 
@@ -116,6 +128,8 @@ protected:
 	std::unordered_set<InputListener*> removedListeners;
 
 	void clearListeners();
+
+	std::unordered_set<InputListener*> mask;
 };
 
 
