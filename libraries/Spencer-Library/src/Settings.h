@@ -26,7 +26,7 @@ public:
 	void reset();
 
 	uint getVersion(){
-		return 1;
+		return 2;
 	}
 
 private:

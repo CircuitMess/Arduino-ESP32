@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <CircuitOS.h>
 #include <SPI.h>
 #include <Loop/LoopManager.h>
 #include <SerialFlash.h>
