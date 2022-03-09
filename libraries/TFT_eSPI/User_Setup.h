@@ -54,6 +54,10 @@
 //#define SSD1963_800_DRIVER    // Untested
 //#define SSD1963_800ALT_DRIVER // Untested
 
+#ifdef TFT_OFF
+#define ST7735_DRIVER
+#endif
+
 // Some displays support SPI reads via the MISO pin, other displays have a single
 // bi-directional SDA pin and the library will try to read this via the MOSI line.
 // To use the SDA line for reading data from the TFT uncomment the following line:
@@ -78,6 +82,11 @@
 // #define TFT_HEIGHT 128
 // #define TFT_HEIGHT 240 // ST7789 240 x 240
 // #define TFT_HEIGHT 320 // ST7789 240 x 320
+
+#if !defined(TFT_WDITH) || !defined(TFT_HEIGHT)
+#define TFT_WIDTH 0
+#define TFT_HEIGHT 0
+#endif
 
 // For ST7735 ONLY, define the type of display, originally this was based on the
 // colour of the tab on the screen protector film but this is not always true, so try
