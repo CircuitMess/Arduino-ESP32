@@ -1,5 +1,5 @@
-name=Ringo ESP32
-version=1.0.0
+name=CircuitMess ESP32
+version=1.4.1
 
 
 
