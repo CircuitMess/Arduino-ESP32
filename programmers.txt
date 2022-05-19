@@ -33,3 +33,9 @@ chatfirm.protocol=esp32
 chatfirm.program.protocol=esp32
 chatfirm.program.tool=esptool_py
 chatfirm.program.extra_params=
+
+cpetfirm.name=CircuitPet Firmware
+cpetfirm.protocol=esp32
+cpetfirm.program.protocol=esp32
+cpetfirm.program.tool=esptool_py
+cpetfirm.program.extra_params=
