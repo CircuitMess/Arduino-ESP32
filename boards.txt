@@ -326,8 +326,8 @@ circuitpet.serial.disableRTS=true
 
 circuitpet.build.mcu=esp32
 circuitpet.build.core=esp32
-circuitpet.build.variant=chatter
-circuitpet.build.board=CM_CHATTER
+circuitpet.build.variant=circuitpet
+circuitpet.build.board=CM_CIRCUITPET
 
 circuitpet.build.f_cpu=240000000L
 circuitpet.build.flash_size=4MB
