@@ -83,7 +83,7 @@
 // #define TFT_HEIGHT 240 // ST7789 240 x 240
 // #define TFT_HEIGHT 320 // ST7789 240 x 320
 
-#if !defined(TFT_WDITH) || !defined(TFT_HEIGHT)
+#if !defined(TFT_WIDTH) || !defined(TFT_HEIGHT)
 #define TFT_WIDTH 0
 #define TFT_HEIGHT 0
 #endif
