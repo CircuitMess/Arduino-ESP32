@@ -14,6 +14,10 @@ public:
 	uint8_t getPercentage() const;
 	uint16_t getVoltage() const;
 
+	static uint16_t mapReading(uint16_t reading);
+
+	static int16_t getVoltOffset();
+
 private:
 	uint16_t voltage = 0; //in mV
 	static const uint16_t MeasureInterval;
@@ -21,7 +25,6 @@ private:
 	uint measureMicros = 0;
 	float measureSum = 0;
 	uint8_t measureCounter = 0;
-
 
 };
 
