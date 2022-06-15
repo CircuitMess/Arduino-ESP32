@@ -6,7 +6,7 @@
 #include <FS.h>
 #include <aacenc_lib.h>
 #include <Buffer/DataBuffer.h>
-#include "../SDScheduler.h"
+#include "../Data/Scheduler.h"
 
 #define OUTWAV_BUFSIZE 2 * 1024 * NUM_CHANNELS
 #define OUTWAV_WRITESIZE 1 * 1024 * NUM_CHANNELS // should be smaller than BUFSIZE
@@ -33,13 +33,13 @@ private:
 
 	void writeHeaderWAV(size_t size);
 
-	bool writePending[OUTWAV_BUFCOUNT] = { false };
-	SDResult* writeResult[OUTWAV_BUFCOUNT] = { nullptr };
+/*	bool writePending[OUTWAV_BUFCOUNT] = { false };
+	SchedResult* writeResult[OUTWAV_BUFCOUNT] = {nullptr };
 	void addWriteJob();
 	void processWriteJob();
 
 	DataBuffer* outBuffers[OUTWAV_BUFCOUNT] = { nullptr };
-	std::vector<uint8_t> freeBuffers;
+	std::vector<uint8_t> freeBuffers;*/
 };
 
 

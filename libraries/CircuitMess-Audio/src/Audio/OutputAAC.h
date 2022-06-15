@@ -6,12 +6,13 @@
 #include <FS.h>
 #include <aacenc_lib.h>
 #include <Buffer/DataBuffer.h>
-#include "../SDScheduler.h"
+#include "../Data/Scheduler.h"
 
 #define OUTFS_DECODE_BUFSIZE 1024 * NUM_CHANNELS // The output buffer size should be 6144 bits per channel excluding the LFE channel.
 #define OUTFS_BUFSIZE 4 * 1024 * NUM_CHANNELS
 #define OUTFS_WRITESIZE 1 * 1024 * NUM_CHANNELS // should be smaller than BUFSIZE
-#define OUTFS_BUFCOUNT 16
+#define OUTFS_BUFCOUNT 1
+//#define OUTFS_BUFCOUNT 16
 
 class OutputAAC : public Output
 {
@@ -37,13 +38,13 @@ private:
 	void setupBuffers();
 
 	bool writePending[OUTFS_BUFCOUNT] = { false };
-	SDResult* writeResult[OUTFS_BUFCOUNT] = { nullptr };
-	void addWriteJob();
-	void processWriteJob();
+	SchedResult* writeResult[OUTFS_BUFCOUNT] = {nullptr };
+//	void addWriteJob();
+//	void processWriteJob();
 
 	uint8_t* decodeBuffer = nullptr;
 	DataBuffer* outBuffers[OUTFS_BUFCOUNT] = { nullptr };
-	std::vector<uint8_t> freeBuffers;
+//	std::vector<uint8_t> freeBuffers;
 };
 
 

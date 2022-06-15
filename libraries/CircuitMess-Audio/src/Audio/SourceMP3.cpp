@@ -7,35 +7,20 @@
 #define MP3_DECODE_MIN_INPUT 1024 * 2 // should be smaller than read chunk
 #define MP3_OUT_BUFFER 1024 * 8
 
-SourceMP3::SourceMP3() :
-		readBuffer(MP3_READ_BUFFER),
+SourceMP3::SourceMP3(DataSource& ds) : Source(ds),
 		fillBuffer(MP3_DECODE_MIN_INPUT),
 		dataBuffer(MP3_OUT_BUFFER, true){
 
-}
-
-SourceMP3::SourceMP3(fs::File file) : SourceMP3(){
-	open(file);
-}
-
-void SourceMP3::open(fs::File file){
-	this->file.close();
 	channels = sampleRate = bytesPerSample = bitrate = readData = 0;
-	readBuffer.clear();
 	dataBuffer.clear();
 
-	if(!file){
-		return;
-	}
-
-	ID3Parser parser(file);
+	ID3Parser parser(ds);
 	metadata = parser.parse();
 	if(metadata.headerSize == 0){
 		Serial.println("Failed parsing MP3 header");
 		return;
 	}
 
-	dataSize = file.size();
 	bitrate = 128000;
 
 	decoder = MP3InitDecoder();
@@ -46,94 +31,32 @@ void SourceMP3::open(fs::File file){
 		Serial.println("Decoder constructed");
 	}
 
-	file.seek(metadata.headerSize);
-	this->file = file;
-	addReadJob(true);
-}
-
-SourceMP3::~SourceMP3(){
-
-}
-
-void SourceMP3::addReadJob(bool full){
-	if(readJobPending) return;
-
-	delete readResult;
-	readResult = nullptr;
-
-	size_t size = full ? readBuffer.writeAvailable() : MP3_READ_CHUNK;
-
-	//Serial.printf("Adding read job, size: %ld\n", size);
-
-	if(size == 0 || readBuffer.writeAvailable() < size){
-		return;
-	}
-
-	uint8_t* buf;
-	if(size <= MP3_READ_CHUNK || !psramFound()){
-		buf = static_cast<uint8_t*>(malloc(size));
-	}else{
-		buf = static_cast<uint8_t*>(ps_malloc(size));
-	}
-
-	Sched.addJob(new SDJob{
-						 .type = SDJob::SD_READ,
-						 .file = file,
-						 .size = size,
-						 .buffer = buf,
-						 .result = &readResult
-				 });
-
-	readJobPending = true;
-}
-
-void SourceMP3::processReadJob(){
-	if(readResult == nullptr){
-		if(readBuffer.readAvailable() + fillBuffer.readAvailable() < MP3_DECODE_MIN_INPUT){
-			Serial.println("small");
-			while(readResult == nullptr){
-				delayMicroseconds(1);
-			}
-			Serial.println("ok");
-		}else{
-			return;
-		}
-	}
-
-	readBuffer.write(readResult->buffer, readResult->size);
-	free(readResult->buffer);
-
-	delete readResult;
-	readResult = nullptr;
-
-	readJobPending = false;
+	ds.seek(metadata.headerSize);
+//	addReadJob(true);
 }
 
 size_t SourceMP3::generate(int16_t* outBuffer){
-	if(!file){
-		Serial.println("file false");
-		return 0;
-	}
-
 	if(!decoder){
 		Serial.println("Decoder false");
 		return 0;
 	}
 
 	Profiler.start("MP3 read job process");
-	processReadJob();
+//	processReadJob();
+	refill();
 	Profiler.end();
 
 	Profiler.start("decode");
 	while(dataBuffer.readAvailable() < BUFFER_SIZE){
 		// Serial.printf("Grabbing, available %ld, taking %ld\n", readBuffer.readAvailable(), fillBuffer.writeAvailable());
 		//Profiler.start("fill read");
-		fillBuffer.writeMove(readBuffer.read(fillBuffer.writeData(), fillBuffer.writeAvailable()));
+//		fillBuffer.writeMove(readBuffer.read(fillBuffer.writeData(), fillBuffer.writeAvailable()));
 		if(fillBuffer.readAvailable() < MP3_DECODE_MIN_INPUT){
 			Serial.println("rezerva");
-			addReadJob();
-			processReadJob();
-			fillBuffer.writeMove(readBuffer.read(fillBuffer.writeData(), fillBuffer.writeAvailable()));
+//			addReadJob();
+//			processReadJob();
+//			fillBuffer.writeMove(readBuffer.read(fillBuffer.writeData(), fillBuffer.writeAvailable()));
+			refill();
 		}
 		//Profiler.end();
 
@@ -194,21 +117,21 @@ size_t SourceMP3::generate(int16_t* outBuffer){
 		outBuffer[i] *= volume;
 	}
 
-	Profiler.start("AAC read job add");
-	addReadJob();
-	Profiler.end();
+//	Profiler.start("AAC read job add");
+//	addReadJob();
+//	Profiler.end();
 
 	return samples;
 }
 
 int SourceMP3::available(){
 	if(sampleRate == 0 || channels == 0 || bytesPerSample == 0) return 0;
-	return (file.available() / (channels * bytesPerSample));
+	return (ds.available() / (channels * bytesPerSample));
 }
 
 uint16_t SourceMP3::getDuration(){
 	if(bitrate == 0) return 0;
-	return 8 * dataSize / bitrate;
+	return 8 * ds.size() / bitrate;
 }
 
 uint16_t SourceMP3::getElapsed(){
@@ -219,20 +142,22 @@ uint16_t SourceMP3::getElapsed(){
 void SourceMP3::seek(uint16_t time, fs::SeekMode mode){
 	if(sampleRate == 0 || channels == 0 || bytesPerSample == 0) return;
 	size_t offset = time * sampleRate * channels * bytesPerSample;
-	if(offset >= file.size()) return;
 
-	file.seek(offset, mode);
+	ds.seek(offset, mode);
 }
 
 void SourceMP3::close(){
 
 }
 
-void SourceMP3::setVolume(uint8_t volume){
-	SourceMP3::volume = (float) volume / 255.0f;
-}
 
 const ID3Metadata& SourceMP3::getMetadata() const{
 	return metadata;
+}
+
+void SourceMP3::refill(){
+	size_t size = min(fillBuffer.writeAvailable(), ds.available());
+	size = ds.read(fillBuffer.writeData(), size);
+	fillBuffer.writeMove(size);
 }
 

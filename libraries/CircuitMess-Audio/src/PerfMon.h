@@ -15,7 +15,7 @@ public:
 	void init();
 	void start(String name);
 	void end();
-	void report();
+	float report();
 
 private:
 	String current;

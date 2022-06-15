@@ -1,7 +1,7 @@
 #ifndef JAYD_LIBRARY_EFFECTTYPE_HPP
 #define JAYD_LIBRARY_EFFECTTYPE_HPP
 
-enum EffectType {
+enum class EffectType {
 	NONE, SPEED, LOWPASS, HIGHPASS, REVERB, BITCRUSHER, COUNT
 };
 
