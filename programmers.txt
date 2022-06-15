@@ -33,3 +33,9 @@ chatfirm.protocol=esp32
 chatfirm.program.protocol=esp32
 chatfirm.program.tool=esptool_py
 chatfirm.program.extra_params=
+
+synthfirm.name=Synthia Firmware
+synthfirm.protocol=esp32
+synthfirm.program.protocol=esp32
+synthfirm.program.tool=esptool_py
+synthfirm.program.extra_params=

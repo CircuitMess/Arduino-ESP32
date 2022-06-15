@@ -306,8 +306,8 @@ synthia.menu.UploadSpeed.921600.upload.speed=921600
 synthia.menu.DebugLevel.none=None
 synthia.menu.DebugLevel.none.build.code_debug=0
 
-synthia.bootloader.tool=wheelfirm
-synthia.bootloader.tool.firmware=wheelson/firmware.bin
+synthia.bootloader.tool=synthfirm
+synthia.bootloader.tool.firmware=synthia/firmware.bin
 
 ##############################################################
 
