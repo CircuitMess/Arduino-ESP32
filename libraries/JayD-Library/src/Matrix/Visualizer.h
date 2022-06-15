@@ -1,17 +1,17 @@
 #ifndef JAYD_LIBRARY_VISUALIZER_H
 #define JAYD_LIBRARY_VISUALIZER_H
 
-#include "MatrixPartition.h"
+#include <Devices/Matrix/Matrix.h>
 #include "../AudioLib/InfoGenerator.h"
 
 class Visualizer {
 public:
-	Visualizer(MatrixPartition *matrix);
+	Visualizer(Matrix *matrix);
 
 	virtual InfoGenerator *getInfoGenerator() = 0;
 
 protected:
-	MatrixPartition *matrix;
+	Matrix *matrix;
 };
 
 

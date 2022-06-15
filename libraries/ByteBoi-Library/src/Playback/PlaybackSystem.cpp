@@ -70,9 +70,7 @@ void PlaybackSystem::audioThread(Task* task){
 
 		if(!task->running) break;
 
-		if(!system->schedDisabled){
-			Sched.loop(0);
-		}
+		system->Sched.loop(0);
 
 		system->setMixRatio();
 
@@ -86,6 +84,7 @@ void PlaybackSystem::audioThread(Task* task){
 		if(sample != nullptr && sample->getSource()->available() == 0){
 			if(sample->isLooping()){
 				sample->getSource()->seek(0, fs::SeekSet);
+				system->out->start();
 			}else{
 				system->mixer->setSource(1, nullptr);
 				system->currentSample = nullptr;
@@ -105,8 +104,6 @@ void PlaybackSystem::play(Sample* sample){
 	if(Settings.get().volume == 0) return;
 	if(sample->getSource() == nullptr) return;
 	open(sample);
-	sample->getSource()->seek(0, fs::SeekSet);
-	Sched.loop(0);
 	start();
 }
 
@@ -183,6 +180,6 @@ void PlaybackSystem::updateGain(){
 	out->setGain((float) Settings.get().volume / 255.0f);
 }
 
-void PlaybackSystem::disableScheduler(bool schedDisabled){
-	PlaybackSystem::schedDisabled = schedDisabled;
+SDScheduler& PlaybackSystem::getSched(){
+	return Sched;
 }

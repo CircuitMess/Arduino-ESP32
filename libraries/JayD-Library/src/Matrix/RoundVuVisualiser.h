@@ -3,11 +3,12 @@
 
 #include "Visualizer.h"
 #include "../AudioLib/VuInfoGenerator.h"
+#include <Loop/LoopListener.h>
 
 class RoundVuVisualiser: public Visualizer, public LoopListener{
 
 public:
-	RoundVuVisualiser(MatrixPartition *matrix);
+	RoundVuVisualiser(Matrix *matrix);
 
 	InfoGenerator *getInfoGenerator() override;
 

@@ -2,14 +2,13 @@
 #define JAYD_LIBRARY_MATRIXMID_H
 
 
-#include "MatrixPartition.h"
+#include <Devices/Matrix/MatrixPartOutput.h>
 
-class MatrixMid : public MatrixPartition {
+class MatrixMid : public MatrixPartOutput {
 public:
-	MatrixMid(LEDmatrixImpl* matrix);
-
-	void push() override;
-	void vu(uint16_t value) override;
+	MatrixMid(MatrixOutputBuffer* output);
+protected:
+	std::pair<uint16_t, uint16_t> map(uint16_t x, uint16_t y) override;
 };
 
 

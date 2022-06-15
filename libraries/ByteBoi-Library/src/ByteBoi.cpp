@@ -49,6 +49,9 @@ void ByteBoiImpl::begin(){
 		Serial.println("SPIFFS error");
 	}
 
+	//Audio thread #0 waits for resources loaded on thread #1
+	disableCore0WDT();
+
 	Settings.begin();
 
 	Playback.begin();

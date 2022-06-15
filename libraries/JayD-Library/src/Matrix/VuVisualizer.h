@@ -3,10 +3,12 @@
 
 #include "Visualizer.h"
 #include "../AudioLib/VuInfoGenerator.h"
+#include <Loop/LoopListener.h>
+#include <Devices/Matrix/Matrix.h>
 
 class VuVisualizer : public Visualizer, public LoopListener {
 public:
-	VuVisualizer(MatrixPartition *matrix);
+	VuVisualizer(Matrix *matrix);
 
 	InfoGenerator *getInfoGenerator() override;
 
@@ -14,6 +16,8 @@ public:
 
 private:
 	VuInfoGenerator info;
+
+	void vu(uint16_t amp);
 };
 
 

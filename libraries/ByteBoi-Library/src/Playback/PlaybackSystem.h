@@ -16,6 +16,7 @@
 #include <Audio/Oscillator.h>
 #include <Audio/Mixer.h>
 #include <Audio/Wave.h>
+#include <Data/SDScheduler.h>
 
 class Sample;
 
@@ -49,12 +50,15 @@ public:
 
 	void seek(uint16_t time);
 
-	void disableScheduler(bool schedDisabled);
 	void updateGain();
+
+	SDScheduler& getSched();
 
 private:
 	bool running = false;
 	Queue queue;
+	SDScheduler Sched;
+
 	bool schedDisabled = false;
 
 	OutputDAC* out = nullptr;

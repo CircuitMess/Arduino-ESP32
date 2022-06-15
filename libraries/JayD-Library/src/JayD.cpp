@@ -1,4 +1,5 @@
 #include "JayD.h"
+#include <Devices/Matrix/MatrixOutputBuffer.h>
 
 const i2s_pin_config_t i2s_pin_config = {
 		.bck_io_num = I2S_BCK,
@@ -7,8 +8,10 @@ const i2s_pin_config_t i2s_pin_config = {
 		.data_in_num = I2S_DI
 };
 
-LEDmatrixImpl LEDmatrix;
-MatrixManager matrixManager(&LEDmatrix);
+IS31FL3731 charlie;
+Matrix LEDmatrix(charlie);
+MatrixOutputBuffer charlieBuffer(&charlie);
+MatrixManager matrixManager(&charlieBuffer);
 
 JayDImpl JayD;
 
@@ -39,9 +42,11 @@ void JayDImpl::begin(){
 	display.begin();
 	SPI.setFrequency(20000000);
 
-	if(!LEDmatrix.begin(I2C_SDA, I2C_SCL)){
-		Serial.println("couldn't start matrix");
-	}
+	Wire.begin(I2C_SDA, I2C_SCL);
+	Wire.setClock(400000);
+
+	charlie.init();
+	LEDmatrix.begin();
 
 	LoopManager::addListener(&Sched);
 	LoopManager::addListener(&matrixManager);
