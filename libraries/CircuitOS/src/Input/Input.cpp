@@ -144,6 +144,7 @@ void Input::loop(uint _time){
 
 			for(auto listener : listeners){
 				if(mask.find(listener) != mask.end()) continue;
+				if(removedListeners.find(listener) != removedListeners.end()) continue;
 
 				auto search = listener->holdTimes.find(buttons[i]);
 				if(search != listener->holdTimes.end() && holdTime >= search->second.time && !search->second.holdingOver){
@@ -223,6 +224,15 @@ void Input::addListener(InputListener* listener){
 
 	for(auto pair : listener->holdAndRepeatTimes){
 		pair.second.repeatCounter = 0;
+	}
+
+	for(int i = 0; i < pinNumber; i++){
+		auto p = listener->holdTimes.find(buttons[i]);
+		if(p == listener->holdTimes.end()) continue;
+
+		if(btnState[buttons[i]]){
+			p->second.holdingOver = true;
+		}
 	}
 }
 

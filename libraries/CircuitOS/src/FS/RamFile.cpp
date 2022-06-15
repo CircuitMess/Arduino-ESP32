@@ -12,7 +12,7 @@ fs::File RamFile::open(uint8_t* data, size_t size, bool readonly){
 	return File(std::make_shared<RamFile>(data, size, readonly));
 }
 
-fs::File RamFile::open(fs::File& file, bool readonly){
+fs::File RamFile::open(fs::File file, bool readonly){
 	uint8_t* data;
 #ifdef CONFIG_SPIRAM_SUPPORT
 	data = static_cast<uint8_t*>(ps_malloc(file.size()));
@@ -25,12 +25,14 @@ fs::File RamFile::open(fs::File& file, bool readonly){
 
 	auto f = std::make_shared<RamFile>(data, file.size(), readonly);
 
-	String name = file.name();
-	char* fstr = static_cast<char*>(malloc(name.length() + 1));
-	memcpy(fstr, name.c_str(), name.length());
-	fstr[name.length()] = 0;
-	f->filename = fstr;
+	f->filename = file.name();
 
+	return File(f);
+}
+
+fs::File RamFile::create(const String& filename){
+	auto f = std::make_shared<RamFile>((uint8_t*) malloc(1), 0, false);
+	f->filename = filename;
 	return File(f);
 }
 
@@ -69,11 +71,11 @@ int RamFile::available(){
 }
 
 int RamFile::read(){
-	return pgm_read_byte(data + cursor++);
+	return *(data + cursor++);
 }
 
 int RamFile::peek(){
-	return pgm_read_byte(data + cursor);
+	return *(data + cursor);
 }
 
 void RamFile::flush(){
@@ -121,11 +123,10 @@ size_t RamFile::size() const{
 
 void RamFile::close(){
 	delete data;
-	delete filename;
 
 	data = nullptr;
 	dataSize = 0;
-	filename = nullptr;
+	filename = "";
 }
 
 RamFile::operator bool(){
@@ -141,7 +142,7 @@ time_t RamFile::getLastWrite(){
 }
 
 const char* RamFile::name() const {
-	return filename;
+	return filename.c_str();
 }
 
 void RamFile::rewindDirectory() {
