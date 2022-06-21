@@ -13,11 +13,11 @@ EffectProcessor::~EffectProcessor()
 size_t EffectProcessor::generate(int16_t* outBuffer){
 	if(inputGenerator == nullptr) return 0;
 
-	size_t noSamples = inputGenerator->generate(effectBuffer);
-	size_t bytes = noSamples * BYTES_PER_SAMPLE * NUM_CHANNELS;
+	size_t numSamples = inputGenerator->generate(effectBuffer);
+	size_t bytes = numSamples * BYTES_PER_SAMPLE * NUM_CHANNELS;
 	if(effectList.empty()){
 		memcpy(outBuffer, effectBuffer, bytes);
-		return noSamples;
+		return numSamples;
 	}
 	int e = 0;
 	for(size_t i = 0; i < effectList.size(); i++){
@@ -25,9 +25,9 @@ size_t EffectProcessor::generate(int16_t* outBuffer){
 		if(effect == nullptr) continue;
 
 		if(e%2 == 0){
-			effect->applyEffect(effectBuffer, outBuffer, noSamples);
+			effect->applyEffect(effectBuffer, outBuffer, numSamples);
 		}else{
-			effect->applyEffect(outBuffer, effectBuffer, noSamples);
+			effect->applyEffect(outBuffer, effectBuffer, numSamples);
 		}
 
 		e++;
@@ -37,7 +37,7 @@ size_t EffectProcessor::generate(int16_t* outBuffer){
 		memcpy(outBuffer, effectBuffer, bytes);
 	}
 
-	return noSamples;
+	return numSamples;
 }
 
 void EffectProcessor::addEffect(Effect* effect){

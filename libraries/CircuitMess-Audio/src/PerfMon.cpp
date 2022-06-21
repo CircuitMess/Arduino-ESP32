@@ -15,26 +15,27 @@ void PerfMon::init(){
 	initTime = micros();
 }
 
-void PerfMon::report(){
+float PerfMon::report(){
 #ifndef PROFILER_DEBUG
-	return;
+	return 0;
 #endif
 
 	float total = (float) (micros() - initTime) / 1000.0f;
 	float max =  1000.0f * (float) BUFFER_SAMPLES / (float) SAMPLE_RATE;
-	Serial.printf("Total time: %.2f / %.2f (%.0f%%)", total, max, 100.0f * total / max);
+	Serial.printf("Total time: %.2f ms / %.2f ms (%.0f%%)", total, max, 100.0f * total / max);
 	if(total > max){
-		Serial.printf(" | %.2f over", total - max);
+		Serial.printf(" | %.2f ms over", total - max);
 	}
 
-	Serial.printf(" | H: %d B\n", ESP.getFreeHeap());
+	Serial.printf(" | H: %d B\n", ESP.getFreePsram());
 
 	mutex.lock();
 	for(const auto& r : reports){
-		Serial.printf(" -- %10s: %6.2f\n", r.name.c_str(), (float) r.duration / 1000.0f);
+		Serial.printf(" -- %10s: %6.2f ms\n", r.name.c_str(), (float) r.duration / 1000.0f);
 	}
 	mutex.unlock();
 	Serial.println();
+	return total;
 }
 
 void PerfMon::start(String name){

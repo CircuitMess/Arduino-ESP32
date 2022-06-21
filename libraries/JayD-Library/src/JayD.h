@@ -43,8 +43,8 @@
 #include <CircuitOS.h>
 #include <Loop/LoopManager.h>
 #include <Display/Display.h>
-#include <Devices/LEDmatrix/LEDmatrix.h>
-#include <Devices/LEDmatrix/Animation.h>
+#include <Devices/Matrix/Matrix.h>
+#include <Devices/Matrix/MatrixAnimGIF.h>
 #include "Matrix/MatrixManager.h"
 #include <driver/i2s.h>
 #include <SPIFFS.h>
@@ -56,10 +56,12 @@
 #include "Input/InputJayD.h"
 #include "AudioLib/Systems/MixSystem.h"
 #include "AudioLib/Systems/PlaybackSystem.h"
+#include <Devices/Matrix/IS31FL3731.h>
 
 extern const i2s_pin_config_t i2s_pin_config;
-extern LEDmatrixImpl LEDmatrix;
+extern Matrix LEDmatrix;
 extern MatrixManager matrixManager;
+extern IS31FL3731 charlie;
 
 class JayDImpl {
 public:

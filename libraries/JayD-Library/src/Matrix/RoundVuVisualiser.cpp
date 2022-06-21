@@ -1,6 +1,6 @@
 #include "RoundVuVisualiser.h"
 
-RoundVuVisualiser::RoundVuVisualiser(MatrixPartition *matrix) : Visualizer(matrix) {
+RoundVuVisualiser::RoundVuVisualiser(Matrix *matrix) : Visualizer(matrix) {
 
 }
 
@@ -31,7 +31,7 @@ void RoundVuVisualiser::drawSquare(uint8_t width, uint8_t value) {
 		{
 			if (i == 0 || i == 2*width-1 ||
 				j == 0 || j == (2*width-2))
-				matrix->drawPixel(4-width + i, 4 - width + 1 +j, value);
+				matrix->drawPixel(4-width + i, 4 - width + 1 +j, {255, 255, 255, value});
 		}
 	}
 }

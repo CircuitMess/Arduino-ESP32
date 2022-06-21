@@ -264,6 +264,53 @@ byteboi.bootloader.tool.firmware=byteboi/firmware.bin
 
 ##############################################################
 
+synthia.name=Synthia by CircuitMess
+
+synthia.vid.0=0x1a86
+synthia.pid.0=0x7523
+
+synthia.upload.tool=esptool_py
+synthia.upload.maximum_size=1310720
+synthia.upload.maximum_data_size=327680
+synthia.upload.wait_for_upload_port=false
+
+synthia.serial.disableDTR=true
+synthia.serial.disableRTS=true
+
+synthia.build.mcu=esp32
+synthia.build.core=esp32
+synthia.build.variant=synthia
+synthia.build.board=CM_SYNTHIA
+
+synthia.build.f_cpu=240000000L
+synthia.build.flash_size=4MB
+synthia.build.flash_freq=40m
+synthia.build.flash_mode=dio
+synthia.build.boot=dio
+synthia.build.partitions=default
+synthia.build.defines=-DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DTFT_OFF -DCONFIG_SPIRAM_SUPPORT=1 -DBOARD_HAS_PSRAM=1 -DCONFIG_SPIRAM_MEMTEST=0 -DCONFIG_SPIRAM_USE_MALLOC=1 -DCONFIG_SPIRAM_USE=SPIRAM_USE_MALLOC -mfix-esp32-psram-cache-issue -DCONFIG_SPIRAM_CACHE_WORKAROUND=1 -DDEBUG
+synthia.build.extra_flags=-O2 -g
+
+synthia.menu.PartitionScheme.min_spiffs=No OTA
+synthia.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
+synthia.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+synthia.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+synthia.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
+
+synthia.menu.FlashFreq.80=80MHz
+synthia.menu.FlashFreq.80.build.flash_freq=80m
+
+synthia.menu.UploadSpeed.921600=921600
+synthia.menu.UploadSpeed.921600.upload.speed=921600
+
+synthia.menu.DebugLevel.none=None
+synthia.menu.DebugLevel.none.build.code_debug=0
+
+synthia.bootloader.tool=synthfirm
+synthia.bootloader.tool.firmware=synthia/firmware.bin
+
+##############################################################
+
 chatter.name=Chatter by CircuitMess
 
 chatter.vid.0=0x1a86

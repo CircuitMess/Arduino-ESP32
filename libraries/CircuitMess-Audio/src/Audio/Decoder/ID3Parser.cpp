@@ -15,13 +15,13 @@ struct ID3Header {
 	uint32_t size;
 } __attribute__((packed));
 
-ID3Parser::ID3Parser(File& file) : file(file){ }
+ID3Parser::ID3Parser(DataSource &ds) : ds(ds){ }
 
 ID3Metadata ID3Parser::parse(){
 	ID3Header header;
 
-	file.seek(0);
-	file.read(reinterpret_cast<uint8_t*>(&header), sizeof(ID3Header));
+	ds.seek(0);
+	ds.read(reinterpret_cast<uint8_t*>(&header), sizeof(ID3Header));
 	swendian(&header.size);
 	sync(&header.size);
 
@@ -31,7 +31,7 @@ ID3Metadata ID3Parser::parse(){
 	experimental = header.flags & FLAG_EXPER;
 
 	data = static_cast<uint8_t*>(malloc(size));
-	file.read(data, size);
+	ds.read(data, size);
 	dataPtr = 0;
 
 	if(extendedHeader){

@@ -1,13 +1,7 @@
 #include "MatrixR.h"
 
-MatrixR::MatrixR(LEDmatrixImpl* matrix) : MatrixPartition(matrix, 3, 8){ }
+MatrixR::MatrixR(MatrixOutputBuffer* output) : MatrixPartOutput(output, 3, 8){}
 
-void MatrixR::push(){
-	uint8_t map[3] = { 56, 72, 88 };
-
-	for(int i = 0; i < width; i++){
-		for(int j = 0; j < height; j++){
-			matrix->drawPixel(map[i] + j, buffer[j * width + i]);
-		}
-	}
+std::pair<uint16_t, uint16_t> MatrixR::map(uint16_t x, uint16_t y){
+	return { y + 8, x + 3};
 }

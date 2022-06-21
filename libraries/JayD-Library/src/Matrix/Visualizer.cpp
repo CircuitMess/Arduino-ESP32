@@ -1,5 +1,6 @@
+#include <Devices/Matrix/Matrix.h>
 #include "Visualizer.h"
 
-Visualizer::Visualizer(MatrixPartition *matrix) : matrix(matrix) {
+Visualizer::Visualizer(Matrix *matrix) : matrix(matrix) {
 
 }

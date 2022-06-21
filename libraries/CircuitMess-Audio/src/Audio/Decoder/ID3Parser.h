@@ -2,7 +2,7 @@
 #define JAYD_ID3PARSER_H
 
 #include <Arduino.h>
-#include <FS.h>
+#include "../../Data/DataSource.h"
 
 struct ID3Metadata {
 	ID3Metadata(){}
@@ -15,12 +15,12 @@ struct ID3Metadata {
 
 class ID3Parser {
 public:
-	ID3Parser(fs::File& file);
+	ID3Parser(DataSource &ds);
 
 	ID3Metadata parse();
 
 private:
-	fs::File file;
+	DataSource &ds;
 
 	bool unsync;
 	bool extendedHeader;

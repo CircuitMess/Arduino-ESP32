@@ -2,13 +2,14 @@
 #define JAYD_LIBRARY_MATRIXR_H
 
 
-#include "MatrixPartition.h"
+#include <Devices/Matrix/MatrixPartOutput.h>
 
-class MatrixR : public MatrixPartition {
+class MatrixR : public MatrixPartOutput {
 public:
-	MatrixR(LEDmatrixImpl* matrix);
+	MatrixR(MatrixOutputBuffer* output);
 
-	void push() override;
+protected:
+	std::pair<uint16_t, uint16_t> map(uint16_t x, uint16_t y) override;
 };
 
 

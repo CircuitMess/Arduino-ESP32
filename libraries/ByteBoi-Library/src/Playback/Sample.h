@@ -4,6 +4,8 @@
 #include <CMAudio.h>
 #include <Audio/Source.h>
 #include "PlaybackSystem.h"
+#include <Data/FileDataSource.h>
+#include <Data/ScheduledDataSource.h>
 
 class Sample {
 friend PlaybackSystem;
@@ -17,6 +19,8 @@ public:
 private:
 	Source* source = nullptr;
 	fs::File sourceFile;
+	FileDataSource* dataSource = nullptr;
+	ScheduledDataSource* schedDataSource = nullptr;
 
 	Source* getSource() const;
 

@@ -34,6 +34,12 @@ chatfirm.program.protocol=esp32
 chatfirm.program.tool=esptool_py
 chatfirm.program.extra_params=
 
+synthfirm.name=Synthia Firmware
+synthfirm.protocol=esp32
+synthfirm.program.protocol=esp32
+synthfirm.program.tool=esptool_py
+synthfirm.program.extra_params=
+
 cpetfirm.name=CircuitPet Firmware
 cpetfirm.protocol=esp32
 cpetfirm.program.protocol=esp32

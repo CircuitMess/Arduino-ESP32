@@ -2,13 +2,14 @@
 #define JAYD_LIBRARY_MATRIXBIG_H
 
 
-#include "MatrixPartition.h"
+#include <Devices/Matrix/MatrixPartOutput.h>
 
-class MatrixBig : public MatrixPartition {
+class MatrixBig : public MatrixPartOutput {
 public:
-	MatrixBig(LEDmatrixImpl* matrix);
+	MatrixBig(MatrixOutputBuffer* output);
 
-	void push() override;
+protected:
+	std::pair<uint16_t, uint16_t> map(uint16_t x, uint16_t y) override;
 };
 
 

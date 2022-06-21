@@ -4,7 +4,7 @@
 //clipping wave to avoid overflows
 int16_t clip(int32_t input){ 
 
-    if (input > 0x7FFF) return 0x7FFFF;
+    if (input > 0x7FFF) return 0x7FFF;
     if (input < - 0x7FFF) return -0x7FFF;
     return input;
 }
@@ -26,33 +26,31 @@ size_t Mixer::generate(int16_t *outBuffer){
 	std::vector<size_t> receivedSamples(sourceList.size(), 0);
 
 	for(uint8_t i = 0; i < sourceList.size(); i++){
-		if(pauseList[i]) continue;
-		Generator* generator = sourceList[i];
-		int16_t* buffer = bufferList[i];
-		if(generator != nullptr && buffer != nullptr){
-			receivedSamples[i] = generator->generate(buffer);
-			if(receivedSamples[i] == 0){
-				pauseList[i] = true;
-			}
+		if(pauseList[i] || sourceList[i] == nullptr || bufferList[i] == nullptr){
+			receivedSamples[i] = 0;
+			continue;
 		}
+
+		receivedSamples[i] = sourceList[i]->generate(bufferList[i]);
 	}
 
 	for(uint16_t i = 0; i < BUFFER_SAMPLES*NUM_CHANNELS; i++){
 		int32_t wave = 0;
 		for(uint8_t j = 0; j < sourceList.size(); j++){
 			if(pauseList[j]) continue;
-			if(bufferList[j] == nullptr || receivedSamples[j] < i/NUM_CHANNELS) break;
+			if(sourceList[j] == nullptr || bufferList[j] == nullptr || receivedSamples[j] <= i/NUM_CHANNELS) continue;
 
 			if(sourceList.size() == 2){
-				wave += bufferList[j][i] * (float)((j == 1 ? (float)(mixRatio) : (float)(255.0 - mixRatio))/255.0); //use the mixer if only 2 tracks found
+				wave += (float) bufferList[j][i] * (float)((j == 1 ? (float)(mixRatio) : (float)(255.0 - mixRatio))/255.0); //use the mixer if only 2 tracks found
 			}else{
-				wave += bufferList[j][i] * (float)(1.0/(float)(sourceList.size())); // evenly distribute all tracks
+				wave += (float) bufferList[j][i] * (float)(1.0/(float)(sourceList.size())); // evenly distribute all tracks
 			}
 		}
 		outBuffer[i] = clip(wave);
 	}
 	size_t longestBuffer = *std::max_element(receivedSamples.begin(), receivedSamples.end());
 
+/*
 	if(longestBuffer == 0){
 		bool allPaused = true;
 		for(bool p : pauseList){
@@ -63,6 +61,7 @@ size_t Mixer::generate(int16_t *outBuffer){
 			return BUFFER_SAMPLES;
 		}
 	}
+*/
 
 	return longestBuffer;
 }
@@ -70,6 +69,7 @@ size_t Mixer::generate(int16_t *outBuffer){
 int Mixer::available(){
 	int available = 0;
 	for(auto & i : sourceList){
+		if(i == nullptr) continue;
 		available = max(available, i->available());
 	}
 	return available;

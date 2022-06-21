@@ -10,7 +10,7 @@ class SpeedModifier : public Generator {
 
 public:
 
-	SpeedModifier(Source* source);
+	SpeedModifier(Generator* source);
 	~SpeedModifier();
 
 	size_t generate(int16_t* outBuffer) override;
@@ -28,10 +28,12 @@ public:
 	 */
 	void setSpeed(float speed);
 
-	void setSource(Source* source);
+	void setSource(Generator* source);
+
+	void resetBuffers();
 
 private:
-	Source *source = nullptr;
+	Generator *source = nullptr;
 	DataBuffer* dataBuffer = nullptr;
 
 	float speed = 1;

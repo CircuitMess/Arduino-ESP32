@@ -4,11 +4,12 @@
 #include "../PerfMon.h"
 
 OutputAAC::OutputAAC(){
-	freeBuffers.reserve(OUTFS_BUFCOUNT);
+/*	freeBuffers.reserve(OUTFS_BUFCOUNT);
 	for(int i = 0; i < OUTFS_BUFCOUNT; i++){
 		outBuffers[i] = new DataBuffer(OUTFS_BUFSIZE);
 		freeBuffers.push_back(i);
-	}
+	}*/
+	outBuffers[0] = new DataBuffer(OUTFS_BUFSIZE);
 
 	if(psramFound()){
 		decodeBuffer = static_cast<uint8_t*>(ps_malloc(OUTFS_DECODE_BUFSIZE));
@@ -68,21 +69,23 @@ void OutputAAC::setupBuffers(){
 }
 
 void OutputAAC::output(size_t numSamples){
-	Profiler.start("AAC write process");
-	processWriteJob();
-	Profiler.end();
+//	Profiler.start("AAC write process");
+//	processWriteJob();
 
-	while(freeBuffers.empty()){
+//	Profiler.end();
+
+/*	while(freeBuffers.empty()){
 		processWriteJob();
-	}
+	}*/
 
-	DataBuffer* buffer = outBuffers[freeBuffers.front()];
+	DataBuffer* buffer = outBuffers[0];
 
 	Profiler.start("AAC encode");
 	// TODO: move these three to constructor
 	::inBuffer[0] = this->inBuffer;
 	::outBuffer[0] = decodeBuffer;
 	::outBufferSize[0] = OUTFS_DECODE_BUFSIZE;
+
 	inArgs.numInSamples = numSamples * NUM_CHANNELS;
 	AACENC_OutArgs outArgs;
 	int status = aacEncEncode(encoder, &inBufDesc, &outBufDesc, &inArgs, &outArgs);
@@ -97,9 +100,9 @@ void OutputAAC::output(size_t numSamples){
 	}
 
 	if(buffer->readAvailable() >= OUTFS_WRITESIZE){
-		Profiler.start("AAC write add");
-		addWriteJob();
-		Profiler.start("AAC write add");
+		size_t size = buffer->readAvailable();
+		file.write(buffer->readData(), size);
+		buffer->readMove(size);
 	}
 }
 
@@ -147,8 +150,12 @@ void OutputAAC::init(){
 }
 
 void OutputAAC::deinit(){
-	if(!freeBuffers.empty() && outBuffers[freeBuffers.front()]->readAvailable() > 0){
-		addWriteJob();
+/*	if(!freeBuffers.empty() && outBuffers[freeBuffers.front()]->readAvailable() > 0){
+		file.write(const_cast<uint8_t*>(outBuffers[freeBuffers.front()]->readData()), outBuffers[freeBuffers.front()]->readAvailable())
+	}*/
+
+	if(outBuffers[0]->readAvailable() > 0){
+		file.write(const_cast<uint8_t*>(outBuffers[0]->readData()), outBuffers[0]->readAvailable());
 	}
 
 	inArgs.numInSamples = -1;
@@ -159,30 +166,33 @@ void OutputAAC::deinit(){
 	}
 
 	if(outArgs.numOutBytes != 0){
-		while(freeBuffers.empty()){
+/*		while(freeBuffers.empty()){
 			processWriteJob();
-		}
+		}*/
 
-		DataBuffer* buffer = outBuffers[freeBuffers.front()];
+		DataBuffer* buffer = outBuffers[0];
+//		DataBuffer* buffer = outBuffers[freeBuffers.front()];
 		memcpy(buffer->writeData(), decodeBuffer, outArgs.numOutBytes);
 		buffer->writeMove(outArgs.numOutBytes);
 
-		addWriteJob();
+//		addWriteJob();
+		file.write(outBuffers[0]->readData(), outBuffers[0]->readAvailable());
 	}
 
 	aacEncClose(&encoder);
 
-	while(freeBuffers.size() != OUTFS_BUFCOUNT){
+/*	while(freeBuffers.size() != OUTFS_BUFCOUNT){
 		processWriteJob();
-	}
+	}*/
 }
 
+/*
 void OutputAAC::addWriteJob(){
 	if(freeBuffers.empty()) return;
 	uint8_t i = freeBuffers.front();
 
-	Sched.addJob(new SDJob{
-			 .type = SDJob::SD_WRITE,
+	Sched.addJob(new SchedJob{
+			 .type = SchedJob::WRITE,
 			 .file = file,
 			 .size = outBuffers[i]->readAvailable(),
 			 .buffer = const_cast<uint8_t*>(outBuffers[i]->readData()),
@@ -207,3 +217,4 @@ void OutputAAC::processWriteJob(){
 		freeBuffers.push_back(i);
 	}
 }
+*/
