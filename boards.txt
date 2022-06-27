@@ -48,6 +48,18 @@ ringo.menu.FlashFreq.80.build.flash_freq=80m
 
 ringo.menu.UploadSpeed.921600=921600
 ringo.menu.UploadSpeed.921600.upload.speed=921600
+ringo.menu.UploadSpeed.115200=115200
+ringo.menu.UploadSpeed.115200.upload.speed=115200
+ringo.menu.UploadSpeed.256000.windows=256000
+ringo.menu.UploadSpeed.256000.upload.speed=256000
+ringo.menu.UploadSpeed.230400.windows.upload.speed=256000
+ringo.menu.UploadSpeed.230400=230400
+ringo.menu.UploadSpeed.230400.upload.speed=230400
+ringo.menu.UploadSpeed.460800.linux=460800
+ringo.menu.UploadSpeed.460800.macosx=460800
+ringo.menu.UploadSpeed.460800.upload.speed=460800
+ringo.menu.UploadSpeed.512000.windows=512000
+ringo.menu.UploadSpeed.512000.upload.speed=512000
 
 ringo.menu.DebugLevel.none=None
 ringo.menu.DebugLevel.none.build.code_debug=0
@@ -95,6 +107,18 @@ spencer.menu.FlashFreq.80.build.flash_freq=80m
 
 spencer.menu.UploadSpeed.921600=921600
 spencer.menu.UploadSpeed.921600.upload.speed=921600
+spencer.menu.UploadSpeed.115200=115200
+spencer.menu.UploadSpeed.115200.upload.speed=115200
+spencer.menu.UploadSpeed.256000.windows=256000
+spencer.menu.UploadSpeed.256000.upload.speed=256000
+spencer.menu.UploadSpeed.230400.windows.upload.speed=256000
+spencer.menu.UploadSpeed.230400=230400
+spencer.menu.UploadSpeed.230400.upload.speed=230400
+spencer.menu.UploadSpeed.460800.linux=460800
+spencer.menu.UploadSpeed.460800.macosx=460800
+spencer.menu.UploadSpeed.460800.upload.speed=460800
+spencer.menu.UploadSpeed.512000.windows=512000
+spencer.menu.UploadSpeed.512000.upload.speed=512000
 
 spencer.menu.DebugLevel.none=None
 spencer.menu.DebugLevel.none.build.code_debug=0
@@ -142,6 +166,18 @@ jayd.menu.FlashFreq.80.build.flash_freq=80m
 
 jayd.menu.UploadSpeed.921600=921600
 jayd.menu.UploadSpeed.921600.upload.speed=921600
+jayd.menu.UploadSpeed.115200=115200
+jayd.menu.UploadSpeed.115200.upload.speed=115200
+jayd.menu.UploadSpeed.256000.windows=256000
+jayd.menu.UploadSpeed.256000.upload.speed=256000
+jayd.menu.UploadSpeed.230400.windows.upload.speed=256000
+jayd.menu.UploadSpeed.230400=230400
+jayd.menu.UploadSpeed.230400.upload.speed=230400
+jayd.menu.UploadSpeed.460800.linux=460800
+jayd.menu.UploadSpeed.460800.macosx=460800
+jayd.menu.UploadSpeed.460800.upload.speed=460800
+jayd.menu.UploadSpeed.512000.windows=512000
+jayd.menu.UploadSpeed.512000.upload.speed=512000
 
 jayd.menu.DebugLevel.none=None
 jayd.menu.DebugLevel.none.build.code_debug=0
@@ -189,6 +225,18 @@ wheelson.menu.FlashFreq.80.build.flash_freq=80m
 
 wheelson.menu.UploadSpeed.921600=921600
 wheelson.menu.UploadSpeed.921600.upload.speed=921600
+wheelson.menu.UploadSpeed.115200=115200
+wheelson.menu.UploadSpeed.115200.upload.speed=115200
+wheelson.menu.UploadSpeed.256000.windows=256000
+wheelson.menu.UploadSpeed.256000.upload.speed=256000
+wheelson.menu.UploadSpeed.230400.windows.upload.speed=256000
+wheelson.menu.UploadSpeed.230400=230400
+wheelson.menu.UploadSpeed.230400.upload.speed=230400
+wheelson.menu.UploadSpeed.460800.linux=460800
+wheelson.menu.UploadSpeed.460800.macosx=460800
+wheelson.menu.UploadSpeed.460800.upload.speed=460800
+wheelson.menu.UploadSpeed.512000.windows=512000
+wheelson.menu.UploadSpeed.512000.upload.speed=512000
 
 wheelson.menu.DebugLevel.none=None
 wheelson.menu.DebugLevel.none.build.code_debug=0
@@ -255,6 +303,18 @@ byteboi.menu.FlashFreq.80.build.flash_freq=80m
 
 byteboi.menu.UploadSpeed.921600=921600
 byteboi.menu.UploadSpeed.921600.upload.speed=921600
+byteboi.menu.UploadSpeed.115200=115200
+byteboi.menu.UploadSpeed.115200.upload.speed=115200
+byteboi.menu.UploadSpeed.256000.windows=256000
+byteboi.menu.UploadSpeed.256000.upload.speed=256000
+byteboi.menu.UploadSpeed.230400.windows.upload.speed=256000
+byteboi.menu.UploadSpeed.230400=230400
+byteboi.menu.UploadSpeed.230400.upload.speed=230400
+byteboi.menu.UploadSpeed.460800.linux=460800
+byteboi.menu.UploadSpeed.460800.macosx=460800
+byteboi.menu.UploadSpeed.460800.upload.speed=460800
+byteboi.menu.UploadSpeed.512000.windows=512000
+byteboi.menu.UploadSpeed.512000.upload.speed=512000
 
 byteboi.menu.DebugLevel.none=None
 byteboi.menu.DebugLevel.none.build.code_debug=0
@@ -302,6 +362,18 @@ synthia.menu.FlashFreq.80.build.flash_freq=80m
 
 synthia.menu.UploadSpeed.921600=921600
 synthia.menu.UploadSpeed.921600.upload.speed=921600
+synthia.menu.UploadSpeed.115200=115200
+synthia.menu.UploadSpeed.115200.upload.speed=115200
+synthia.menu.UploadSpeed.256000.windows=256000
+synthia.menu.UploadSpeed.256000.upload.speed=256000
+synthia.menu.UploadSpeed.230400.windows.upload.speed=256000
+synthia.menu.UploadSpeed.230400=230400
+synthia.menu.UploadSpeed.230400.upload.speed=230400
+synthia.menu.UploadSpeed.460800.linux=460800
+synthia.menu.UploadSpeed.460800.macosx=460800
+synthia.menu.UploadSpeed.460800.upload.speed=460800
+synthia.menu.UploadSpeed.512000.windows=512000
+synthia.menu.UploadSpeed.512000.upload.speed=512000
 
 synthia.menu.DebugLevel.none=None
 synthia.menu.DebugLevel.none.build.code_debug=0
@@ -349,6 +421,18 @@ chatter.menu.FlashFreq.80.build.flash_freq=80m
 
 chatter.menu.UploadSpeed.921600=921600
 chatter.menu.UploadSpeed.921600.upload.speed=921600
+chatter.menu.UploadSpeed.115200=115200
+chatter.menu.UploadSpeed.115200.upload.speed=115200
+chatter.menu.UploadSpeed.256000.windows=256000
+chatter.menu.UploadSpeed.256000.upload.speed=256000
+chatter.menu.UploadSpeed.230400.windows.upload.speed=256000
+chatter.menu.UploadSpeed.230400=230400
+chatter.menu.UploadSpeed.230400.upload.speed=230400
+chatter.menu.UploadSpeed.460800.linux=460800
+chatter.menu.UploadSpeed.460800.macosx=460800
+chatter.menu.UploadSpeed.460800.upload.speed=460800
+chatter.menu.UploadSpeed.512000.windows=512000
+chatter.menu.UploadSpeed.512000.upload.speed=512000
 
 chatter.menu.DebugLevel.none=None
 chatter.menu.DebugLevel.none.build.code_debug=0
