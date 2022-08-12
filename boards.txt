@@ -470,10 +470,10 @@ circuitpet.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREE
 circuitpet.build.extra_flags=-O2 -g
 
 circuitpet.menu.PartitionScheme.min_spiffs=No OTA
-circuitpet.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
-circuitpet.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+circuitpet.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+circuitpet.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
 circuitpet.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
-circuitpet.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
+circuitpet.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
 
 circuitpet.menu.FlashFreq.80=80MHz
 circuitpet.menu.FlashFreq.80.build.flash_freq=80m
