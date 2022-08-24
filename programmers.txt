@@ -34,6 +34,12 @@ chatfirm.program.protocol=esp32
 chatfirm.program.tool=esptool_py
 chatfirm.program.extra_params=
 
+chatfirm2.name=Chatter 2.0 Firmware
+chatfirm2.protocol=esp32
+chatfirm2.program.protocol=esp32
+chatfirm2.program.tool=esptool_py
+chatfirm2.program.extra_params=
+
 synthfirm.name=Synthia Firmware
 synthfirm.protocol=esp32
 synthfirm.program.protocol=esp32
