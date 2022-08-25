@@ -442,6 +442,53 @@ chatter.bootloader.tool.firmware=chatter/firmware.bin
 
 ##############################################################
 
+circuitpet.name=CircuitPet by CircuitMess
+
+circuitpet.vid.0=0x1a86
+circuitpet.pid.0=0x7523
+
+circuitpet.upload.tool=esptool_py
+circuitpet.upload.maximum_size=1310720
+circuitpet.upload.maximum_data_size=327680
+circuitpet.upload.wait_for_upload_port=false
+
+circuitpet.serial.disableDTR=true
+circuitpet.serial.disableRTS=true
+
+circuitpet.build.mcu=esp32
+circuitpet.build.core=esp32
+circuitpet.build.variant=circuitpet
+circuitpet.build.board=CM_CIRCUITPET
+
+circuitpet.build.f_cpu=240000000L
+circuitpet.build.flash_size=4MB
+circuitpet.build.flash_freq=40m
+circuitpet.build.flash_mode=dio
+circuitpet.build.boot=dio
+circuitpet.build.partitions=default
+circuitpet.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DDEBUG
+circuitpet.build.extra_flags=-O2 -g
+
+circuitpet.menu.PartitionScheme.min_spiffs=No OTA
+circuitpet.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+circuitpet.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
+circuitpet.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+circuitpet.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
+
+circuitpet.menu.FlashFreq.80=80MHz
+circuitpet.menu.FlashFreq.80.build.flash_freq=80m
+
+circuitpet.menu.UploadSpeed.921600=921600
+circuitpet.menu.UploadSpeed.921600.upload.speed=921600
+
+circuitpet.menu.DebugLevel.none=None
+circuitpet.menu.DebugLevel.none.build.code_debug=0
+
+circuitpet.bootloader.tool=chatfirm
+circuitpet.bootloader.tool.firmware=chatter/firmware.bin
+
+##############################################################
+
 chatter2.name=Chatter 2.0 by CircuitMess
 
 chatter2.vid.0=0x1a86
