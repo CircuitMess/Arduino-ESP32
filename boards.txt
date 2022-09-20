@@ -466,7 +466,7 @@ circuitpet.build.flash_freq=40m
 circuitpet.build.flash_mode=dio
 circuitpet.build.boot=dio
 circuitpet.build.partitions=default
-circuitpet.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DDEBUG
+circuitpet.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL
 circuitpet.build.extra_flags=-O2 -g
 
 circuitpet.menu.PartitionScheme.min_spiffs=No OTA
