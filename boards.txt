@@ -480,6 +480,18 @@ circuitpet.menu.FlashFreq.80.build.flash_freq=80m
 
 circuitpet.menu.UploadSpeed.921600=921600
 circuitpet.menu.UploadSpeed.921600.upload.speed=921600
+circuitpet.menu.UploadSpeed.115200=115200
+circuitpet.menu.UploadSpeed.115200.upload.speed=115200
+circuitpet.menu.UploadSpeed.256000.windows=256000
+circuitpet.menu.UploadSpeed.256000.upload.speed=256000
+circuitpet.menu.UploadSpeed.230400.windows.upload.speed=256000
+circuitpet.menu.UploadSpeed.230400=230400
+circuitpet.menu.UploadSpeed.230400.upload.speed=230400
+circuitpet.menu.UploadSpeed.460800.linux=460800
+circuitpet.menu.UploadSpeed.460800.macosx=460800
+circuitpet.menu.UploadSpeed.460800.upload.speed=460800
+circuitpet.menu.UploadSpeed.512000.windows=512000
+circuitpet.menu.UploadSpeed.512000.upload.speed=512000
 
 circuitpet.menu.DebugLevel.none=None
 circuitpet.menu.DebugLevel.none.build.code_debug=0
