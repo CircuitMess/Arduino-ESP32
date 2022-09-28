@@ -484,7 +484,7 @@ circuitpet.menu.UploadSpeed.921600.upload.speed=921600
 circuitpet.menu.DebugLevel.none=None
 circuitpet.menu.DebugLevel.none.build.code_debug=0
 
-circuitpet.bootloader.tool=chatfirm
-circuitpet.bootloader.tool.firmware=chatter/firmware.bin
+circuitpet.bootloader.tool=cpetfirm
+circuitpet.bootloader.tool.firmware=circuitpet/firmware.bin
 
 ##############################################################
