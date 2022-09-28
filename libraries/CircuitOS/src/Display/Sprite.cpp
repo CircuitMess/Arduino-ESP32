@@ -13,6 +13,8 @@ Sprite::Sprite(TFT_eSPI* spi, uint16_t width, uint16_t height) : TFT_eSprite(spi
 	parent = nullptr;
 	parentSPI = spi;
 	setColorDepth(16);
+	this->myWidth = width;
+	this->myHeight = height;
 #ifdef CIRCUITOS_LOVYANGFX
 	setPsram(true);
 #endif
@@ -22,6 +24,8 @@ Sprite::Sprite(TFT_eSPI* spi, uint16_t width, uint16_t height) : TFT_eSprite(spi
 Sprite::Sprite(Display& display, uint16_t width, uint16_t height) : TFT_eSprite(display.getBaseSprite()){
 	parent = display.getBaseSprite();
 	setColorDepth(16);
+	this->myWidth = width;
+	this->myHeight = height;
 #ifdef CIRCUITOS_LOVYANGFX
 	setPsram(true);
 #endif
@@ -31,6 +35,8 @@ Sprite::Sprite(Display& display, uint16_t width, uint16_t height) : TFT_eSprite(
 Sprite::Sprite(Sprite* sprite, uint16_t width, uint16_t height) : TFT_eSprite(sprite){
 	parent = sprite;
 	setColorDepth(16);
+	this->myWidth = width;
+	this->myHeight = height;
 #ifdef CIRCUITOS_LOVYANGFX
 	setPsram(true);
 #endif
@@ -61,19 +67,44 @@ void Sprite::drawIcon(const unsigned short* icon, int16_t x, int16_t y, uint16_t
 	setChroma(c);
 }
 
-void Sprite::drawIcon(File& icon, int16_t x, int16_t y, uint16_t width, uint16_t height, uint8_t scale, int32_t maskingColor){
+void Sprite::drawIcon(const Pixel* icon, int16_t x, int16_t y, uint16_t width, uint16_t height, uint8_t scale, int32_t maskingColor){
 	Color c = chromaKey;
 	setChroma(TFT_TRANSPARENT);
 
+	for(int i = 0; i < width; i++){
+		for(int j = 0; j < height; j++){
+			Pixel p = icon[j * width + i];
+			uint16_t color = C_RGB(p.r, p.g, p.b);
+
+			if((!chroma || color != chromaKey) && (color != maskingColor || maskingColor == -1)){
+				fillRect(x + i * scale, y + j * scale, scale, scale, color);
+			}
+		}
+	}
+	setChroma(c);
+}
+
+void Sprite::drawIcon(File icon, int16_t x, int16_t y, uint16_t width, uint16_t height, uint8_t scale, int32_t maskingColor){
+	Color c = chromaKey;
+	setChroma(TFT_TRANSPARENT);
+
+	icon.seek(0);
+	Color buffer[512];
+	size_t bufferPos = 0;
+	size_t available = icon.read(reinterpret_cast<uint8_t*>(buffer), 512) / 2;
+
 	for(int i = 0; i < height; i++){
 		for(int j = 0; j < width; j++){
-			uint16_t color = 0;
-			size_t read = icon.read((uint8_t*)&color, 2);
-
-			if(read < 2){
-				setChroma(c);
-				return;
+			if(bufferPos == available){
+				available = icon.read(reinterpret_cast<uint8_t*>(buffer), 512) / 2;
+				if(available == 0){
+					setChroma(c);
+					return;
+				}
+				bufferPos = 0;
 			}
+
+			uint16_t color = buffer[bufferPos++];
 
 			if((!chroma || color != chromaKey) && (color != maskingColor || maskingColor == -1)){
 				fillRect(x + j * scale, y + i * scale, scale, scale, color);
@@ -275,6 +306,18 @@ Sprite& Sprite::setChroma(Color color){
 void Sprite::pushData(uint width, uint height, uint16_t* data){
 	memcpy(_img, data, sizeof(uint16_t) * width * height);
 }
+
+void Sprite::push(Sprite* canvas, int16_t x, int16_t y) const{
+	if(!canvas) return;
+	if(!_img8) return;
+
+	auto canvasSprite = static_cast<TFT_eSprite*>(canvas);
+	bool old = canvasSprite->getSwapBytes();
+	canvasSprite->setSwapBytes(false);
+	canvas->pushImage(x, y, myWidth, myHeight, (uint16_t*) _img8, TFT_TRANSPARENT);
+	canvasSprite->setSwapBytes(old);
+}
+
 #ifndef CIRCUITOS_LOVYANGFX
 void Sprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data, uint32_t chroma){
 	if((x >= width()) || (y >= height()) || (w == 0) || (h == 0) || !(_img != nullptr) || _bpp != 16) return;

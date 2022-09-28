@@ -4,17 +4,30 @@
 #include <Arduino.h>
 #include <unordered_set>
 #include "../../Setup.hpp"
+#include <functional>
 
 class LoopListener;
 class Task;
 
 class LoopManager {
 public:
+	/**
+	 * Reserve listener vector slots.
+	 * @param count Expected listener count
+	 */
+	static void reserve(size_t count);
 
 	static void addListener(LoopListener* listener);
 	static void removeListener(LoopListener* listener);
 
 	static void loop();
+
+	static void resetTime();
+
+	/**
+	 * Run later. The function will be ran after the next loop iteration is completed.
+	 */
+	static void defer(std::function<void(uint32_t)>);
 
 #ifdef CIRCUITOS_TASK
 	/**
@@ -42,10 +55,15 @@ public:
 
 private:
 	static std::unordered_set<LoopListener*> listeners;
+	static std::unordered_set<LoopListener*> addedListeners;
 	static std::unordered_set<LoopListener*> removedListeners;
 
+	volatile static bool iterating;
 	static uint lastMicros;
+	static void insertListeners();
 	static void clearListeners();
+
+	static std::vector<std::function<void(uint32_t)>> deferred;
 
 #ifdef CIRCUITOS_TASK
 	static Task* task;

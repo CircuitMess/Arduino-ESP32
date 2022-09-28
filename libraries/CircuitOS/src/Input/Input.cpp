@@ -10,6 +10,16 @@ Input::Input(uint8_t _pinNumber) : pinNumber(_pinNumber), btnPressCallback(pinNu
 								   btnHoldValue(pinNumber, 0), btnHoldRepeatValue(pinNumber, 0),
 								   btnHoldOver(pinNumber, 0), anyKeyCallback(nullptr), anyKeyCallbackReturn(0){
 	instance = this;
+
+	listeners.reserve(16);
+	addedListeners.reserve(4);
+	removedListeners.reserve(4);
+}
+
+void Input::reserve(size_t listeners, size_t transient){
+	this->listeners.reserve(listeners);
+	addedListeners.reserve(transient);
+	removedListeners.reserve(transient);
 }
 
 void Input::setBtnPressCallback(uint8_t pin, void (* callback)()){
@@ -209,31 +219,9 @@ void Input::preregisterButtons(Vector<uint8_t> pins){
 }
 
 void Input::addListener(InputListener* listener){
-	if(listeners.indexOf(listener) == (uint) -1){
-		listeners.push_back(listener);
-	}
-
-	auto l = removedListeners.find(listener);
-	if(l != removedListeners.end()){
-		removedListeners.erase(l);
-	}
-
-	for(auto pair : listener->holdTimes){
-		pair.second.holdingOver = false;
-	}
-
-	for(auto pair : listener->holdAndRepeatTimes){
-		pair.second.repeatCounter = 0;
-	}
-
-	for(int i = 0; i < pinNumber; i++){
-		auto p = listener->holdTimes.find(buttons[i]);
-		if(p == listener->holdTimes.end()) continue;
-
-		if(btnState[buttons[i]]){
-			p->second.holdingOver = true;
-		}
-	}
+	if(listeners.indexOf(listener) != -1 || addedListeners.find(listener) != removedListeners.end()) return;
+	addedListeners.insert(listener);
+	removedListeners.erase(listener);
 }
 
 void Input::removeListener(InputListener* listener){
@@ -250,6 +238,31 @@ void Input::clearListeners(){
 	}
 
 	removedListeners.clear();
+
+	for(const auto& listener : addedListeners){
+		uint i = listeners.indexOf(listener);
+		if(i != (uint) -1) continue;
+		listeners.push_back(listener);
+
+		for(auto pair : listener->holdTimes){
+			pair.second.holdingOver = false;
+		}
+
+		for(auto pair : listener->holdAndRepeatTimes){
+			pair.second.repeatCounter = 0;
+		}
+
+		for(int i = 0; i < pinNumber; i++){
+			auto p = listener->holdTimes.find(buttons[i]);
+			if(p == listener->holdTimes.end()) continue;
+
+			if(btnState[buttons[i]]){
+				p->second.holdingOver = true;
+			}
+		}
+	}
+
+	addedListeners.clear();
 }
 
 void Input::maskAll(){
