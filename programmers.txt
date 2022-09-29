@@ -39,3 +39,9 @@ synthfirm.protocol=esp32
 synthfirm.program.protocol=esp32
 synthfirm.program.tool=esptool_py
 synthfirm.program.extra_params=
+
+cpetfirm.name=CircuitPet Firmware
+cpetfirm.protocol=esp32
+cpetfirm.program.protocol=esp32
+cpetfirm.program.tool=esptool_py
+cpetfirm.program.extra_params=

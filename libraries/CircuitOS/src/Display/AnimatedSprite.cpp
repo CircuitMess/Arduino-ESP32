@@ -33,7 +33,7 @@ AnimatedSprite::AnimatedSprite(Sprite* canvas, fs::File file, bool compressed) :
 	reset();
 }
 
-AnimatedSprite::Table::Table(fs::File& file){
+AnimatedSprite::Table::Table(File file){
 	file.read(&noColors, sizeof(noColors));
 	colors = static_cast<Color*>(malloc(sizeof(Color) * noColors));
 	file.read(reinterpret_cast<uint8_t*>(colors), sizeof(Color) * noColors);
@@ -117,6 +117,13 @@ bool AnimatedSprite::nextFrame(){
 	bool newFrame = false;
 
 	uint currentTime = millis();
+
+	if(currentFrameTime + gifFrame.duration*10 < currentTime){
+		reset();
+
+		return nextFrame();
+	}
+
 	while(currentFrameTime + gifFrame.duration < currentTime){
 		currentFrameTime += gifFrame.duration;
 		currentFrame++;

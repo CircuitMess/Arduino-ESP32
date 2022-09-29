@@ -94,6 +94,8 @@ public:
 	void addMask(InputListener* listener);
 	void removeMask(InputListener* listener);
 
+	void reserve(size_t listeners, size_t transient = 4);
+
 protected:
 	uint8_t pinNumber = 0;
 
@@ -126,6 +128,7 @@ protected:
 
 	Vector<InputListener*> listeners;
 	std::unordered_set<InputListener*> removedListeners;
+	std::unordered_set<InputListener*> addedListeners;
 
 	void clearListeners();
 

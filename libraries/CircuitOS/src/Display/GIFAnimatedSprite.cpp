@@ -1,24 +1,91 @@
+#include <Loop/LoopManager.h>
 #include "GIFAnimatedSprite.h"
-#include "../Util/gifdec.h"
 
-GIFAnimatedSprite::GIFAnimatedSprite(Sprite* parentSprite, fs::File _gifFile) : parentSprite(parentSprite), gifFile(_gifFile){
-	gif = gd_open_gif(gifFile);
-	if(gif == nullptr){
+GIFAnimatedSprite::GIFAnimatedSprite(Sprite* parentSprite, const fs::File& gifFile) : parentSprite(parentSprite), gif(gifFile){
+	if(!gif){
 		Serial.println("Failed opening gif");
 		return;
 	}
-
-	width = gif->width;
-	height = gif->height;
-
-	if(!nextFrame()) return;
-
 }
 
 GIFAnimatedSprite::~GIFAnimatedSprite(){
-	gd_close_gif(gif);
-	free(currentFrame.data);
-	gifFile.close();
+	stop();
+}
+
+void GIFAnimatedSprite::loop(uint micros){
+	if(!gif) return;
+
+	frameCounter += micros;
+
+	if(frameCounter / 1000 >= gif.frameDuration() * 10){
+		reset();
+		loopCount = gif.getLoopCount();
+		gif.nextFrame();
+
+		if(loopDoneCallback){
+			loopDoneCallback(loopCount);
+		}
+
+		return;
+	}
+
+	while(frameCounter / 1000 >= gif.frameDuration()){
+		frameCounter -= gif.frameDuration()*1000;
+		gif.nextFrame();
+
+		if(gif.getLoopCount() > loopCount){
+			loopCount = gif.getLoopCount();
+
+			if(loopDoneCallback){
+				loopDoneCallback(loopCount);
+				return;
+			}
+		}
+	}
+}
+
+void GIFAnimatedSprite::start(){
+	if(!gif) return;
+	LoopManager::addListener(this);
+	gif.nextFrame();
+}
+
+void GIFAnimatedSprite::stop(){
+	LoopManager::removeListener(this);
+
+}
+
+void GIFAnimatedSprite::push() const{
+	if(!gif) return;
+
+	parentSprite->drawIcon(gif.getFrame().getData(), getX(), getY(), getWidth(), getHeight(), scale);
+}
+
+void GIFAnimatedSprite::push(Sprite* sprite, int x, int y, Color maskingColor) const{
+	if(!gif) return;
+
+	sprite->drawIcon(gif.getFrame().getData(), x, y, getWidth(), getHeight(), scale, maskingColor);
+}
+
+#ifdef CIRCUITOS_LOVYANGFX
+void GIFAnimatedSprite::pushRotate(Sprite* sprite, int x, int y, float rot, Color maskingColor) const{
+	if(!gif) return;
+
+	Sprite temp = Sprite(sprite, getWidth(), getHeight());
+	temp.clear(TFT_TRANSPARENT);
+	temp.drawIcon(gif.getFrame().getData(), 0, 0, getWidth(), getHeight(), 1, maskingColor);
+	temp.pushRotateZoomWithAA(x + getWidth() / 2, y + getHeight() / 2, rot, scale, scale, TFT_TRANSPARENT);
+//	sprite->pushImageRotateZoomWithAA(x, y, getWidth() / 2, getHeight() / 2, rot, scale, scale, getWidth(), getHeight(), (uint8_t*)gif.getFrame().getData(), maskingColor);
+}
+#endif
+
+void GIFAnimatedSprite::reset(){
+	if(!gif) return;
+
+	gif.reset();
+
+	frameCounter = 0;
+	loopCount = 0;
 }
 
 int GIFAnimatedSprite::getX() const{
@@ -42,74 +109,35 @@ void GIFAnimatedSprite::setXY(int x, int y){
 	GIFAnimatedSprite::y = y;
 }
 
-void GIFAnimatedSprite::push(){
-	if(currentFrameTime == 0){
-		parentSprite->drawIcon(reinterpret_cast<const unsigned short*>(currentFrame.data), x, y, width, height, scale, TFT_TRANSPARENT);
-		currentFrameTime = millis();
-		return;
-	}
-
-	uint cFrameTime = currentFrameTime;
-	uint currentTime = millis();
-	while(cFrameTime + currentFrame.duration < currentTime){
-		cFrameTime += currentFrame.duration;
-		currentFrameTime = currentTime;
-		if(!nextFrame()){
-			if(loopDoneCallback != nullptr && !alerted){
-				loopDoneCallback();
-				alerted = true;
-			}
-		}else{
-			alerted = false;
-		}
-	}
-	parentSprite->drawIcon(reinterpret_cast<const unsigned short*>(currentFrame.data), x, y, width, height, scale, TFT_TRANSPARENT);
+uint16_t GIFAnimatedSprite::getWidth() const{
+	if(!gif) return 0;
+	return gif.getWidth();
 }
 
-void GIFAnimatedSprite::reset(){
-	gd_rewind(gif);
-	if(!nextFrame()) return;
-	currentFrameTime = 0;
-	alerted=false;
+uint16_t GIFAnimatedSprite::getHeight() const{
+	if(!gif) return 0;
+	return gif.getHeight();
 }
 
-void GIFAnimatedSprite::setLoopDoneCallback(void (*callback)()){
+GIF::LoopMode GIFAnimatedSprite::getLoopMode() const{
+	if(!gif) GIF::LoopMode::Auto;
+	return gif.getLoopMode();
+}
+
+void GIFAnimatedSprite::setLoopMode(GIF::LoopMode loopMode){
+	if(!gif) return;
+	gif.setLoopMode(loopMode);
+}
+
+uint32_t GIFAnimatedSprite::getLoopCount() const{
+	if(!gif) 0;
+	return gif.getLoopCount();
+}
+
+void GIFAnimatedSprite::setLoopDoneCallback(std::function<void(uint32_t loopCount)> callback){
 	loopDoneCallback = callback;
-}
-
-bool GIFAnimatedSprite::nextFrame(){
-	if(gd_get_frame(gif) == 1) {
-		if(currentFrame.data != nullptr){
-			free(currentFrame.data);
-		}
-		uint8_t *buffer = (uint8_t*) malloc(width * height * 3);
-		//render 24-bit color frame into buffer
-
-		gd_render_frame(gif, buffer, false);
-
-		uint16_t* frame = static_cast<uint16_t*>(malloc(width * height * sizeof(uint16_t)));
-		for(int i = 0; i < width * height; i++){
-			frame[i] = C_RGB(buffer[i*3], buffer[i*3+1], buffer[i*3+2]);
-		}
-		free(buffer);
-
-		currentFrame.data = (uint8_t*)frame;
-		currentFrame.duration = static_cast<uint>(gif->gce.delay*10);
-		return true;
-	}
-	return false;
-}
-
-bool GIFAnimatedSprite::newFrameReady(){
-	uint cFrameTime = currentFrameTime;
-	uint currentTime = millis();
-	if(cFrameTime + currentFrame.duration < currentTime){
-		return true;
-	}
-	return false;
 }
 
 void GIFAnimatedSprite::setScale(uint8_t scale){
 	GIFAnimatedSprite::scale = scale;
-
 }
