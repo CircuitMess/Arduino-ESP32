@@ -15,9 +15,17 @@ const uint8_t rgbMap[] = {
 };
 
 void ByteBoiLED::begin(){
-	ByteBoi.getExpander()->pinMode(LED_R, OUTPUT);
-	ByteBoi.getExpander()->pinMode(LED_G, OUTPUT);
-	ByteBoi.getExpander()->pinMode(LED_B, OUTPUT);
+	auto expander = ByteBoi.getExpander();
+
+	if(expander){
+		expander->pinMode(LED_R, OUTPUT);
+		expander->pinMode(LED_G, OUTPUT);
+		expander->pinMode(LED_B, OUTPUT);
+	}else{
+		pinMode(LED_R, OUTPUT);
+		pinMode(LED_G, OUTPUT);
+		pinMode(LED_B, OUTPUT);
+	}
 }
 
 void ByteBoiLED::setRGB(LEDColor colour){
@@ -25,9 +33,17 @@ void ByteBoiLED::setRGB(LEDColor colour){
 
 	currentColor = colour;
 	uint8_t color = rgbMap[(uint8_t)colour];
-	ByteBoi.getExpander()->pinWrite(LED_R, (color & 0b100));
-	ByteBoi.getExpander()->pinWrite(LED_G, (color & 0b010));
-	ByteBoi.getExpander()->pinWrite(LED_B, (color & 0b001));
+
+	auto expander = ByteBoi.getExpander();
+	if(expander){
+		expander->pinWrite(LED_R, (color & 0b100));
+		expander->pinWrite(LED_G, (color & 0b010));
+		expander->pinWrite(LED_B, (color & 0b001));
+	}else{
+		digitalWrite(LED_R, (color & 0b100) ? HIGH : LOW);
+		digitalWrite(LED_G, (color & 0b010) ? HIGH : LOW);
+		digitalWrite(LED_B, (color & 0b001) ? HIGH : LOW);
+	}
 }
 LEDColor ByteBoiLED::getRGB(){
 	return currentColor;

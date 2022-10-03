@@ -19,6 +19,7 @@
 #include "Battery/BatteryService.h"
 #include "Battery/BatteryPopupService.h"
 #include "SleepService.h"
+#include "ByteBoiDisplay.h"
 
 class ByteBoiImpl : public InputListener, public LoopListener{
 public:
@@ -29,9 +30,12 @@ public:
 	void begin();
 	Display* getDisplay();
 	I2cExpander* getExpander();
-	InputI2C* getInput();
+	Input* getInput();
 	static bool inFirmware();
 	static bool isStandalone();
+
+	void checkSD();
+	bool sdDetected();
 
 	/**
 	 * Retrieve the path of the game directory on the SD card.
@@ -83,16 +87,19 @@ public:
 	void splash(void (* callback)() = nullptr);
 	void shutdown();
 	void fadeout();
+	void setBacklight(bool on);
 
 	static const char* SPIFFSgameRoot;
 	static const char* SPIFFSdataRoot;
 
 	void loop(uint micros) override;
 
+	int getPin(uint8_t index) const;
+
 private:
 	Display* display;
-	I2cExpander* expander;
-	InputI2C* input;
+	I2cExpander* expander = nullptr;
+	Input* input;
 	String gameID = "";
 	void buttonPressed(uint i) override;
 	volatile bool menuBind = false;
@@ -100,6 +107,15 @@ private:
 
 	void (* splashCallback)() = nullptr;
 	uint32_t splashTime = 0;
+
+	ByteBoiDisplay displayConfig;
+
+	bool sdInserted = false;
+
+	std::array<int, 7> pinMap;
+	void initPins1();
+	void initPins2();
+
 };
 
 extern ByteBoiImpl ByteBoi;

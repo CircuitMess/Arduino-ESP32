@@ -9,10 +9,13 @@
 #include "Battery/BatteryPopupService.h"
 #include "SleepService.h"
 #include "Bitmaps/ByteBoiLogo.hpp"
+#include "ByteBoi2Input.h"
 #include <Loop/LoopManager.h>
 #include <esp_wifi.h>
 #include <esp_bt.h>
 #include <driver/adc.h>
+#include <Input/InputShift.h>
+#include "Pins.hpp"
 
 const char* ByteBoiImpl::SPIFFSgameRoot = "/game";
 const char* ByteBoiImpl::SPIFFSdataRoot = "/data";
@@ -25,6 +28,33 @@ BatteryPopupService BatteryPopup;
 Menu* ByteBoiImpl::popupMenu = nullptr;
 
 void ByteBoiImpl::begin(){
+	expander = new I2cExpander();
+	if(expander->begin(I2C_EXPANDER_ADDR, I2C_SDA, I2C_SCL)){
+		initPins1();
+
+		expander->pinMode(BL_PIN, OUTPUT);
+		expander->pinWrite(BL_PIN, HIGH);
+		expander->pinMode(SD_DETECT_PIN, INPUT);
+		expander->portRead();
+
+		input = new InputI2C(expander);
+	}else{
+		delete expander;
+		expander = nullptr;
+		initPins2();
+
+		auto* inputShift = new ByteBoi2Input(SHIFT_SDA, SHIFT_SCL, SHIFT_PL, 8);
+		inputShift->begin();
+		input = inputShift;
+
+		pinMode(CHARGE_DETECT_PIN, INPUT);
+		pinMode(BL_PIN, OUTPUT);
+		digitalWrite(BL_PIN, HIGH);
+	}
+
+	LED.begin();
+	LED.setRGB(OFF);
+
 	pinMode(SPEAKER_SD, OUTPUT);
 	digitalWrite(SPEAKER_SD, HIGH);
 	delay(10);
@@ -59,28 +89,26 @@ void ByteBoiImpl::begin(){
 	SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI, SPI_SS);
 	SPI.setFrequency(60000000);
 
-	display = new Display(160, 120, -1, 1);
-	expander = new I2cExpander();
+	checkSD();
 
+	display = new Display(160, 120, -1, 1);
+	if(expander){
+		display->getTft()->setPanel(displayConfig.panel1());
+	}else{
+		display->getTft()->setPanel(displayConfig.panel2());
+	}
 	display->begin();
 	display->getBaseSprite()->clear(TFT_BLACK);
 	display->commit();
 
-	expander->begin(I2C_EXPANDER_ADDR, I2C_SDA, I2C_SCL);
-	expander->pinMode(BL_PIN, OUTPUT);
-	expander->pinWrite(BL_PIN, 0);
-	LED.begin();
-	LED.setRGB(OFF);
-	expander->pinMode(SD_DETECT_PIN, INPUT);
-	expander->portRead();
-
-	input = new InputI2C(expander);
-	input->preregisterButtons({ BTN_A, BTN_B, BTN_C, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT });
-	LoopManager::addListener(Input::getInstance());
+	input->preregisterButtons({ (uint8_t) BTN_A, (uint8_t) BTN_B, (uint8_t) BTN_C, (uint8_t) BTN_UP, (uint8_t) BTN_DOWN, (uint8_t) BTN_RIGHT, (uint8_t) BTN_LEFT });
+	LoopManager::addListener(input);
 
 	Context::setDeleteOnPop(true);
 
 	Battery.begin();
+
+	setBacklight(true);
 }
 
 String ByteBoiImpl::getSDPath(){
@@ -136,7 +164,7 @@ void ByteBoiImpl::backToLauncher(){
 	if(inFirmware() || isStandalone()) return;
 
 	fadeout();
-	expander->pinWrite(BL_PIN, HIGH);
+	setBacklight(false);
 
 	const esp_partition_t *partition = esp_ota_get_running_partition();
 	const esp_partition_t *partition2 = esp_ota_get_next_update_partition(partition);
@@ -152,8 +180,69 @@ I2cExpander* ByteBoiImpl::getExpander(){
 	return expander;
 }
 
-InputI2C* ByteBoiImpl::getInput(){
+Input* ByteBoiImpl::getInput(){
 	return input;
+}
+
+void ByteBoiImpl::checkSD(){
+	if(expander){
+		bool wasInserted = sdInserted;
+		sdInserted = !(ByteBoi.getExpander()->getPortState() & (1 << SD_DETECT_PIN));
+
+		if(wasInserted && !sdInserted){
+			SD.end();
+		}else if(!wasInserted && sdInserted){
+			sdInserted = SD.begin(SD_CS, SPI);
+
+			if(!sdInserted) return;
+
+			if(!SD.exists("/.ByteBoi")){
+				File f = SD.open("/.ByteBoi", FILE_WRITE);
+				f.write(0);
+				f.close();
+			}
+		}
+	}else{
+		if(sdInserted){
+			File f = SD.open("/.ByteBoi");
+			uint8_t b;
+			if(f && f.read(&b, 1)){
+				sdInserted = true;
+				return;
+			}
+			f.close();
+			SD.end();
+			sdInserted = false;
+		}else{
+			if(!SD.begin(SD_CS, SPI)){
+				sdInserted = false;
+				return;
+			}
+			if(!SD.exists("/.ByteBoi")){
+				File f = SD.open("/.ByteBoi", FILE_WRITE);
+				f.write(0);
+				f.close();
+			}
+			sdInserted = true;
+		}
+	}
+}
+
+bool ByteBoiImpl::sdDetected(){
+	if(expander){
+		checkSD();
+		return sdInserted;
+	}else{
+		return sdInserted;
+	}
+}
+
+void ByteBoiImpl::setBacklight(bool on){
+	if(expander){
+		expander->pinWrite(BL_PIN, on ? LOW : HIGH);
+	}else{
+		digitalWrite(BL_PIN, on ? LOW : HIGH);
+	}
 }
 
 void ByteBoiImpl::setGameID(String ID){
@@ -242,7 +331,7 @@ void ByteBoiImpl::fadeout(){
 
 void ByteBoiImpl::shutdown(){
 	display->getTft()->sleep();
-	expander->pinWrite(BL_PIN, HIGH);
+	setBacklight(false);
 	LED.setRGB(OFF);
 	Playback.stop();
 	delay(100);
@@ -286,5 +375,31 @@ void ByteBoiImpl::loop(uint micros){
 
 }
 
+void ByteBoiImpl::initPins1(){
+	pinMap[0] = 12; // BL_PIN
 
+	pinMap[1] = 14; // LED_R
+	pinMap[2] = 15; // LED_G
+	pinMap[3] = 13; // LED_B
+	pinMap[4] = 10; // CHARGE_DETECT_PIN
+	pinMap[5] = 8; // SD_DETECT_PIN
 
+	pinMap[6] = 26; // SPI_SCK
+}
+
+void ByteBoiImpl::initPins2(){
+	pinMap[0] = 18; // BL_PIN
+
+	pinMap[1] = 22; // LED_R
+	pinMap[2] = 23; // LED_G
+	pinMap[3] = 19; // LED_B
+	pinMap[4] = 35; // CHARGE_DETECT_PIN
+	pinMap[5] = 7; // SD_DETECT_PIN
+
+	pinMap[6] = 14; // SPI_SCK
+}
+
+int ByteBoiImpl::getPin(uint8_t index) const{
+	if(index >= pinMap.size()) return -1;
+	return pinMap[index];
+}

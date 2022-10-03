@@ -19,7 +19,13 @@ void BatteryService::loop(uint micros){
 		measureCounter++;
 		if(measureCounter == measureCount){
 			measureSum = measureSum / measureCount;
-			voltage = (1.1 * measureSum + 683);
+
+			if(ByteBoi.getExpander()){
+				voltage = (1.1 * measureSum + 683);
+			}else{
+				voltage = (0.587 * measureSum + 1694.0);
+			}
+
 			measureCounter = 0;
 			measureSum = 0;
 
@@ -56,7 +62,14 @@ uint16_t BatteryService::getVoltage() const{
 }
 
 uint8_t BatteryService::getPercentage() const{
-	int16_t percentage = map(getVoltage(), 3650, 4250, 0, 100);
+	int16_t percentage;
+
+	if(ByteBoi.getExpander()){
+		percentage = map(getVoltage(), 3650, 4250, 0, 100);
+	}else{
+		percentage = map(getVoltage(), 3650, 4000, 0, 100);
+	}
+
 	if(percentage < 0){
 		return 0;
 	}else if(percentage > 100){
@@ -72,7 +85,16 @@ void BatteryService::setAutoShutdown(bool enabled){
 
 void BatteryService::begin(){
 	LoopManager::addListener(this);
-	ByteBoi.getExpander()->pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
+
+	auto expander = ByteBoi.getExpander();
+	if(expander){
+		expander->pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
+	}else{
+		analogSetAttenuation(ADC_11db);
+		pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
+	}
+
+
 	pinMode(BATTERY_PIN, INPUT);
 	for(int i = 0; i < 5; i++){
 		batteryBuffer[i] = static_cast<Color*>(malloc(sizeof(batteryIcon_4)));
@@ -85,7 +107,12 @@ void BatteryService::begin(){
 }
 
 bool BatteryService::chargePinDetected() const{
-	return ByteBoi.getExpander()->getPortState() & (1 << CHARGE_DETECT_PIN);
+	auto expander = ByteBoi.getExpander();
+	if(expander){
+		return expander->getPortState() & (1 << CHARGE_DETECT_PIN);
+	}else{
+		return digitalRead(CHARGE_DETECT_PIN) == HIGH;
+	}
 }
 
 bool BatteryService::isCharging() const{
