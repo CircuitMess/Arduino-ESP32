@@ -7,8 +7,8 @@
 #define digitalPinToInterrupt(p)    (((p)<40)?(p):-1)
 #define digitalPinHasPWM(p)         (p < 34)
 
-static const uint8_t SDA = 26;
-static const uint8_t SCL = 27;
+static const uint8_t SDA = 21;
+static const uint8_t SCL = 22;
 
 static const uint8_t SCK = -1;
 static const uint8_t MISO = -1;

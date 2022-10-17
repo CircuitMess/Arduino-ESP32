@@ -501,61 +501,61 @@ circuitpet.bootloader.tool.firmware=circuitpet/firmware.bin
 
 ##############################################################
 
-batcontroller.name=BatController by CircuitMess
+batctrl.name=BatController by CircuitMess
 
-batcontroller.vid.0=0x1a86
-batcontroller.pid.0=0x7523
+batctrl.vid.0=0x1a86
+batctrl.pid.0=0x7523
 
-batcontroller.upload.tool=esptool_py
-batcontroller.upload.maximum_size=1310720
-batcontroller.upload.maximum_data_size=327680
-batcontroller.upload.wait_for_upload_port=false
+batctrl.upload.tool=esptool_py
+batctrl.upload.maximum_size=1310720
+batctrl.upload.maximum_data_size=327680
+batctrl.upload.wait_for_upload_port=false
 
-batcontroller.serial.disableDTR=true
-batcontroller.serial.disableRTS=true
+batctrl.serial.disableDTR=true
+batctrl.serial.disableRTS=true
 
-batcontroller.build.mcu=esp32
-batcontroller.build.core=esp32
-batcontroller.build.variant=batcontroller
-batcontroller.build.board=CM_BATCONTROLLER
+batctrl.build.mcu=esp32
+batctrl.build.core=esp32
+batctrl.build.variant=batctrl
+batctrl.build.board=CM_BATCTRL
 
-batcontroller.build.f_cpu=240000000L
-batcontroller.build.flash_size=4MB
-batcontroller.build.flash_freq=40m
-batcontroller.build.flash_mode=dio
-batcontroller.build.boot=dio
-batcontroller.build.partitions=default
-batcontroller.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF
-batcontroller.build.extra_flags=-O2 -g
+batctrl.build.f_cpu=240000000L
+batctrl.build.flash_size=4MB
+batctrl.build.flash_freq=40m
+batctrl.build.flash_mode=dio
+batctrl.build.boot=dio
+batctrl.build.partitions=default
+batctrl.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF
+batctrl.build.extra_flags=-O2 -g
 
-batcontroller.menu.PartitionScheme.min_spiffs=No OTA
-batcontroller.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
-batcontroller.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
-batcontroller.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
-batcontroller.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
+batctrl.menu.PartitionScheme.min_spiffs=No OTA
+batctrl.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+batctrl.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
+batctrl.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+batctrl.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
 
-batcontroller.menu.FlashFreq.80=80MHz
-batcontroller.menu.FlashFreq.80.build.flash_freq=80m
+batctrl.menu.FlashFreq.80=80MHz
+batctrl.menu.FlashFreq.80.build.flash_freq=80m
 
-batcontroller.menu.UploadSpeed.921600=921600
-batcontroller.menu.UploadSpeed.921600.upload.speed=921600
-batcontroller.menu.UploadSpeed.115200=115200
-batcontroller.menu.UploadSpeed.115200.upload.speed=115200
-batcontroller.menu.UploadSpeed.256000.windows=256000
-batcontroller.menu.UploadSpeed.256000.upload.speed=256000
-batcontroller.menu.UploadSpeed.230400.windows.upload.speed=256000
-batcontroller.menu.UploadSpeed.230400=230400
-batcontroller.menu.UploadSpeed.230400.upload.speed=230400
-batcontroller.menu.UploadSpeed.460800.linux=460800
-batcontroller.menu.UploadSpeed.460800.macosx=460800
-batcontroller.menu.UploadSpeed.460800.upload.speed=460800
-batcontroller.menu.UploadSpeed.512000.windows=512000
-batcontroller.menu.UploadSpeed.512000.upload.speed=512000
+batctrl.menu.UploadSpeed.921600=921600
+batctrl.menu.UploadSpeed.921600.upload.speed=921600
+batctrl.menu.UploadSpeed.115200=115200
+batctrl.menu.UploadSpeed.115200.upload.speed=115200
+batctrl.menu.UploadSpeed.256000.windows=256000
+batctrl.menu.UploadSpeed.256000.upload.speed=256000
+batctrl.menu.UploadSpeed.230400.windows.upload.speed=256000
+batctrl.menu.UploadSpeed.230400=230400
+batctrl.menu.UploadSpeed.230400.upload.speed=230400
+batctrl.menu.UploadSpeed.460800.linux=460800
+batctrl.menu.UploadSpeed.460800.macosx=460800
+batctrl.menu.UploadSpeed.460800.upload.speed=460800
+batctrl.menu.UploadSpeed.512000.windows=512000
+batctrl.menu.UploadSpeed.512000.upload.speed=512000
 
-batcontroller.menu.DebugLevel.none=None
-batcontroller.menu.DebugLevel.none.build.code_debug=0
+batctrl.menu.DebugLevel.none=None
+batctrl.menu.DebugLevel.none.build.code_debug=0
 
-batcontroller.bootloader.tool=batcfirm
-batcontroller.bootloader.tool.firmware=batcontroller/firmware.bin
+batctrl.bootloader.tool=batcfirm
+batctrl.bootloader.tool.firmware=batctrl/firmware.bin
 
 
