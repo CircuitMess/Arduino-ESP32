@@ -529,10 +529,10 @@ batctrl.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITO
 batctrl.build.extra_flags=-O2 -g
 
 batctrl.menu.PartitionScheme.min_spiffs=No OTA
-batctrl.menu.PartitionScheme.min_spiffs.build.partitions=noota_4MB
-batctrl.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+batctrl.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
+batctrl.menu.PartitionScheme.min_spiffs.upload.maximum_size=2097152
 batctrl.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
-batctrl.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x383000
+batctrl.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
 
 batctrl.menu.FlashFreq.80=80MHz
 batctrl.menu.FlashFreq.80.build.flash_freq=80m
