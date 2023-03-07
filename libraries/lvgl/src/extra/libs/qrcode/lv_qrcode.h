@@ -16,6 +16,8 @@ extern "C" {
 #include "../../../lvgl.h"
 #if LV_USE_QRCODE
 
+#include "qrcodegen.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -45,9 +47,11 @@ lv_obj_t * lv_qrcode_create(lv_obj_t * parent, lv_coord_t size, lv_color_t dark_
  * @param qrcode pointer to aQ code object
  * @param data data to display
  * @param data_len length of data in bytes
+ * @param maxVersion The maximum version number for QR Code Model 2 standard
+ * @param ecc The error correction level in a QR Code symbol
  * @return LV_RES_OK: if no error; LV_RES_INV: on error
  */
-lv_res_t lv_qrcode_update(lv_obj_t * qrcode, const void * data, uint32_t data_len);
+lv_res_t lv_qrcode_update(lv_obj_t *qrcode, const void *data, uint32_t data_len, uint8_t maxVersion, enum qrcodegen_Ecc ecc);
 
 /**
  * DEPRECATED: Use normal lv_obj_del instead

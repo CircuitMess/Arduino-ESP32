@@ -74,19 +74,21 @@ lv_obj_t * lv_qrcode_create(lv_obj_t * parent, lv_coord_t size, lv_color_t dark_
  * @param qrcode pointer to aQ code object
  * @param data data to display
  * @param data_len length of data in bytes
+ * @param maxVersion The maximum version number for QR Code Model 2 standard
+ * @param ecc The error correction level in a QR Code symbol
  * @return LV_RES_OK: if no error; LV_RES_INV: on error
  */
-lv_res_t lv_qrcode_update(lv_obj_t * qrcode, const void * data, uint32_t data_len)
+lv_res_t lv_qrcode_update(lv_obj_t *qrcode, const void *data, uint32_t data_len, uint8_t maxVersion, enum qrcodegen_Ecc ecc)
 {
     lv_color_t c;
     c.full = 1;
     lv_canvas_fill_bg(qrcode, c, LV_OPA_COVER);
 
-    if(data_len > qrcodegen_BUFFER_LEN_MAX) return LV_RES_INV;
+    if(data_len > qrcodegen_BUFFER_LEN_FOR_VERSION(maxVersion)) return LV_RES_INV;
 
     lv_img_dsc_t * imgdsc = lv_canvas_get_img(qrcode);
 
-    int32_t qr_version = qrcodegen_getMinFitVersion(qrcodegen_Ecc_MEDIUM, data_len);
+    int32_t qr_version = qrcodegen_getMinFitVersion(ecc, data_len);
     if(qr_version <= 0) return LV_RES_INV;
     int32_t qr_size = qrcodegen_version2size(qr_version);
     if(qr_size <= 0) return LV_RES_INV;
@@ -96,9 +98,9 @@ lv_res_t lv_qrcode_update(lv_obj_t * qrcode, const void * data, uint32_t data_le
 
     /* The qr version is incremented by four point */
     uint32_t version_extend = remain / (scale << 2);
-    if(version_extend && qr_version < qrcodegen_VERSION_MAX) {
-        qr_version = qr_version + version_extend > qrcodegen_VERSION_MAX ?
-                     qrcodegen_VERSION_MAX : qr_version + version_extend;
+    if(version_extend && qr_version < maxVersion) {
+        qr_version = qr_version + version_extend > maxVersion ?
+                     maxVersion : qr_version + version_extend;
     }
 
     uint8_t * qr0 = lv_mem_alloc(qrcodegen_BUFFER_LEN_FOR_VERSION(qr_version));
@@ -108,7 +110,7 @@ lv_res_t lv_qrcode_update(lv_obj_t * qrcode, const void * data, uint32_t data_le
     lv_memcpy(data_tmp, data, data_len);
 
     bool ok = qrcodegen_encodeBinary(data_tmp, data_len,
-                                     qr0, qrcodegen_Ecc_MEDIUM,
+                                     qr0, ecc,
                                      qr_version, qr_version,
                                      qrcodegen_Mask_AUTO, true);
 
