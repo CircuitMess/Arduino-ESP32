@@ -516,7 +516,7 @@ armstrong.serial.disableRTS=true
 
 armstrong.build.mcu=esp32
 armstrong.build.core=esp32
-armstrong.build.variant=armtstrong
+armstrong.build.variant=armstrong
 armstrong.build.board=CM_ARMSTRONG
 
 armstrong.build.f_cpu=240000000L
@@ -555,7 +555,7 @@ armstrong.menu.UploadSpeed.512000.upload.speed=512000
 armstrong.menu.DebugLevel.none=None
 armstrong.menu.DebugLevel.none.build.code_debug=0
 
-armstrong.bootloader.tool=cpetfirm
+armstrong.bootloader.tool=armstrongfirm
 armstrong.bootloader.tool.firmware=armstrong/firmware.bin
 
 ##############################################################
