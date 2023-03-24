@@ -45,3 +45,15 @@ cpetfirm.protocol=esp32
 cpetfirm.program.protocol=esp32
 cpetfirm.program.tool=esptool_py
 cpetfirm.program.extra_params=
+
+batctrlfirm.name=Batcontroller Firmware
+batctrlfirm.protocol=esp32
+batctrlfirm.program.protocol=esp32
+batctrlfirm.program.tool=esptool_py
+batctrlfirm.program.extra_params=
+
+batmobilefirm.name=Batmobile Firmware
+batmobilefirm.protocol=esp32
+batmobilefirm.program.protocol=esp32
+batmobilefirm.program.tool=esptool_py
+batmobilefirm.program.extra_params=

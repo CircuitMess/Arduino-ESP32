@@ -614,7 +614,7 @@ batmobile.menu.UploadSpeed.512000.upload.speed=512000
 batmobile.menu.DebugLevel.none=None
 batmobile.menu.DebugLevel.none.build.code_debug=0
 
-batmobile.bootloader.tool=batcfirm
+batmobile.bootloader.tool=batmobilefirm
 batmobile.bootloader.tool.firmware=batmobile/firmware.bin
 
 
