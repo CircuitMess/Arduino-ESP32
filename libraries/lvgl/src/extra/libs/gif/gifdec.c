@@ -73,7 +73,7 @@ static gd_GIF * gif_open(gd_GIF * gif_base)
     int i;
     uint8_t *bgcolor;
     int gct_sz;
-    gd_GIF *gif;
+    gd_GIF *gif = NULL;
 
     /* Header */
     f_gif_read(gif_base, sigver, 3);
@@ -120,6 +120,9 @@ static gd_GIF * gif_open(gd_GIF * gif_base)
     gif->width  = width;
     gif->height = height;
     gif->depth  = depth;
+
+	gif->firstClear = true;
+
     /* Read GCT */
     gif->gct.size = gct_sz;
     f_gif_read(gif, gif->gct.colors, 3 * gif->gct.size);
@@ -216,6 +219,19 @@ read_graphic_control_ext(gd_GIF *gif)
     f_gif_read(gif, &gif->gce.tindex, 1);
     /* Skip block terminator. */
     f_gif_seek(gif, 1, LV_FS_SEEK_CUR);
+
+	if(gif->firstClear && gif->gce.transparency){
+		gif->firstClear = false;
+		for (size_t i = 0; i < gif->width * gif->height; i++) {
+#if LV_COLOR_DEPTH == 32
+			gif->canvas[i*4 + 3] = 0x00;
+#elif LV_COLOR_DEPTH == 16
+			gif->canvas[i*3 + 2] = 0x00;
+#elif LV_COLOR_DEPTH == 8
+			gif->canvas[i*2 + 1] = 0x00;
+#endif
+		}
+	}
 }
 
 static void

@@ -136,6 +136,15 @@ tools.cpetfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --ch
 tools.cpetfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/circuitpet/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/circuitpet/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/circuitpet/spiffs.bin"
 tools.cpetfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/circuitpet/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/circuitpet/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/circuitpet/spiffs.bin"
 
+tools.batcfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batcontroller/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batcontroller/firmware.partitions.bin" 0x211000 "{runtime.platform.path}/firmwares/batcontroller/spiffs.bin"
+tools.batcfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batcontroller/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batcontroller/firmware.partitions.bin" 0x211000 "{runtime.platform.path}/firmwares/batcontroller/spiffs.bin"
+tools.batcfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batcontroller/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batcontroller/firmware.partitions.bin" 0x211000 "{runtime.platform.path}/firmwares/batcontroller/spiffs.bin"
+
+tools.batmobilefirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batmobile/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batmobile/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/batmobile/spiffs.bin"
+tools.batmobilefirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batmobile/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batmobile/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/batmobile/spiffs.bin"
+tools.batmobilefirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batmobile/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batmobile/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/batmobile/spiffs.bin"
+
+
 tools.ringofirm.erase.pattern=
 tools.ringofirm.erase.params.quiet=
 tools.ringofirm.erase.params.verbose=
@@ -184,3 +193,14 @@ tools.cpetfirm.erase.params.verbose=
 tools.cpetfirm.bootloader.params.verbose=
 tools.cpetfirm.bootloader.params.quiet=
 
+tools.batcfirm.erase.pattern=
+tools.batcfirm.erase.params.quiet=
+tools.batcfirm.erase.params.verbose=
+tools.batcfirm.bootloader.params.verbose=
+tools.batcfirm.bootloader.params.quiet=
+
+tools.batmobilefirm.erase.pattern=
+tools.batmobilefirm.erase.params.quiet=
+tools.batmobilefirm.erase.params.verbose=
+tools.batmobilefirm.bootloader.params.verbose=
+tools.batmobilefirm.bootloader.params.quiet=

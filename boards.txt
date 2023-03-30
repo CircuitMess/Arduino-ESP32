@@ -407,7 +407,7 @@ chatter.build.flash_freq=40m
 chatter.build.flash_mode=dio
 chatter.build.boot=dio
 chatter.build.partitions=default
-chatter.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_PANEL=Panel_ST7735S -DLOVYAN_FREQ=27000000 -DLOVYAN_WIDTH=128 -DLOVYAN_HEIGHT=160 -DLOVYAN_MISO=-1 -DLOVYAN_MOSI=26 -DLOVYAN_SCK=27 -DLOVYAN_CS=-1 -DLOVYAN_DC=33 -DLOVYAN_RST=15 -DRADIOLIB_GODMODE
+chatter.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_PANEL=Panel_ST7735S -DLOVYAN_FREQ=27000000 -DLOVYAN_WIDTH=128 -DLOVYAN_HEIGHT=160 -DLOVYAN_MISO=-1 -DLOVYAN_MOSI=26 -DLOVYAN_SCK=27 -DLOVYAN_CS=-1 -DLOVYAN_DC=33 -DLOVYAN_RST=15 -DRADIOLIB_GODMODE -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_14=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_USE_GIF=1
 chatter.build.extra_flags=-O2 -g
 
 chatter.menu.PartitionScheme.min_spiffs=No OTA
@@ -500,6 +500,124 @@ circuitpet.bootloader.tool=cpetfirm
 circuitpet.bootloader.tool.firmware=circuitpet/firmware.bin
 
 ##############################################################
+
+batctrl.name=BatController by CircuitMess
+
+batctrl.vid.0=0x1a86
+batctrl.pid.0=0x7523
+
+batctrl.upload.tool=esptool_py
+batctrl.upload.maximum_size=1310720
+batctrl.upload.maximum_data_size=327680
+batctrl.upload.wait_for_upload_port=false
+
+batctrl.serial.disableDTR=true
+batctrl.serial.disableRTS=true
+
+batctrl.build.mcu=esp32
+batctrl.build.core=esp32
+batctrl.build.variant=batctrl
+batctrl.build.board=CM_BATCTRL
+
+batctrl.build.f_cpu=240000000L
+batctrl.build.flash_size=4MB
+batctrl.build.flash_freq=40m
+batctrl.build.flash_mode=dio
+batctrl.build.boot=dio
+batctrl.build.partitions=default
+batctrl.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_USE_GIF=1 -DLV_FONT_UNSCII_8=1 -DLV_USE_QRCODE=1
+batctrl.build.extra_flags=-O2 -g
+
+batctrl.menu.PartitionScheme.min_spiffs=No OTA
+batctrl.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
+batctrl.menu.PartitionScheme.min_spiffs.upload.maximum_size=2097152
+batctrl.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+batctrl.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
+
+batctrl.menu.FlashFreq.80=80MHz
+batctrl.menu.FlashFreq.80.build.flash_freq=80m
+
+batctrl.menu.UploadSpeed.921600=921600
+batctrl.menu.UploadSpeed.921600.upload.speed=921600
+batctrl.menu.UploadSpeed.115200=115200
+batctrl.menu.UploadSpeed.115200.upload.speed=115200
+batctrl.menu.UploadSpeed.256000.windows=256000
+batctrl.menu.UploadSpeed.256000.upload.speed=256000
+batctrl.menu.UploadSpeed.230400.windows.upload.speed=256000
+batctrl.menu.UploadSpeed.230400=230400
+batctrl.menu.UploadSpeed.230400.upload.speed=230400
+batctrl.menu.UploadSpeed.460800.linux=460800
+batctrl.menu.UploadSpeed.460800.macosx=460800
+batctrl.menu.UploadSpeed.460800.upload.speed=460800
+batctrl.menu.UploadSpeed.512000.windows=512000
+batctrl.menu.UploadSpeed.512000.upload.speed=512000
+
+batctrl.menu.DebugLevel.none=None
+batctrl.menu.DebugLevel.none.build.code_debug=0
+
+batctrl.bootloader.tool=batcfirm
+batctrl.bootloader.tool.firmware=batctrl/firmware.bin
+
+##############################################################
+
+batmobile.name=Batmobile by CircuitMess
+
+batmobile.vid.0=0x1a86
+batmobile.pid.0=0x7523
+
+batmobile.upload.tool=esptool_py
+batmobile.upload.maximum_size=1310720
+batmobile.upload.maximum_data_size=327680
+batmobile.upload.wait_for_upload_port=false
+
+batmobile.serial.disableDTR=true
+batmobile.serial.disableRTS=true
+
+batmobile.build.mcu=esp32
+batmobile.build.core=esp32
+batmobile.build.variant=batmobile
+batmobile.build.board=CM_BATMOBILE
+
+batmobile.build.f_cpu=240000000L
+batmobile.build.flash_size=4MB
+batmobile.build.flash_freq=40m
+batmobile.build.flash_mode=dio
+batmobile.build.boot=dio
+batmobile.build.partitions=default
+batmobile.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DCONFIG_ARDUINO_LOOP_STACK_SIZE=32000
+batmobile.build.extra_flags=-O2 -g
+
+batmobile.menu.PartitionScheme.min_spiffs=No OTA
+batmobile.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+batmobile.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
+batmobile.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+batmobile.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
+
+batmobile.menu.FlashFreq.80=80MHz
+batmobile.menu.FlashFreq.80.build.flash_freq=80m
+
+batmobile.menu.UploadSpeed.921600=921600
+batmobile.menu.UploadSpeed.921600.upload.speed=921600
+batmobile.menu.UploadSpeed.115200=115200
+batmobile.menu.UploadSpeed.115200.upload.speed=115200
+batmobile.menu.UploadSpeed.256000.windows=256000
+batmobile.menu.UploadSpeed.256000.upload.speed=256000
+batmobile.menu.UploadSpeed.230400.windows.upload.speed=256000
+batmobile.menu.UploadSpeed.230400=230400
+batmobile.menu.UploadSpeed.230400.upload.speed=230400
+batmobile.menu.UploadSpeed.460800.linux=460800
+batmobile.menu.UploadSpeed.460800.macosx=460800
+batmobile.menu.UploadSpeed.460800.upload.speed=460800
+batmobile.menu.UploadSpeed.512000.windows=512000
+batmobile.menu.UploadSpeed.512000.upload.speed=512000
+
+batmobile.menu.DebugLevel.none=None
+batmobile.menu.DebugLevel.none.build.code_debug=0
+
+batmobile.bootloader.tool=batmobilefirm
+batmobile.bootloader.tool.firmware=batmobile/firmware.bin
+
+
 
 armstrong.name=Armstrong by CircuitMess
 
