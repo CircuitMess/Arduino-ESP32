@@ -144,6 +144,12 @@ tools.batmobilefirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool"
 tools.batmobilefirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batmobile/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batmobile/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/batmobile/spiffs.bin"
 tools.batmobilefirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/batmobile/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/batmobile/firmware.partitions.bin" 0x111000 "{runtime.platform.path}/firmwares/batmobile/spiffs.bin"
 
+tools.clockstarfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0x1000 "{runtime.platform.path}/firmwares/clockstar/bootloader.bin" 0x20000 "{runtime.platform.path}/firmwares/clockstar/firmware.bin" 0x10000 "{runtime.platform.path}/firmwares/clockstar/firmware.partitions.bin" 0x214000 "{runtime.platform.path}/firmwares/clockstar/spiffs.bin"
+tools.clockstarfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0x1000 "{runtime.platform.path}/firmwares/clockstar/bootloader.bin" 0x20000 "{runtime.platform.path}/firmwares/clockstar/firmware.bin" 0x10000 "{runtime.platform.path}/firmwares/clockstar/firmware.partitions.bin" 0x214000 "{runtime.platform.path}/firmwares/clockstar/spiffs.bin"
+tools.clockstarfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0x1000 "{runtime.platform.path}/firmwares/clockstar/bootloader.bin" 0x20000 "{runtime.platform.path}/firmwares/clockstar/firmware.bin" 0x10000 "{runtime.platform.path}/firmwares/clockstar/firmware.partitions.bin" 0x214000 "{runtime.platform.path}/firmwares/clockstar/spiffs.bin"
+
+
+
 
 tools.ringofirm.erase.pattern=
 tools.ringofirm.erase.params.quiet=
@@ -204,3 +210,9 @@ tools.batmobilefirm.erase.params.quiet=
 tools.batmobilefirm.erase.params.verbose=
 tools.batmobilefirm.bootloader.params.verbose=
 tools.batmobilefirm.bootloader.params.quiet=
+
+tools.clockstarfirm.erase.pattern=
+tools.clockstarfirm.erase.params.quiet=
+tools.clockstarfirm.erase.params.verbose=
+tools.clockstarfirm.bootloader.params.verbose=
+tools.clockstarfirm.bootloader.params.quiet=
