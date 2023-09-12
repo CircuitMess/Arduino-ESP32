@@ -148,7 +148,9 @@ tools.clockstarfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool"
 tools.clockstarfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0x1000 "{runtime.platform.path}/firmwares/clockstar/bootloader.bin" 0x20000 "{runtime.platform.path}/firmwares/clockstar/firmware.bin" 0x10000 "{runtime.platform.path}/firmwares/clockstar/firmware.partitions.bin" 0x214000 "{runtime.platform.path}/firmwares/clockstar/spiffs.bin"
 tools.clockstarfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0x1000 "{runtime.platform.path}/firmwares/clockstar/bootloader.bin" 0x20000 "{runtime.platform.path}/firmwares/clockstar/firmware.bin" 0x10000 "{runtime.platform.path}/firmwares/clockstar/firmware.partitions.bin" 0x214000 "{runtime.platform.path}/firmwares/clockstar/spiffs.bin"
 
-
+tools.armstrongfirm.bootloader.pattern="{runtime.tools.esptool_py.path}/esptool" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/armstrong/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/armstrong/firmware.partitions.bin"
+tools.armstrongfirm.bootloader.pattern.windows="{runtime.tools.esptool_py.path}/esptool.exe" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/armstrong/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/armstrong/firmware.partitions.bin"
+tools.armstrongfirm.bootloader.pattern.linux=python "{runtime.tools.esptool_py.path}/esptool.py" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{runtime.platform.path}/firmwares/armstrong/firmware.bin" 0x8000 "{runtime.platform.path}/firmwares/armstrong/firmware.partitions.bin"
 
 
 tools.ringofirm.erase.pattern=
@@ -216,3 +218,9 @@ tools.clockstarfirm.erase.params.quiet=
 tools.clockstarfirm.erase.params.verbose=
 tools.clockstarfirm.bootloader.params.verbose=
 tools.clockstarfirm.bootloader.params.quiet=
+
+tools.armstrongfirm.erase.pattern=
+tools.armstrongfirm.erase.params.quiet=
+tools.armstrongfirm.erase.params.verbose=
+tools.armstrongfirm.bootloader.params.verbose=
+tools.armstrongfirm.bootloader.params.quiet=

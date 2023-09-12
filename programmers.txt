@@ -63,3 +63,9 @@ clockstarfirm.protocol=esp32
 clockstarfirm.program.protocol=esp32
 clockstarfirm.program.tool=esptool_py
 clockstarfirm.program.extra_params=
+
+armstrongfirm.name=Armstrong Firmware
+armstrongfirm.protocol=esp32
+armstrongfirm.program.protocol=esp32
+armstrongfirm.program.tool=esptool_py
+armstrongfirm.program.extra_params=
