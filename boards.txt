@@ -675,3 +675,64 @@ clockstar.menu.DebugLevel.none.build.code_debug=0
 
 clockstar.bootloader.tool=clockstarfirm
 clockstar.bootloader.tool.firmware=clockstar/firmware.bin
+
+##############################################################
+
+armstrong.name=Armstrong by CircuitMess
+
+armstrong.vid.0=0x1a86
+armstrong.pid.0=0x7523
+
+armstrong.upload.tool=esptool_py
+armstrong.upload.maximum_size=1310720
+armstrong.upload.maximum_data_size=327680
+armstrong.upload.wait_for_upload_port=false
+
+armstrong.serial.disableDTR=true
+armstrong.serial.disableRTS=true
+
+armstrong.build.mcu=esp32
+armstrong.build.core=esp32
+armstrong.build.variant=armstrong
+armstrong.build.board=CM_ARMSTRONG
+
+armstrong.build.f_cpu=240000000L
+armstrong.build.flash_size=4MB
+armstrong.build.flash_freq=40m
+armstrong.build.flash_mode=dio
+armstrong.build.boot=dio
+armstrong.build.partitions=default
+armstrong.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL
+armstrong.build.extra_flags=-O2 -g
+
+armstrong.menu.PartitionScheme.min_spiffs=No OTA
+armstrong.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+armstrong.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
+armstrong.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+armstrong.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
+
+armstrong.menu.FlashFreq.80=80MHz
+armstrong.menu.FlashFreq.80.build.flash_freq=80m
+
+armstrong.menu.UploadSpeed.921600=921600
+armstrong.menu.UploadSpeed.921600.upload.speed=921600
+armstrong.menu.UploadSpeed.115200=115200
+armstrong.menu.UploadSpeed.115200.upload.speed=115200
+armstrong.menu.UploadSpeed.256000.windows=256000
+armstrong.menu.UploadSpeed.256000.upload.speed=256000
+armstrong.menu.UploadSpeed.230400.windows.upload.speed=256000
+armstrong.menu.UploadSpeed.230400=230400
+armstrong.menu.UploadSpeed.230400.upload.speed=230400
+armstrong.menu.UploadSpeed.460800.linux=460800
+armstrong.menu.UploadSpeed.460800.macosx=460800
+armstrong.menu.UploadSpeed.460800.upload.speed=460800
+armstrong.menu.UploadSpeed.512000.windows=512000
+armstrong.menu.UploadSpeed.512000.upload.speed=512000
+
+armstrong.menu.DebugLevel.none=None
+armstrong.menu.DebugLevel.none.build.code_debug=0
+
+armstrong.bootloader.tool=armstrongfirm
+armstrong.bootloader.tool.firmware=armstrong/firmware.bin
+
+##############################################################
