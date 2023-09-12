@@ -617,4 +617,61 @@ batmobile.menu.DebugLevel.none.build.code_debug=0
 batmobile.bootloader.tool=batmobilefirm
 batmobile.bootloader.tool.firmware=batmobile/firmware.bin
 
+##############################################################
 
+clockstar.name=Clockstar by CircuitMess
+
+clockstar.vid.0=0x1a86
+clockstar.pid.0=0x7523
+
+clockstar.upload.tool=esptool_py
+clockstar.upload.maximum_size=1310720
+clockstar.upload.maximum_data_size=327680
+clockstar.upload.wait_for_upload_port=false
+
+clockstar.serial.disableDTR=true
+clockstar.serial.disableRTS=true
+
+clockstar.build.mcu=esp32
+clockstar.build.core=esp32
+clockstar.build.variant=clockstar
+clockstar.build.board=CM_CLOCKSTAR
+
+clockstar.build.f_cpu=240000000L
+clockstar.build.flash_size=4MB
+clockstar.build.flash_freq=40m
+clockstar.build.flash_mode=dio
+clockstar.build.boot=dio
+clockstar.build.partitions=default
+clockstar.build.defines= -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_USE_GIF=1 -DLV_FONT_UNSCII_8=1
+clockstar.build.extra_flags=-O2 -g
+
+clockstar.menu.PartitionScheme.min_spiffs=No OTA
+clockstar.menu.PartitionScheme.min_spiffs.build.partitions=noota_3g
+clockstar.menu.PartitionScheme.min_spiffs.upload.maximum_size=1048576
+clockstar.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+clockstar.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x111000
+
+clockstar.menu.FlashFreq.80=80MHz
+clockstar.menu.FlashFreq.80.build.flash_freq=80m
+
+clockstar.menu.UploadSpeed.921600=921600
+clockstar.menu.UploadSpeed.921600.upload.speed=921600
+clockstar.menu.UploadSpeed.115200=115200
+clockstar.menu.UploadSpeed.115200.upload.speed=115200
+clockstar.menu.UploadSpeed.256000.windows=256000
+clockstar.menu.UploadSpeed.256000.upload.speed=256000
+clockstar.menu.UploadSpeed.230400.windows.upload.speed=256000
+clockstar.menu.UploadSpeed.230400=230400
+clockstar.menu.UploadSpeed.230400.upload.speed=230400
+clockstar.menu.UploadSpeed.460800.linux=460800
+clockstar.menu.UploadSpeed.460800.macosx=460800
+clockstar.menu.UploadSpeed.460800.upload.speed=460800
+clockstar.menu.UploadSpeed.512000.windows=512000
+clockstar.menu.UploadSpeed.512000.upload.speed=512000
+
+clockstar.menu.DebugLevel.none=None
+clockstar.menu.DebugLevel.none.build.code_debug=0
+
+clockstar.bootloader.tool=clockstarfirm
+clockstar.bootloader.tool.firmware=clockstar/firmware.bin
