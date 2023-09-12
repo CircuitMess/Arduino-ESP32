@@ -1,9 +1,6 @@
 #include "Spencer.h"
-
 SpencerImpl Spencer;
-IS31FL3731 charlie;
-Matrix LEDmatrix(charlie);
-
+LEDmatrixImpl LEDmatrix;
 SpencerImpl::SpencerImpl()
 {
 }
@@ -27,13 +24,10 @@ void SpencerImpl::begin()
 
 	pinMode(LED_PIN, OUTPUT);
 
-
-	Wire.begin(I2C_SDA, I2C_SCL);
-	Wire.setClock(400000);
-
-	charlie.init();
-	LEDmatrix.begin();
-	LEDmatrix.setRotation(2);
+	if(!LEDmatrix.begin()){
+		Serial.println("couldn't start matrix");
+		for(;;);
+	}
 
 	I2S* i2s = new I2S();
 	i2s_driver_uninstall(I2S_NUM_0); //revert wrong i2s config from esp8266audio
@@ -43,6 +37,7 @@ void SpencerImpl::begin()
 	Recording.begin(i2s);
 
 	LoopManager::addListener(&Playback);
+	LoopManager::addListener(&LEDmatrix);
 	LoopManager::addListener(new InputGPIO());
 
 	Net.set(Settings.get().SSID, Settings.get().pass);

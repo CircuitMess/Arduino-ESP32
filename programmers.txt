@@ -57,3 +57,9 @@ batmobilefirm.protocol=esp32
 batmobilefirm.program.protocol=esp32
 batmobilefirm.program.tool=esptool_py
 batmobilefirm.program.extra_params=
+
+clockstarfirm.name=Clockstar Firmware
+clockstarfirm.protocol=esp32
+clockstarfirm.program.protocol=esp32
+clockstarfirm.program.tool=esptool_py
+clockstarfirm.program.extra_params=
