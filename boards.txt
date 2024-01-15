@@ -442,6 +442,65 @@ chatter.bootloader.tool.firmware=chatter/firmware.bin
 
 ##############################################################
 
+chatter2.name=Chatter 2.0 by CircuitMess
+
+chatter2.vid.0=0x1a86
+chatter2.pid.0=0x7523
+
+chatter2.upload.tool=esptool_py
+chatter2.upload.maximum_size=1310720
+chatter2.upload.maximum_data_size=327680
+chatter2.upload.wait_for_upload_port=false
+
+chatter2.serial.disableDTR=true
+chatter2.serial.disableRTS=true
+
+chatter2.build.mcu=esp32
+chatter2.build.core=esp32
+chatter2.build.variant=chatter
+chatter2.build.board=CM_CHATTER
+
+chatter2.build.f_cpu=240000000L
+chatter2.build.flash_size=4MB
+chatter2.build.flash_freq=40m
+chatter2.build.flash_mode=dio
+chatter2.build.boot=dio
+chatter2.build.partitions=default
+chatter2.build.defines=-DCONFIG_ARDUINO_LOOP_STACK_SIZE=14000 -DCIRCUITOS_FREERTOS -DCIRCUITOS_NVS -DCIRCUITOS_PIEZO_PWM -DCIRCUITOS_PIEZO_PWM_CHANNEL=15 -DCIRCUITOS_LOVYANGFX -DLOVYAN_PANEL=Panel_ST7735S -DLOVYAN_FREQ=27000000 -DLOVYAN_WIDTH=128 -DLOVYAN_HEIGHT=160 -DLOVYAN_MISO=-1 -DLOVYAN_MOSI=26 -DLOVYAN_SCK=27 -DLOVYAN_CS=-1 -DLOVYAN_DC=33 -DLOVYAN_RST=15 -DRADIOLIB_GODMODE -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_14=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_FONT_UNSCII_8=1 -DLV_USE_GIF=1
+chatter2.build.extra_flags=-O2 -g
+
+chatter2.menu.PartitionScheme.min_spiffs=No OTA
+chatter2.menu.PartitionScheme.min_spiffs.build.partitions=no_ota
+chatter2.menu.PartitionScheme.min_spiffs.upload.maximum_size=3612672
+chatter2.menu.PartitionScheme.min_spiffs.upload.binary_start=0x10000
+chatter2.menu.PartitionScheme.min_spiffs.upload.spiffs_start=0x211000
+
+chatter2.menu.FlashFreq.80=80MHz
+chatter2.menu.FlashFreq.80.build.flash_freq=80m
+
+chatter2.menu.UploadSpeed.921600=921600
+chatter2.menu.UploadSpeed.921600.upload.speed=921600
+chatter2.menu.UploadSpeed.115200=115200
+chatter2.menu.UploadSpeed.115200.upload.speed=115200
+chatter2.menu.UploadSpeed.256000.windows=256000
+chatter2.menu.UploadSpeed.256000.upload.speed=256000
+chatter2.menu.UploadSpeed.230400.windows.upload.speed=256000
+chatter2.menu.UploadSpeed.230400=230400
+chatter2.menu.UploadSpeed.230400.upload.speed=230400
+chatter2.menu.UploadSpeed.460800.linux=460800
+chatter2.menu.UploadSpeed.460800.macosx=460800
+chatter2.menu.UploadSpeed.460800.upload.speed=460800
+chatter2.menu.UploadSpeed.512000.windows=512000
+chatter2.menu.UploadSpeed.512000.upload.speed=512000
+
+chatter2.menu.DebugLevel.none=None
+chatter2.menu.DebugLevel.none.build.code_debug=0
+
+chatter2.bootloader.tool=chat2firm
+chatter2.bootloader.tool.firmware=chatter2/firmware.bin
+
+##############################################################
+
 circuitpet.name=CircuitPet by CircuitMess
 
 circuitpet.vid.0=0x1a86
