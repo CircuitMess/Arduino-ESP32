@@ -9,7 +9,7 @@
 #include <Buffer/RingBuffer.h>
 
 enum class S3Error {
-	None, Camera
+	None, Camera, Update
 };
 
 class S3Interface {
@@ -22,6 +22,14 @@ public:
 	void reset();
 
 	S3Error getError();
+	uint8_t getVersion();
+
+	/**
+	 * Flashes a firmware image onto S3. WARNING: Flashing a corrupted or incompatible image
+	 * will brick the device. This function is disabled (returns early) for the time being.
+	 * @param file Firmware image file.
+	 */
+	void update(File file);
 
 	void setMode(DriveMode mode);
 	std::unique_ptr<DriveInfo> getFrame();

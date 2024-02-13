@@ -36,9 +36,9 @@ void ColorSensor::scan(){
 	b = constrain(pow(b, 6.0f) * 50.0f, 0.0f, 1.0f);
 
 	color = {
-			(uint8_t) std::round(r * 255.0),
-			(uint8_t) std::round(g * 255.0),
-			(uint8_t) std::round(b * 255.0)
+			(uint8_t) round(r * 255.0),
+			(uint8_t) round(g * 255.0),
+			(uint8_t) round(b * 255.0)
 	};
 }
 

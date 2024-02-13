@@ -12,6 +12,8 @@
 #define COMM_SHAKE (0x7)
 #define COMM_DOWN (0x8)
 #define COMM_ERR (0x9)
+#define COMM_VER (0x10)
+#define COMM_UPDATE (0x11)
 
 S3Interface::S3Interface() : SPI(VSPI), SS(20000000, SPI_MSBFIRST, SPI_MODE3), recvBuf((uint8_t*) malloc(MaxFrameSize)), recvRing(MaxFrameSize){
 
@@ -68,6 +70,98 @@ S3Error S3Interface::getError(){
 	waitReady();
 	uint8_t err = recv();
 	return (S3Error) err;
+}
+
+uint8_t S3Interface::getVersion(){
+	send(COMM_VER);
+	waitReady();
+	return recv();
+}
+
+void S3Interface::update(File f){
+	return;
+
+	if(!f){
+		printf("Can't open update file for reading\n");
+		return;
+	}
+
+	size_t fileSize = f.size();
+	uint32_t sum = 0;
+
+	uint32_t time = millis();
+	{
+		size_t summed = 0;
+		std::vector<uint8_t> data(1024);
+		while(summed < fileSize){
+			size_t read = f.read(data.data(), data.size());
+			for(int i = 0; i < read; i++){
+				sum += data[i];
+			}
+			summed += read;
+		}
+		f.seek(0);
+	}
+	printf("Sum calculated in %.3f s\n", (float) (millis() - time) / 1000.0f);
+
+	static constexpr size_t ChunkSize = 2048;
+
+	time = millis();
+	{
+		struct UpdateInfo {
+			size_t size;
+			uint32_t checksum;
+			size_t chunkSize;
+			uint8_t version;
+		};
+
+		uint8_t ver = getVersion() + 1;
+		UpdateInfo info = {
+				.size = fileSize,
+				.checksum = sum,
+				.chunkSize = ChunkSize,
+				.version = ver
+		};
+
+		size_t dataSize = sizeof(info) + 1;
+		if(dataSize % 4 != 0){
+			dataSize += 4 - (dataSize % 4);
+		}
+		std::vector<uint8_t> data(dataSize);
+
+		data[0] = COMM_UPDATE;
+		memcpy(data.data() + 1, &info, sizeof(info));
+
+		sendData(data.data(), data.size());
+		waitReady();
+	}
+
+	size_t sent = 0;
+	while(sent < fileSize){
+		size_t sendSize = std::min(ChunkSize, fileSize - sent);
+
+		std::vector<uint8_t> data(ChunkSize);
+		f.read(data.data(), sendSize);
+
+		sendData(data.data(), data.size());
+		sent += sendSize;
+	}
+
+	printf("Update done. Sent %zu B in %.3f s\n", sent, (float) (millis() - time) / 1000.0f);
+	printf("Waiting for S3 to come back up...\n");
+	waitReady();
+
+	auto error = getError();
+	if(error == S3Error::Update){
+		printf("S3 reports update error.\n");
+	}else{
+		printf("S3 reports OK. Rebooting.\n");
+	}
+
+	bool idd = begin();
+	printf("Begin: %s\n", idd ? "OK" : "not OK");
+	if(!idd) return;
+	printf("Updated firmware version: %d\n", getVersion());
 }
 
 void S3Interface::setMode(DriveMode mode){

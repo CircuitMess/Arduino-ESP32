@@ -40,7 +40,7 @@ private:
 	std::map<ComType, std::unordered_set<ComListener*>> listeners;
 	InfoSender infoSender;
 
-	uint8_t heartbeatReceived = 0;
+	uint32_t heartbeatReceived = 0;
 	uint32_t heartbeatCounter = 0;
 	static constexpr uint32_t HeartbeatTimeout = 6000000;
 };

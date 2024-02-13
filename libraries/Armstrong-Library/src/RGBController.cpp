@@ -57,7 +57,7 @@ void RGBController::set(uint8_t i, uint8_t val){
 	if(i >= 3) return;
 
 	state[i] = val;
-	const auto adjusted = (uint8_t) std::round(255.0f - pow((float) val / 255.0f, 2.0f) * 255.0f);
+	const auto adjusted = (uint8_t) round(255.0f - pow((float) val / 255.0f, 2.0f) * 255.0f);
 	ledcWrite(PWMChannels[i], adjusted);
 }
 
