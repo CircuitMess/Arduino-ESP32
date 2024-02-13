@@ -584,7 +584,7 @@ batctrl.build.flash_freq=40m
 batctrl.build.flash_mode=dio
 batctrl.build.boot=dio
 batctrl.build.partitions=default
-batctrl.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_USE_GIF=1 -DLV_FONT_UNSCII_8=1 -DLV_USE_QRCODE=1
+batctrl.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DLV_FONT_MONTSERRAT_8=1 -DLV_FONT_MONTSERRAT_10=1 -DLV_USE_GIF=1 -DLV_FONT_UNSCII_8=1 -DLV_USE_QRCODE=1 -DGLM_FORCE_CXX98
 batctrl.build.extra_flags=-O2 -g
 
 batctrl.menu.PartitionScheme.min_spiffs=No OTA
@@ -643,7 +643,7 @@ batmobile.build.flash_freq=40m
 batmobile.build.flash_mode=dio
 batmobile.build.boot=dio
 batmobile.build.partitions=default
-batmobile.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DCONFIG_ARDUINO_LOOP_STACK_SIZE=32000
+batmobile.build.defines=-DCIRCUITOS_LOVYANGFX -DLOVYAN_MANUAL -DTFT_OFF -DCIRCUITOS_NVS -DCIRCUITOS_FREERTOS -DDEBUG -DCONFIG_ARDUINO_LOOP_STACK_SIZE=32000 -DGLM_FORCE_CXX98
 batmobile.build.extra_flags=-O2 -g
 
 batmobile.menu.PartitionScheme.min_spiffs=No OTA
