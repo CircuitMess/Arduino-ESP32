@@ -17,8 +17,8 @@ tools.gen_esp32part.cmd.windows="{runtime.platform.path}/tools/gen_esp32part.exe
 compiler.warning_flags=-w
 compiler.warning_flags.none=-w
 compiler.warning_flags.default=
-compiler.warning_flags.more=-Wall -Werror=all
-compiler.warning_flags.all=-Wall -Werror=all -Wextra
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
 
 compiler.path={runtime.tools.xtensa-esp32-elf-gcc.path}/bin/
 compiler.sdk.path={runtime.platform.path}/tools/sdk
