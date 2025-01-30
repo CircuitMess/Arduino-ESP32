@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <CircuitOS.h>
 #include <Display/Display.h>
+#include "WheelsonDisplay.h"
 #include <WiFi.h>
 #include <SPIFFS.h>
 #include <Loop/LoopManager.h>

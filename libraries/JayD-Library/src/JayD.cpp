@@ -1,5 +1,6 @@
 #include "JayD.h"
 #include <Devices/Matrix/MatrixOutputBuffer.h>
+#include <Util/HWRevision.h>
 
 const i2s_pin_config_t i2s_pin_config = {
 		.bck_io_num = I2S_BCK,
@@ -39,6 +40,11 @@ void JayDImpl::begin(){
 		Serial.println("SPIFFS error");
 	}
 
+	if(HWRevision::get() == 1){
+		display.getTft()->setPanel(JayDDisplay::panel2());
+	}else{
+		display.getTft()->setPanel(JayDDisplay::panel1());
+	}
 	display.begin();
 	SPI.setFrequency(20000000);
 

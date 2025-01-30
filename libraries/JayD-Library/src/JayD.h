@@ -57,6 +57,7 @@
 #include "AudioLib/Systems/MixSystem.h"
 #include "AudioLib/Systems/PlaybackSystem.h"
 #include <Devices/Matrix/IS31FL3731.h>
+#include "JayDDisplay.h"
 
 extern const i2s_pin_config_t i2s_pin_config;
 extern Matrix LEDmatrix;
