@@ -73,11 +73,14 @@ void Camera::initialize(bool jpeg, uint8_t q){
 
 	Serial.println("Camera init OK!");
 	sensor_t* sensor = esp_camera_sensor_get();
-	sensor->set_hmirror(sensor, 1);
-	sensor->set_vflip(sensor, 1);
 	sensor->set_quality(sensor, qualities[q]);
 	sensor->set_special_effect(sensor, 0);
 	sensor->set_saturation(sensor, 2);
+
+	if(Settings.get().camRotate == false){
+		sensor->set_hmirror(sensor, 1);
+		sensor->set_vflip(sensor, 1);
+	}
 }
 
 bool Camera::loadFrame(){
