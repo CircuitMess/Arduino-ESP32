@@ -11,7 +11,7 @@ namespace glm{
 namespace detail
 {
 #	if GLM_HAS_CXX11_STL
-		using std::log2;
+		using ::log2;
 #	else
 		template<typename genType>
 		genType log2(genType Value)
@@ -27,7 +27,7 @@ namespace detail
 		{
 			GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'log2' only accept floating-point inputs. Include <glm/gtc/integer.hpp> for integer inputs.");
 
-			return detail::functor1<vec, L, T, T, Q>::call(log2, v);
+			return detail::functor1<vec, L, T, T, Q>::call(log2f, v);
 		}
 	};
 
@@ -91,7 +91,7 @@ namespace detail
 	}
 
 #   if GLM_HAS_CXX11_STL
-    using std::exp2;
+    using ::exp2;
 #   else
 	//exp2, ln2 = 0.69314718055994530941723212145818f
 	template<typename genType>

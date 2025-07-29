@@ -39,7 +39,7 @@ namespace glm
 
 	// round
 #	if GLM_HAS_CXX11_STL
-		using ::std::round;
+		using ::round;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType round(genType x)
@@ -52,7 +52,7 @@ namespace glm
 
 	// trunc
 #	if GLM_HAS_CXX11_STL
-		using ::std::trunc;
+		using ::trunc;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType trunc(genType x)
@@ -204,7 +204,7 @@ namespace detail
 	{
 		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x)
 		{
-			return detail::functor1<vec, L, T, T, Q>::call(round, x);
+			return detail::functor1<vec, L, T, T, Q>::call(::roundf, x);
 		}
 	};
 
@@ -739,7 +739,7 @@ namespace detail
 	}
 
 #	if GLM_HAS_CXX11_STL
-		using std::fma;
+		using ::fma;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType fma(genType const& a, genType const& b, genType const& c)

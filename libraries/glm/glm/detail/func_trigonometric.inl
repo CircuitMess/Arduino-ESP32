@@ -131,7 +131,7 @@ namespace glm
 
 	// asinh
 #	if GLM_HAS_CXX11_STL
-		using std::asinh;
+		using ::asinh;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType asinh(genType x)
@@ -150,7 +150,7 @@ namespace glm
 
 	// acosh
 #	if GLM_HAS_CXX11_STL
-		using std::acosh;
+		using ::acosh;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType acosh(genType x)
@@ -171,7 +171,7 @@ namespace glm
 
 	// atanh
 #	if GLM_HAS_CXX11_STL
-		using std::atanh;
+		using ::atanh;
 #	else
 		template<typename genType>
 		GLM_FUNC_QUALIFIER genType atanh(genType x)

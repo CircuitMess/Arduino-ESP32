@@ -25,7 +25,7 @@ namespace glm
 	}
 
 #	if GLM_HAS_CXX11_STL
-		using std::fmin;
+		using ::fmin;
 #	else
 		template<typename T>
 		GLM_FUNC_QUALIFIER T fmin(T a, T b)
@@ -70,7 +70,7 @@ namespace glm
 
 
 #	if GLM_HAS_CXX11_STL
-		using std::fmax;
+		using ::fmax;
 #	else
 		template<typename T>
 		GLM_FUNC_QUALIFIER T fmax(T a, T b)
