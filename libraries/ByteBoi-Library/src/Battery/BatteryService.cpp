@@ -7,24 +7,21 @@
 #include "../Bitmaps/battery_4.hpp"
 #include <SPIFFS.h>
 #include <Loop/LoopManager.h>
-
-const uint16_t BatteryService::measureInterval = 2; //in seconds
-const uint16_t BatteryService::measureCount = 10; //in seconds
+#include <Util/HWRevision.h>
 
 void BatteryService::loop(uint micros){
 	measureMicros += micros;
 	if(measureMicros >= (measureInterval * 1000000) / measureCount){
 		measureMicros = 0;
-		measureSum += analogRead(BATTERY_PIN);
+
+		if(hasChars){
+			measureSum += esp_adc_cal_raw_to_voltage(analogRead(BATTERY_PIN), &calChars) * Factor;
+		}else{
+			measureSum += analogRead(BATTERY_PIN);
+		}
 		measureCounter++;
 		if(measureCounter == measureCount){
-			measureSum = measureSum / measureCount;
-
-			if(ByteBoi.getExpander()){
-				voltage = (1.1 * measureSum + 683);
-			}else{
-				voltage = (0.587 * measureSum + 1694.0);
-			}
+			voltage = (int) round(measureSum / measureCount);
 
 			measureCounter = 0;
 			measureSum = 0;
@@ -53,21 +50,33 @@ uint8_t BatteryService::getLevel() const{
 	}
 }
 
-uint16_t BatteryService::getVoltage() const{
-	if(chargePinDetected()){
-		return ((float)voltage - (2289.61 - 0.523723*(float)voltage));
-	}else{
-		return voltage;
+uint16_t BatteryService::getVoltage(bool bypassChrg) const{
+	if(chargePinDetected() && !bypassChrg){
+		return 5000;
+	}
+
+	if(ByteBoi.getVer() == ByteBoiImpl::v2_0){
+		if(hasChars){
+			return voltage;
+		}else{
+			return (int) round(1.0683 * voltage - 197.0);
+		}
+	}else if(ByteBoi.getVer() == ByteBoiImpl::v1_1){
+		return (int) round(0.587 * voltage + 1694.0);
+	}else{ // v1.0
+		return (int) round(1.1 * voltage + 683);
 	}
 }
 
 uint8_t BatteryService::getPercentage() const{
 	int16_t percentage;
 
-	if(ByteBoi.getExpander()){
-		percentage = map(getVoltage(), 3650, 4250, 0, 100);
-	}else{
+	if(ByteBoi.getVer() == ByteBoiImpl::v2_0){
+		percentage = map(getVoltage(), 3650, 4100, 0, 100);
+	}else if(ByteBoi.getVer() == ByteBoiImpl::v1_1){
 		percentage = map(getVoltage(), 3650, 4000, 0, 100);
+	}else{
+		percentage = map(getVoltage(), 3650, 4250, 0, 100);
 	}
 
 	if(percentage < 0){
@@ -86,15 +95,6 @@ void BatteryService::setAutoShutdown(bool enabled){
 void BatteryService::begin(){
 	LoopManager::addListener(this);
 
-	auto expander = ByteBoi.getExpander();
-	if(expander){
-		expander->pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
-	}else{
-		analogSetAttenuation(ADC_11db);
-		pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
-	}
-
-
 	pinMode(BATTERY_PIN, INPUT);
 	for(int i = 0; i < 5; i++){
 		batteryBuffer[i] = static_cast<Color*>(malloc(sizeof(batteryIcon_4)));
@@ -104,6 +104,45 @@ void BatteryService::begin(){
 	memcpy_P(batteryBuffer[2],batteryIcon_2,sizeof(batteryIcon_2));
 	memcpy_P(batteryBuffer[3],batteryIcon_3,sizeof(batteryIcon_3));
 	memcpy_P(batteryBuffer[4],batteryIcon_4,sizeof(batteryIcon_4));
+
+	if(ByteBoi.getVer() == ByteBoiImpl::Ver::v1_0){
+		ByteBoi.getExpander()->pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
+	}else if(ByteBoi.getVer() == ByteBoiImpl::Ver::v1_1 || ByteBoi.getVer() == ByteBoiImpl::Ver::v2_0){
+		pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
+
+		if(ByteBoi.getVer() == ByteBoiImpl::Ver::v2_0){
+			// TODO: Check if this stays low during deep sleep
+			pinMode(CALIB_EN, OUTPUT);
+			digitalWrite(CALIB_EN, 0);
+
+			analogSetAttenuation(ADC_2_5db);
+
+			if(esp_adc_cal_check_efuse(ESP_ADC_CAL_VAL_EFUSE_VREF) == ESP_OK || esp_adc_cal_check_efuse(ESP_ADC_CAL_VAL_EFUSE_TP) == ESP_OK){
+				if(esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_2_5, ADC_WIDTH_BIT_12, 0, &calChars) != ESP_ADC_CAL_VAL_DEFAULT_VREF){
+					hasChars = true;
+				}
+			}
+
+			if(!hasChars){
+				printf("No ADC calib in efuse found!\n");
+			}
+
+			//NOTE: Design error on HW v2.3, GPIO35 is input-only and cannot be used here
+			// calibrate();
+		}else if(ByteBoi.getVer() == ByteBoiImpl::v1_1){
+			analogSetAttenuation(ADC_11db);
+		}
+	}
+
+	for(int i = 0; i < measureCount; i++){
+		if(hasChars){
+			measureSum += esp_adc_cal_raw_to_voltage(analogRead(BATTERY_PIN), &calChars) * Factor;
+		}else{
+			measureSum += analogRead(BATTERY_PIN);
+		}
+	}
+	voltage = (int) round(measureSum / measureCount);
+	measureSum = 0;
 }
 
 bool BatteryService::chargePinDetected() const{
@@ -116,11 +155,7 @@ bool BatteryService::chargePinDetected() const{
 }
 
 bool BatteryService::isCharging() const{
-	if(getLevel() == 4){
-		return false;
-	}else{
-		return chargePinDetected();
-	}
+	return chargePinDetected();
 }
 
 void BatteryService::drawIcon(Sprite &sprite, int16_t x, int16_t y, int16_t level){
@@ -151,4 +186,21 @@ void BatteryService::drawIcon(Sprite &sprite, int16_t x, int16_t y, int16_t leve
 	}else{
 		sprite.drawIcon(buffer, x, y, 14, 6, 1, TFT_TRANSPARENT);
 	}
+}
+
+void BatteryService::calibrate(){
+	digitalWrite(CALIB_EN, 1);
+	delay(100);
+
+	float sum = 0;
+	for(int i = 0; i < measureCount; i++){
+		sum += analogRead(BATTERY_PIN);
+		delay(100 / measureCount);
+	}
+	const uint16_t volt = round(sum / (float) measureCount);
+
+	calibOffset = CalibRef - volt;
+
+	digitalWrite(CALIB_EN, 0);
+	delay(100);
 }

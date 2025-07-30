@@ -16,7 +16,7 @@ void BatteryService::loop(uint micros){
 	measureMicros += micros;
 	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
-		voltage = Nuvo.getBatteryVoltage();
+		voltage = round((float) Nuvo.getBatteryVoltage() * 1.035f);
 		/*if(voltage > 4325){
 			charging = true;
 		}else{

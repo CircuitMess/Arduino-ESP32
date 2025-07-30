@@ -1,6 +1,7 @@
 #include "PlaybackSystem.h"
 #include "../Settings.h"
 #include "../Pins.hpp"
+#include "../ByteBoi.h"
 #include "Sample.h"
 
 

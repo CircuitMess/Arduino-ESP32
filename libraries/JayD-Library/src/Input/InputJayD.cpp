@@ -2,6 +2,7 @@
 #include "../JayD.h"
 #include <Wire.h>
 #include <driver/i2s.h>
+#include <Util/HWRevision.h>
 
 
 InputJayD *InputJayD::instance;
@@ -238,6 +239,19 @@ void InputJayD::handleEncoderEvent(uint8_t id, int8_t value){
 
 void InputJayD::handlePotentiometerEvent(uint8_t id, uint8_t value){
 	value = constrain(((float) value / 235.0f) * 255.0f, 0, 255);
+
+	if(HWRevision::get() >= 2){
+		int newVal = value;
+
+		if(id != 0){
+			newVal = 255 - newVal;
+		}
+		newVal = map(newVal, 70, 185, 0, 255);
+		newVal = constrain(newVal, 0, 255);
+
+		value = newVal;
+	}
+
 	if(potMovedCallbacks[id] != nullptr){
 		potMovedCallbacks[id](value);
 	}

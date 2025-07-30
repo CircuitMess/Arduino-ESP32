@@ -1,29 +1,35 @@
 #ifndef BYTEBOI_LIBRARY_SLIDERELEMENT_H
 #define BYTEBOI_LIBRARY_SLIDERELEMENT_H
 
-#include <UI/CustomElement.h>
+#include "SettingsElement.h"
+
 
 namespace MiniMenu {
-	class SliderElement : public CustomElement {
-	public:
-		SliderElement(ElementContainer* parent);
+class SliderElement : public SettingsElement {
+public:
+	SliderElement(ElementContainer* parent, String name, std::function<void(int)> onChange);
 
-		void moveSliderValue(int8_t value);
+	void click() override;
 
-		void setSliderValue(uint8_t sliderValue);
+	void left() override;
+	void right() override;
 
-		uint8_t getSliderValue() const;
+	void setSliderValue(uint8_t sliderValue);
 
-		void draw();
+	uint8_t getSliderValue() const;
 
-	private:
+private:
+	void moveSliderValue(int8_t value);
 
-		bool sliderIsSelected = false;
+	bool sliderIsSelected = false;
 
-		uint8_t sliderValue = 255;
+	uint8_t sliderValue = 255;
 
-	};
 
+protected:
+	void drawControl() override;
+};
 }
+
 
 #endif //BYTEBOI_LIBRARY_SLIDERELEMENT_H

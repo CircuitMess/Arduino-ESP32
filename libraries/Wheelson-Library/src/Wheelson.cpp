@@ -25,7 +25,7 @@ void WheelsonImpl::begin(){
 
 	if(!Nuvo.begin()){
 		Serial.println("Nuvoton error");
-		for(;;);
+		// for(;;);
 	}
 
 	if(!SPIFFS.begin()){
@@ -49,7 +49,7 @@ void WheelsonImpl::begin(){
 	sprite->setPsram(true);
 	sprite->createSprite(160, 128);
 
-	if(HWRevision::get() == 1){
+	if(HWRevision::get() > 0){
 		display.getTft()->setPanel(WheelsonDisplay::panel2());
 	}else{
 		display.getTft()->setPanel(WheelsonDisplay::panel1());

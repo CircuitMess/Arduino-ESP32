@@ -3,7 +3,9 @@
 #include "Pins.hpp"
 #include "Battery/BatteryService.h"
 #include "Settings.h"
+#include "ChatterDisplay.h"
 #include <SPIFFS.h>
+#include <Util/HWRevision.h>
 
 ChatterImpl Chatter;
 
@@ -19,8 +21,13 @@ void ChatterImpl::begin(bool backlight){
 	Piezo.noTone();
 
 	display = new Display(160, 128, -1, 3);
+
+	if(HWRevision::get() == 1){
+		display->getTft()->setPanel(ChatterDisplay::panel2());
+	}else{
+		display->getTft()->setPanel(ChatterDisplay::panel1());
+	}
 	display->begin();
-	display->getTft()->setRotation(1);
 	display->swapBytes(false);
 	display->getBaseSprite()->clear(TFT_BLACK);
 	display->commit();
@@ -85,6 +92,9 @@ void ChatterImpl::fadeOut(){
 	}
 
 	deinitPWM();
+
+	display->getBaseSprite()->clear(TFT_BLACK);
+	display->commit();
 }
 
 void ChatterImpl::fadeIn(){

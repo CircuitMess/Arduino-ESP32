@@ -1,13 +1,15 @@
 #include "SliderInput.h"
-#include "../Pins.hpp"
+#include "../Synthia.h"
 #include <Loop/LoopManager.h>
-#include "../Settings.h"
 
-SliderInput::SliderInput() : respLeft(POT_L, true), respRight(POT_L, true){
+SliderInput::SliderInput(){
 
 }
 
 void SliderInput::begin(){
+	respLeft.begin(POT_L, true);
+	respRight.begin(POT_R, true);
+
 	pinMode(POT_L, INPUT);
 	pinMode(POT_R, INPUT);
 

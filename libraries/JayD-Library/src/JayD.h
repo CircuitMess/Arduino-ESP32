@@ -67,6 +67,7 @@ extern IS31FL3731 charlie;
 class JayDImpl {
 public:
 	JayDImpl();
+	void initVer(int override = -1); // Initializes version and pins; also called from begin()
 
 	void begin();
 
@@ -74,6 +75,9 @@ public:
 
 private:
 	Display display;
+
+	enum class Ver { v1_0, v1_1, v1_2 } ver = Ver::v1_0;
+	bool verInited = false;
 
 };
 

@@ -10,6 +10,7 @@
 #include <vector>
 #include <FS.h>
 #include <Input/InputListener.h>
+#include <Util/PinMap.h>
 #include "Pins.hpp"
 #include "Menu/Menu.h"
 #include "Playback/PlaybackSystem.h"
@@ -28,6 +29,8 @@ public:
 	 * Initializes display, Playback, Battery, I2C expander, I2C input, and pre-registers all buttons.
 	 */
 	void begin();
+	void initVer(int override = -1); // Initializes version and pins; also called from begin()
+
 	Display* getDisplay();
 	I2cExpander* getExpander();
 	Input* getInput();
@@ -94,7 +97,8 @@ public:
 
 	void loop(uint micros) override;
 
-	int getPin(uint8_t index) const;
+	enum Ver { v1_0, v1_1, v2_0 };
+	Ver getVer() const;
 
 private:
 	Display* display;
@@ -108,18 +112,15 @@ private:
 	void (* splashCallback)() = nullptr;
 	uint32_t splashTime = 0;
 
-	ByteBoiDisplay displayConfig;
-
 	bool sdInserted = false;
 
-	std::array<int, 7> pinMap;
-	void initPins1();
-	void initPins2();
-
+	Ver ver = v1_0;
+	bool verInited = false;
 };
 
 extern ByteBoiImpl ByteBoi;
 extern BatteryService Battery;
 extern BatteryPopupService BatteryPopup;
+extern PinMap<Pin> Pins;
 
 #endif //BYTEBOI_H

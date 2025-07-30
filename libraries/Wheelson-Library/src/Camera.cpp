@@ -2,6 +2,7 @@
 
 #include <esp_camera.h>
 #include <Display/Color.h>
+#include <Util/HWRevision.h>
 #include "Wheelson.h"
 bool Camera::inited = false;
 bool Camera::useJpeg = false;
@@ -77,7 +78,7 @@ void Camera::initialize(bool jpeg, uint8_t q){
 	sensor->set_special_effect(sensor, 0);
 	sensor->set_saturation(sensor, 2);
 
-	if(Settings.get().camRotate == false){
+	if(Settings.get().camRotate == (HWRevision::get() == 2)){
 		sensor->set_hmirror(sensor, 1);
 		sensor->set_vflip(sensor, 1);
 	}

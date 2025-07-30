@@ -1,16 +1,16 @@
-#include <Loop/LoopManager.h>
 #include "EncoderInput.h"
-#include "../Pins.hpp"
+#include "../Synthia.h"
+#include <Loop/LoopManager.h>
 
 EncoderInput::EncoderInput(){
 
 }
 
 void EncoderInput::begin(){
-	pinMode(ENC_L1, INPUT);
-	pinMode(ENC_L2, INPUT);
-	pinMode(ENC_R1, INPUT);
-	pinMode(ENC_R2, INPUT);
+	for(const auto& pin : { ENC_L1, ENC_L2, ENC_R1, ENC_R2 }){
+		pinMode(pin, INPUT);
+		gpio_set_pull_mode((gpio_num_t) pin, GPIO_PULLUP_ONLY);
+	}
 
 	LoopManager::addListener(this);
 }

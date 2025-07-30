@@ -44,5 +44,7 @@
 #define INPUT_LOAD 21
 
 #define BATTERY_PIN 36
+#define CALIB_EN 25
+#define CALIB_READ 39
 
 #endif //CHATTER_LIBRARY_PINS_H

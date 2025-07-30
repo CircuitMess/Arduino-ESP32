@@ -8,11 +8,11 @@
 
 #include <LovyanGFX.hpp>
 
-class ByteBoiDisplay : public lgfx::LGFX_Device {
+class ChatterDisplay : public lgfx::LGFX_Device {
 public:
-	static lgfx::Panel_ILI9341* panel1();
-	static lgfx::Panel_ST7789* panel2();
-	static lgfx::Panel_ST7789* panel3();
+
+	static lgfx::Panel_ST7735S* panel1();
+	static lgfx::Panel_ST7735S* panel2();
 
 };
 

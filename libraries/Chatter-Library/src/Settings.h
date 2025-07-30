@@ -15,7 +15,7 @@ extern const char* ShutdownText[SHUTDOWN_STEPS];
 struct SettingsData {
 	bool sound = true;
 	uint8_t sleepTime = 1;
-	uint8_t shutdownTime = 4;
+	uint8_t shutdownTime = 1;
 	uint8_t screenBrightness = 200;
 	bool tested = false;
 	uint32_t messagesSent = 0;

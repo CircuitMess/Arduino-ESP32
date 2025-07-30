@@ -16,6 +16,8 @@
 #include <driver/adc.h>
 #include <Input/InputShift.h>
 #include "Pins.hpp"
+#include "PinDef.h"
+#include <Util/HWRevision.h>
 
 const char* ByteBoiImpl::SPIFFSgameRoot = "/game";
 const char* ByteBoiImpl::SPIFFSdataRoot = "/data";
@@ -26,11 +28,14 @@ ByteBoiImpl ByteBoi;
 BatteryService Battery;
 BatteryPopupService BatteryPopup;
 Menu* ByteBoiImpl::popupMenu = nullptr;
+PinMap<Pin> Pins;
 
 void ByteBoiImpl::begin(){
-	expander = new I2cExpander();
-	if(expander->begin(I2C_EXPANDER_ADDR, I2C_SDA, I2C_SCL)){
-		initPins1();
+	initVer();
+
+	if(ver == v1_0){
+		expander = new I2cExpander();
+		expander->begin(0x74, I2C_SDA, I2C_SCL);
 
 		expander->pinMode(BL_PIN, OUTPUT);
 		expander->pinWrite(BL_PIN, HIGH);
@@ -39,10 +44,6 @@ void ByteBoiImpl::begin(){
 
 		input = new InputI2C(expander);
 	}else{
-		delete expander;
-		expander = nullptr;
-		initPins2();
-
 		auto* inputShift = new ByteBoi2Input(SHIFT_SDA, SHIFT_SCL, SHIFT_PL, 8);
 		inputShift->begin();
 		input = inputShift;
@@ -79,6 +80,24 @@ void ByteBoiImpl::begin(){
 		Serial.println("SPIFFS error");
 	}
 
+	display = new Display(160, 120, -1, 1);
+	if(ver == v1_0){
+		display->getTft()->setPanel(ByteBoiDisplay::panel1());
+	}else if(ver == v1_1){
+		display->getTft()->setPanel(ByteBoiDisplay::panel2());
+	}else{
+		display->getTft()->setPanel(ByteBoiDisplay::panel3());
+	}
+
+	display->begin();
+	display->getBaseSprite()->clear(TFT_BLACK);
+	display->commit();
+
+	Battery.begin();
+	if(Battery.getLevel() == 0 && !Battery.isCharging()){
+		ByteBoi.shutdown();
+	}
+
 	//Audio thread #0 waits for resources loaded on thread #1
 	disableCore0WDT();
 
@@ -91,24 +110,41 @@ void ByteBoiImpl::begin(){
 
 	checkSD();
 
-	display = new Display(160, 120, -1, 1);
-	if(expander){
-		display->getTft()->setPanel(displayConfig.panel1());
-	}else{
-		display->getTft()->setPanel(displayConfig.panel2());
-	}
-	display->begin();
-	display->getBaseSprite()->clear(TFT_BLACK);
-	display->commit();
-
 	input->preregisterButtons({ (uint8_t) BTN_A, (uint8_t) BTN_B, (uint8_t) BTN_C, (uint8_t) BTN_UP, (uint8_t) BTN_DOWN, (uint8_t) BTN_RIGHT, (uint8_t) BTN_LEFT });
 	LoopManager::addListener(input);
 
 	Context::setDeleteOnPop(true);
 
-	Battery.begin();
-
 	setBacklight(true);
+}
+
+void ByteBoiImpl::initVer(int override){
+	if(verInited) return;
+	verInited = true;
+
+	const auto hw = override == -1 ? HWRevision::get() : override;
+
+	if(hw == 1){
+		// HW v2
+		ver = v2_0;
+		Pins.set(Pins3);
+	}else{
+		// HW v1.0 I2C pins
+		static constexpr int Sda = 23;
+		static constexpr int Scl = 22;
+
+		Wire.begin(Sda, Scl);
+		Wire.beginTransmission(0x74);
+		if(Wire.endTransmission() == 0){
+			// Expander present, this is HW v1.0
+			ver = v1_0;
+			Pins.set(Pins1);
+		}else{
+			// Expander not present, this is HW v1.1
+			ver = v1_1;
+			Pins.set(Pins2);
+		}
+	}
 }
 
 String ByteBoiImpl::getSDPath(){
@@ -341,8 +377,19 @@ void ByteBoiImpl::shutdown(){
 	esp_bt_controller_disable();
 	esp_wifi_stop();
 #endif
+
+	gpio_hold_en((gpio_num_t) BL_PIN);
+	gpio_hold_en((gpio_num_t) SPEAKER_SD);
+	gpio_deep_sleep_hold_en();
+
 	adc_power_off();
+	esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
+	esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
+	esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
+	esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
 	esp_deep_sleep_start();
+
+	for(;;); // Just in case
 }
 
 void ByteBoiImpl::splash(void(* callback)()){
@@ -375,31 +422,6 @@ void ByteBoiImpl::loop(uint micros){
 
 }
 
-void ByteBoiImpl::initPins1(){
-	pinMap[0] = 12; // BL_PIN
-
-	pinMap[1] = 14; // LED_R
-	pinMap[2] = 15; // LED_G
-	pinMap[3] = 13; // LED_B
-	pinMap[4] = 10; // CHARGE_DETECT_PIN
-	pinMap[5] = 8; // SD_DETECT_PIN
-
-	pinMap[6] = 26; // SPI_SCK
-}
-
-void ByteBoiImpl::initPins2(){
-	pinMap[0] = 18; // BL_PIN
-
-	pinMap[1] = 22; // LED_R
-	pinMap[2] = 23; // LED_G
-	pinMap[3] = 19; // LED_B
-	pinMap[4] = 35; // CHARGE_DETECT_PIN
-	pinMap[5] = 7; // SD_DETECT_PIN
-
-	pinMap[6] = 14; // SPI_SCK
-}
-
-int ByteBoiImpl::getPin(uint8_t index) const{
-	if(index >= pinMap.size()) return -1;
-	return pinMap[index];
+ByteBoiImpl::Ver ByteBoiImpl::getVer() const{
+	return ver;
 }
