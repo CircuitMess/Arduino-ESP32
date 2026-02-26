@@ -1,11 +1,12 @@
 #include "Camera.h"
-
 #include <esp_camera.h>
 #include <Display/Color.h>
 #include <Util/HWRevision.h>
 #include "Wheelson.h"
+
 bool Camera::inited = false;
 bool Camera::useJpeg = false;
+bool Camera::ManualJPEGEncoding = false;
 
 Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t))), frame888(static_cast<uint8_t*>(ps_malloc(160 * 120 * 3))){
 	if(!inited){
@@ -16,6 +17,7 @@ Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t)))
 Camera::~Camera(){
 	free(frame565);
 	free(frame888);
+	free(buffJPG);
 
 	if(frame){
 		esp_camera_fb_return(frame);
@@ -57,7 +59,7 @@ void Camera::initialize(bool jpeg, uint8_t q){
 	config.pin_sscb_scl = SIOC_GPIO_NUM;
 	config.pin_pwdn = PWDN_GPIO_NUM;
 	config.pin_reset = RESET_GPIO_NUM;
-	config.xclk_freq_hz = 18000000;
+	config.xclk_freq_hz = 10000000;
 
 	config.pixel_format = useJpeg ? PIXFORMAT_JPEG : PIXFORMAT_RGB888;
 	config.frame_size = FRAMESIZE_QQVGA;
@@ -82,6 +84,9 @@ void Camera::initialize(bool jpeg, uint8_t q){
 		sensor->set_hmirror(sensor, 1);
 		sensor->set_vflip(sensor, 1);
 	}
+
+	//OV3660 cameras don't have internal JPEG encoder, so we have to do this manually.
+	ManualJPEGEncoding = sensor->id.PID != OV2640_PID;
 }
 
 bool Camera::loadFrame(){
@@ -92,7 +97,17 @@ bool Camera::loadFrame(){
 	}
 
 	// TODO: decoding, maybe
-	if(useJpeg) return true;
+	if(useJpeg && !ManualJPEGEncoding) return true;
+
+	if(useJpeg && ManualJPEGEncoding){
+		frame2jpg(frame, 10, &buffJPG, &sizeJPG);
+		frameJPG = *frame;
+		frameJPG.buf = buffJPG;
+		frameJPG.format = PIXFORMAT_JPEG;
+		frameJPG.len = sizeJPG;
+
+		return true;
+	}
 
 	memcpy(frame888, frame->buf, min(frame->len, (size_t) 160 * 120 * 3));
 
@@ -108,6 +123,13 @@ void Camera::releaseFrame(){
 
 	esp_camera_fb_return(frame);
 	frame = nullptr;
+
+	if(useJpeg && ManualJPEGEncoding){
+		free(buffJPG);
+		buffJPG = nullptr;
+		sizeJPG = 0;
+		frameJPG = {};
+	}
 }
 
 uint16_t* Camera::getRGB565() const{
@@ -119,6 +141,10 @@ uint8_t* Camera::getRGB888() const{
 }
 
 const camera_fb_t* Camera::getFrame() const{
+	if(useJpeg && ManualJPEGEncoding){
+		return &frameJPG;
+	}
+
 	return frame;
 }
 

@@ -45,8 +45,14 @@ private:
 	uint16_t* frame565;
 	uint8_t* frame888;
 
+	uint8_t* buffJPG = nullptr;
+	size_t sizeJPG = 0;
+	camera_fb_t frameJPG = {};
+
 	static bool inited;
 	static bool useJpeg;
+
+	static bool ManualJPEGEncoding;
 };
 
 
