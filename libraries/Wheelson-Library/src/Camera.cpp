@@ -59,7 +59,7 @@ void Camera::initialize(bool jpeg, uint8_t q){
 	config.pin_sscb_scl = SIOC_GPIO_NUM;
 	config.pin_pwdn = PWDN_GPIO_NUM;
 	config.pin_reset = RESET_GPIO_NUM;
-	config.xclk_freq_hz = 10000000;
+	config.xclk_freq_hz = 8000000;
 
 	config.pixel_format = useJpeg ? PIXFORMAT_JPEG : PIXFORMAT_RGB888;
 	config.frame_size = FRAMESIZE_QQVGA;
@@ -86,7 +86,24 @@ void Camera::initialize(bool jpeg, uint8_t q){
 	}
 
 	//OV3660 cameras don't have internal JPEG encoder, so we have to do this manually.
-	ManualJPEGEncoding = sensor->id.PID != OV2640_PID;
+	ManualJPEGEncoding = sensor->id.PID == OV3660_PID;
+	if(jpeg && ManualJPEGEncoding){
+		esp_camera_deinit();
+
+		config.pixel_format = PIXFORMAT_RGB888;
+		err = esp_camera_init(&config);
+		inited = err == ESP_OK;
+
+		if(err != ESP_OK){
+			Serial.printf("Camera init failed with error 0x%x", err);
+			return;
+		}
+
+		sensor = esp_camera_sensor_get();
+		sensor->set_quality(sensor, qualities[q]);
+		sensor->set_special_effect(sensor, 0);
+		sensor->set_saturation(sensor, 2);
+	}
 }
 
 bool Camera::loadFrame(){
@@ -101,7 +118,8 @@ bool Camera::loadFrame(){
 
 	if(useJpeg && ManualJPEGEncoding){
 		frame2jpg(frame, 10, &buffJPG, &sizeJPG);
-		frameJPG = *frame;
+		frameJPG.height = frame->height;
+		frameJPG.width = frame->width;
 		frameJPG.buf = buffJPG;
 		frameJPG.format = PIXFORMAT_JPEG;
 		frameJPG.len = sizeJPG;
