@@ -473,6 +473,13 @@ DSTATUS ff_sd_initialize(uint8_t pdrv)
     }
 
     token = sdTransaction(pdrv, CRC_ON_OFF, 1, NULL);
+    if (token != 1 && (token & 0x04)) {
+        // Some cards reject the first CRC_ON_OFF as illegal command but accept a retry.
+        // Backport of esp-idf 543c7b9bff (fix for 0x106 error during SD card init via SPI)
+        log_w("CRC_ON_OFF failed: %u, retrying", token);
+        delay(10);
+        token = sdTransaction(pdrv, CRC_ON_OFF, 1, NULL);
+    }
     if (token == 0x5) {
         //old card maybe
         card->supports_crc = false;
