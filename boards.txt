@@ -275,7 +275,7 @@ byteboi.build.extra_flags=-Os -g
 
 byteboi.menu.PartitionScheme.game=Game for launcher (1MB SPIFFS)
 byteboi.menu.PartitionScheme.game.build.partitions=byteboi
-byteboi.menu.PartitionScheme.game.upload.maximum_size=2097152
+byteboi.menu.PartitionScheme.game.upload.maximum_size=2031616
 byteboi.menu.PartitionScheme.game.upload.binary_start=0x110000
 byteboi.menu.PartitionScheme.game.upload.spiffs_start=0x11000
 
@@ -293,7 +293,7 @@ byteboi.menu.PartitionScheme.standalone_big.upload.spiffs_start=0x11000
 
 byteboi.menu.PartitionScheme.launcher=Launcher
 byteboi.menu.PartitionScheme.launcher.build.partitions=byteboi_launcher
-byteboi.menu.PartitionScheme.launcher.upload.maximum_size=983040
+byteboi.menu.PartitionScheme.launcher.upload.maximum_size=1048576
 byteboi.menu.PartitionScheme.launcher.upload.binary_start=0x110000
 byteboi.menu.PartitionScheme.launcher.upload.spiffs_start=0x11000
 byteboi.menu.PartitionScheme.launcher.build.pscheme_defines=-DBYTEBOI_LAUNCHER
