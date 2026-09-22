@@ -97,14 +97,24 @@ public:
 
 	void loop(uint micros) override;
 
-	enum Ver { v1_0, v1_1, v2_0 };
+	enum Ver { v1_0, v1_1, v2_0, v2_6 };
 	Ver getVer() const;
+
+	bool SD_begin();
+	void SD_end();
+
+	bool SD_exists(const char* path);
+	bool SD_exists(const String& path);
+
+	File SD_open(const char* path, const char* mode = FILE_READ);
+	File SD_open(const String& path, const char* mode = FILE_READ);
 
 private:
 	Display* display;
 	I2cExpander* expander = nullptr;
 	Input* input;
 	String gameID = "";
+
 	void buttonPressed(uint i) override;
 	volatile bool menuBind = false;
 	static MiniMenu::Menu* popupMenu;

@@ -1,4 +1,3 @@
-#include <SD.h>
 #include "MixSystem.h"
 #include "../../JayD.h"
 #include "../Effects/LowPass.h"
@@ -36,7 +35,7 @@ MixSystem::MixSystem() : audioTask("MixAudio", audioThread, 16 * 1024, this), qu
 								.dma_buf_count = 16,
 								.dma_buf_len = 512,
 								.use_apll = false
-						}, i2s_pin_config, I2S_NUM_0);
+						}, JayD.i2s_pin_config, I2S_NUM_0);
 
 	i2s->setGain(0.4f*((float) Settings.get().volumeLevel) / 255.0f);
 	i2s->setSource(mixer);
@@ -376,11 +375,11 @@ void MixSystem::stopRecording(){
 void MixSystem::_startRecording(){
 	if(isRecording()) return;
 
-	if(SD.exists(recordPath)){
-		SD.remove(recordPath);
+	if(JayD.SD_exists(recordPath)){
+		JayD.SD_remove(recordPath);
 	}
 
-	fileOut = SD.open(recordPath, "w");
+	fileOut = JayD.SD_open(recordPath, "w");
 	if(!fileOut){
 		Serial.printf("Failed opening %s for writing\n", recordPath);
 		return;

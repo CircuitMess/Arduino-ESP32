@@ -1,6 +1,7 @@
 #include "ByteBoi.h"
 #include <SPIFFS.h>
 #include <SD.h>
+#include <SD_MMC.h>
 #include <SPI.h>
 #include <esp_partition.h>
 #include <esp_ota_ops.h>
@@ -32,6 +33,11 @@ PinMap<Pin> Pins;
 
 void ByteBoiImpl::begin(){
 	initVer();
+
+	//Ovo je neki SD pin na kojem ne smijemo imati pull-up, jer je strapping pin. Ali SD MMC ne radi bez ovoga, zato koristimo interni pull-up.
+	if(ver == v2_6){
+		gpio_set_pull_mode(GPIO_NUM_2, GPIO_PULLUP_ONLY);
+	}
 
 	if(ver == v1_0){
 		expander = new I2cExpander();
@@ -105,8 +111,11 @@ void ByteBoiImpl::begin(){
 
 	Playback.begin();
 
-	SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI, SPI_SS);
-	SPI.setFrequency(60000000);
+	//HW v2.6: SD lines belong to the SDMMC peripheral (1-bit slot 1), don't claim them for SPI
+	if(ver != v2_6){
+		SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI, SPI_SS);
+		SPI.setFrequency(60000000);
+	}
 
 	checkSD();
 
@@ -124,7 +133,11 @@ void ByteBoiImpl::initVer(int override){
 
 	const auto hw = override == -1 ? HWRevision::get() : override;
 
-	if(hw == 1){
+	if(hw == 2){
+		// HW v2.6
+		ver = v2_6;
+		Pins.set(Pins4);
+	}else if(hw == 1){
 		// HW v2
 		ver = v2_0;
 		Pins.set(Pins3);
@@ -226,36 +239,36 @@ void ByteBoiImpl::checkSD(){
 		sdInserted = !(ByteBoi.getExpander()->getPortState() & (1 << SD_DETECT_PIN));
 
 		if(wasInserted && !sdInserted){
-			SD.end();
+			SD_end();
 		}else if(!wasInserted && sdInserted){
-			sdInserted = SD.begin(SD_CS, SPI);
+			sdInserted = SD_begin();
 
 			if(!sdInserted) return;
 
-			if(!SD.exists("/.ByteBoi")){
-				File f = SD.open("/.ByteBoi", FILE_WRITE);
+			if(!SD_exists("/.ByteBoi")){
+				File f = SD_open("/.ByteBoi", FILE_WRITE);
 				f.write(0);
 				f.close();
 			}
 		}
 	}else{
 		if(sdInserted){
-			File f = SD.open("/.ByteBoi");
+			File f = SD_open("/.ByteBoi");
 			uint8_t b;
 			if(f && f.read(&b, 1)){
 				sdInserted = true;
 				return;
 			}
 			f.close();
-			SD.end();
+			SD_end();
 			sdInserted = false;
 		}else{
-			if(!SD.begin(SD_CS, SPI)){
+			if(!SD_begin()){
 				sdInserted = false;
 				return;
 			}
-			if(!SD.exists("/.ByteBoi")){
-				File f = SD.open("/.ByteBoi", FILE_WRITE);
+			if(!SD_exists("/.ByteBoi")){
+				File f = SD_open("/.ByteBoi", FILE_WRITE);
 				f.write(0);
 				f.close();
 			}
@@ -424,4 +437,47 @@ void ByteBoiImpl::loop(uint micros){
 
 ByteBoiImpl::Ver ByteBoiImpl::getVer() const{
 	return ver;
+}
+
+bool ByteBoiImpl::SD_begin(){
+	if(ver == v2_6){
+		return SD_MMC.begin("/sd", true);
+	}
+	return SD.begin(SD_CS, SPI);
+}
+
+void ByteBoiImpl::SD_end(){
+	if(ver == v2_6){
+		SD_MMC.end();
+	}else{
+		SD.end();
+	}
+}
+
+bool ByteBoiImpl::SD_exists(const char* path){
+	if(ver == v2_6){
+		return SD_MMC.exists(path);
+	}
+	return SD.exists(path);
+}
+
+bool ByteBoiImpl::SD_exists(const String& path){
+	if(ver == v2_6){
+		return SD_MMC.exists(path);
+	}
+	return SD.exists(path);
+}
+
+File ByteBoiImpl::SD_open(const char* path, const char* mode){
+	if(ver == v2_6){
+		return SD_MMC.open(path, mode);
+	}
+	return SD.open(path, mode);
+}
+
+File ByteBoiImpl::SD_open(const String& path, const char* mode){
+	if(ver == v2_6){
+		return SD_MMC.open(path, mode);
+	}
+	return SD.open(path, mode);
 }

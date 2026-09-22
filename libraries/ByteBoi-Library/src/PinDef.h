@@ -8,6 +8,7 @@
 extern const PinDefMap<Pin> Pins1;
 extern const PinDefMap<Pin> Pins2;
 extern const PinDefMap<Pin> Pins3;
+extern const PinDefMap<Pin> Pins4;
 
 
 #endif //BYTEBOI_LIBRARY_PINDEF_H
