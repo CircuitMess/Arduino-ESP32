@@ -17,7 +17,7 @@ PlaybackSystem::PlaybackSystem() : audioTask("MixAudio", audioThread, 4 * 1024, 
 								.dma_buf_count = 16,
 								.dma_buf_len = 512,
 								.use_apll = false
-						}, i2s_pin_config, I2S_NUM_0);
+						}, JayD.i2s_pin_config, I2S_NUM_0);
 
 	out->setGain(0.4f*((float) Settings.get().volumeLevel) / 255.0f);
 }

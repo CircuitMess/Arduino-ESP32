@@ -55,7 +55,7 @@ uint16_t BatteryService::getVoltage(bool bypassChrg) const{
 		return 5000;
 	}
 
-	if(ByteBoi.getVer() == ByteBoiImpl::v2_0){
+	if(ByteBoi.getVer() == ByteBoiImpl::v2_0 || ByteBoi.getVer() == ByteBoiImpl::v2_6){
 		if(hasChars){
 			return voltage;
 		}else{
@@ -71,7 +71,7 @@ uint16_t BatteryService::getVoltage(bool bypassChrg) const{
 uint8_t BatteryService::getPercentage() const{
 	int16_t percentage;
 
-	if(ByteBoi.getVer() == ByteBoiImpl::v2_0){
+	if(ByteBoi.getVer() == ByteBoiImpl::v2_0 || ByteBoi.getVer() == ByteBoiImpl::v2_6){
 		percentage = map(getVoltage(), 3650, 4100, 0, 100);
 	}else if(ByteBoi.getVer() == ByteBoiImpl::v1_1){
 		percentage = map(getVoltage(), 3650, 4000, 0, 100);
@@ -107,10 +107,10 @@ void BatteryService::begin(){
 
 	if(ByteBoi.getVer() == ByteBoiImpl::Ver::v1_0){
 		ByteBoi.getExpander()->pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
-	}else if(ByteBoi.getVer() == ByteBoiImpl::Ver::v1_1 || ByteBoi.getVer() == ByteBoiImpl::Ver::v2_0){
+	}else{
 		pinMode(CHARGE_DETECT_PIN, INPUT_PULLDOWN);
 
-		if(ByteBoi.getVer() == ByteBoiImpl::Ver::v2_0){
+		if(ByteBoi.getVer() == ByteBoiImpl::Ver::v2_0 || ByteBoi.getVer() == ByteBoiImpl::Ver::v2_6){
 			// TODO: Check if this stays low during deep sleep
 			pinMode(CALIB_EN, OUTPUT);
 			digitalWrite(CALIB_EN, 0);
@@ -127,7 +127,8 @@ void BatteryService::begin(){
 				printf("No ADC calib in efuse found!\n");
 			}
 
-			//NOTE: Design error on HW v2.3, GPIO35 is input-only and cannot be used here
+			//NOTE: Design error on HW v2.3, GPIO35 is input-only and cannot be used here.
+			//Fixed on HW v2.6 (CALIB_EN moved to GPIO32), but calibration isn't validated on hardware yet.
 			// calibrate();
 		}else if(ByteBoi.getVer() == ByteBoiImpl::v1_1){
 			analogSetAttenuation(ADC_11db);

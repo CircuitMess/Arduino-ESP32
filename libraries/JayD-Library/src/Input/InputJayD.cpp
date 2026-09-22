@@ -3,6 +3,7 @@
 #include <Wire.h>
 #include <driver/i2s.h>
 #include <Util/HWRevision.h>
+#include "../Pins.h"
 
 
 InputJayD *InputJayD::instance;
@@ -47,7 +48,7 @@ bool InputJayD::begin(){
 	digitalWrite(JDNV_PIN_RESET, HIGH);
 	reset();
 	delay(500);
-	Wire.begin(I2C_SDA, I2C_SCL);
+	Wire.begin(PIN(I2C_SDA), PIN(I2C_SCL));
 	Wire.beginTransmission(JDNV_ADDR);
 
 	if(Wire.endTransmission() != 0){

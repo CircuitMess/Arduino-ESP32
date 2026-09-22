@@ -15,7 +15,6 @@
 #include <SPI.h>
 #include <Devices/Matrix/Matrix.h>
 #include <Devices/SerialFlash/SerialFlashFileAdapter.h>
-#include <SD.h>
 #include <WiFi.h>
 #include <Util/Task.h>
 #include <esp_partition.h>
@@ -54,7 +53,7 @@ void recurseDir(File dir){
 }
 
 void listSD(){
-	File root = SD.open("/");
+	File root = JayD.SD_open("/");
 	if(!root){
 		Serial.println("List SD: can't open root");
 		return;

@@ -1,5 +1,6 @@
 #include "JayDDisplay.h"
 #include "JayD.h"
+#include "Pins.h"
 
 lgfx::Panel_ST7735S* JayDDisplay::panel1(){
 	auto bus = new lgfx::Bus_SPI();
@@ -16,10 +17,10 @@ lgfx::Panel_ST7735S* JayDDisplay::panel1(){
 		cfg.spi_3wire = false;
 		cfg.use_lock = true;
 		cfg.dma_channel = 1;
-		cfg.pin_sclk = SPI_SCK;
-		cfg.pin_mosi = SPI_MOSI;
+		cfg.pin_sclk = PIN(SPI_SCK);
+		cfg.pin_mosi = PIN(SPI_MOSI);
 		cfg.pin_miso = -1;
-		cfg.pin_dc = 33;
+		cfg.pin_dc = PIN(PIN_DC);
 
 		bus->config(cfg);
 		panel->setBus(bus);
@@ -28,8 +29,8 @@ lgfx::Panel_ST7735S* JayDDisplay::panel1(){
 	{
 		auto cfg = panel->config();
 
-		cfg.pin_cs = 32;
-		cfg.pin_rst = 2;
+		cfg.pin_cs = PIN(PIN_CS);
+		cfg.pin_rst = PIN(PIN_RST);
 		cfg.pin_busy = -1;
 
 
@@ -68,10 +69,10 @@ lgfx::Panel_ST7735S* JayDDisplay::panel2(){
 		cfg.spi_3wire = false;
 		cfg.use_lock = true;
 		cfg.dma_channel = 1;
-		cfg.pin_sclk = SPI_SCK;
-		cfg.pin_mosi = SPI_MOSI;
+		cfg.pin_sclk = PIN(SPI_SCK);
+		cfg.pin_mosi = PIN(SPI_MOSI);
 		cfg.pin_miso = -1;
-		cfg.pin_dc = 33;
+		cfg.pin_dc = PIN(PIN_DC);
 
 		bus->config(cfg);
 		panel->setBus(bus);
@@ -80,8 +81,8 @@ lgfx::Panel_ST7735S* JayDDisplay::panel2(){
 	{
 		auto cfg = panel->config();
 
-		cfg.pin_cs = 32;
-		cfg.pin_rst = 2;
+		cfg.pin_cs = PIN(PIN_CS);
+		cfg.pin_rst = PIN(PIN_RST);
 		cfg.pin_busy = -1;
 
 
@@ -120,10 +121,10 @@ lgfx::Panel_ST7735S* JayDDisplay::panel3(){
 		cfg.spi_3wire = false;
 		cfg.use_lock = true;
 		cfg.dma_channel = 1;
-		cfg.pin_sclk = SPI_SCK;
-		cfg.pin_mosi = SPI_MOSI;
+		cfg.pin_sclk = PIN(SPI_SCK);
+		cfg.pin_mosi = PIN(SPI_MOSI);
 		cfg.pin_miso = -1;
-		cfg.pin_dc = 33;
+		cfg.pin_dc = PIN(PIN_DC);
 
 		bus->config(cfg);
 		panel->setBus(bus);
@@ -132,8 +133,8 @@ lgfx::Panel_ST7735S* JayDDisplay::panel3(){
 	{
 		auto cfg = panel->config();
 
-		cfg.pin_cs = 32;
-		cfg.pin_rst = 2;
+		cfg.pin_cs = PIN(PIN_CS);
+		cfg.pin_rst = PIN(PIN_RST);
 		cfg.pin_busy = -1;
 
 

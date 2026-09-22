@@ -20,7 +20,7 @@ MiniMenu::Menu::Menu(Context* currentContext) : Modal(*currentContext, 130, Byte
 	elements[0] = volumeSlider;
 
 	const auto version = ByteBoi.getVer();
-	if(version == ByteBoiImpl::v2_0){
+	if(version == ByteBoiImpl::v2_0 || version == ByteBoiImpl::v2_6){
 		LEDSwitch = nullptr;
 		NumElements = 1;
 	}else{

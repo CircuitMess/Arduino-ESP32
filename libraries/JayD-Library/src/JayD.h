@@ -1,9 +1,6 @@
 #ifndef JAYD_H
 #define JAYD_H
 
-#define PIN_BL 25
-#define SD_CS 22
-
 #define ENC_MID 0
 #define ENC_L1 1
 #define ENC_L2 6
@@ -26,19 +23,6 @@
 #define BTN_R2 5
 #define BTN_R3 4
 
-#define I2S_WS 4
-#define I2S_DO 14
-#define I2S_BCK 21
-#define I2S_DI -1
-
-#define I2C_SDA 26
-#define I2C_SCL 27
-
-#define SPI_SCK 18
-#define SPI_MISO 19
-#define SPI_MOSI 23
-#define SPI_SS -1
-
 #include <Arduino.h>
 #include <CircuitOS.h>
 #include <Loop/LoopManager.h>
@@ -50,7 +34,6 @@
 #include <SPIFFS.h>
 #include <WiFi.h>
 #include <SPI.h>
-#include <SD.h>
 #include "Settings.h"
 #include "Services/SDScheduler.h"
 #include "Input/InputJayD.h"
@@ -59,7 +42,6 @@
 #include <Devices/Matrix/IS31FL3731.h>
 #include "JayDDisplay.h"
 
-extern const i2s_pin_config_t i2s_pin_config;
 extern Matrix LEDmatrix;
 extern MatrixManager matrixManager;
 extern IS31FL3731 charlie;
@@ -73,12 +55,25 @@ public:
 
 	Display& getDisplay();
 
+	File SD_open(const char* path, const char* mode = FILE_READ);
+	File SD_open(String path, const char* mode = FILE_READ);
+
+	bool SD_exists(const char* path);
+	bool SD_exists(const String& path);
+	bool SD_remove(const char* path);
+	bool SD_remove(const String& path);
+
+	bool SD_begin();
+	void SD_end();
+
+	i2s_pin_config_t i2s_pin_config;
+
 private:
 	Display display;
 
-	enum class Ver { v1_0, v1_1, v1_2 } ver = Ver::v1_0;
-	bool verInited = false;
+	enum class Ver { v1_0, v1_1, v1_2, v1_3 } ver = Ver::v1_0;
 
+	bool verInited = false;
 };
 
 extern JayDImpl JayD;
